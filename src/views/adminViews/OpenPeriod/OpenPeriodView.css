@@ -1,0 +1,13 @@
+.open-period-container {
+    display: flex;
+}
+
+.open-period-content {
+    flex: 1;
+    /* Other styles */
+}
+
+.sidebar-option {
+    margin-bottom: 10px;
+    /* Add other styles for each option */
+}

@@ -1,0 +1,57 @@
+.sidebar {
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 250px;
+    background-image: url('./../../assets/images/layouts/background.png');
+    background-size: cover; 
+    background-position: center;
+}
+
+.sidebar-top {
+    /* flex: 1; */
+    display: flex;
+    align-items: flex-start;  /* Align the image to the top */
+    justify-content: center;
+    background-color: #AFAAB4;  /* Set the background color */
+    padding-block: 10px;
+    padding-inline: 15px;
+    cursor: pointer;
+}
+
+.sidebar-logo {
+    width: 100%;  /* Make the image span the entire width */
+    display: block;  /* Block display to remove any extra space below the image */
+}
+
+.sidebar-options {
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    padding-top: 4rem;
+}
+
+.option {
+    background-color: #034A91;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+    text-align: center;
+    margin-block: 5%;
+    cursor: pointer;
+    /* demás estilos que necesitemos */
+}
+
+.sidebar-bottom {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.logout-action {
+    font-size: 1rem;
+}
