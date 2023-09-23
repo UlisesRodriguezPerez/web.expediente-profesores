@@ -6,6 +6,7 @@ import './SemesterWorkload.css';
 import dataService from '../../../services/dataService'; // Asegúrate de ajustar la ruta correcta
 import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
+import { set } from 'date-fns';
 
 export const SemesterWorkload = () => {
 
@@ -14,14 +15,21 @@ export const SemesterWorkload = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [editingWorkloadId, setEditingWorkloadId] = useState(null);
     const [tempWorkloadValue, setTempWorkloadValue] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
 
 
     const { showNotification } = useContext(NotificationContext);
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
 
-    const fetchWorkloads = async (page = 1) => {
+
+    const fetchWorkloads = async (page = 1, filterQuery = '') => {
+        setCurrentPage(page);
         try {
-            const responseData = await dataService.readData(`${ROUTES.WORKLOADS}?included=collaborator.user,period.creator.user&perPage=10&page=${page}`);
+            const responseData = await dataService.readData(`${ROUTES.WORKLOADS}?included=collaborator.user,period.creator.user&perPage=10&page=${page}${filterQuery}`);
             setWorkloads(responseData.data.data);
             setTotalItems(responseData.data.total);
             console.log('workloads', responseData.data);
@@ -32,9 +40,27 @@ export const SemesterWorkload = () => {
     };
 
     useEffect(() => {
+        // establece un temporizador para retrasar la ejecución de la búsqueda
+        const timerId = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300); // 300ms de retardo
+    
+        // limpia el temporizador si el usuario escribe antes de que el temporizador termine
+        return () => clearTimeout(timerId);
+    }, [searchTerm]);
+    
+    useEffect(() => {
+        if (debouncedSearchTerm.trim() === '') {
+            fetchWorkloads(1); // Si debouncedSearchTerm está vacío, mostrar todos los elementos (sin filtro).
+        } else {
+            const filterQuery = buildFilterQuery(debouncedSearchTerm);
+            fetchWorkloads(1, filterQuery); // Si debouncedSearchTerm tiene un valor, aplicar el filtro.
+        }
+    }, [debouncedSearchTerm]);
+
+    useEffect(() => {
         fetchWorkloads();
     }, []); // Este useEffect se ejecutará una vez cuando el componente se monte.
-
     useEffect(() => {
         fetchWorkloads(currentPage);
     }, [currentPage]); // Este useEffect se ejecutará cada vez que currentPage cambie.
@@ -65,10 +91,10 @@ export const SemesterWorkload = () => {
 
     const handleSaveWorkload = async (workloadId, collaboratorId, periodId) => {
         if (tempWorkloadValue < 0) return showNotification('error', 'El valor del workload debe ser mayor o igual a cero.');
-    
+
         try {
             console.log('workloadId', workloadId);
-            const response = await dataService.updateData(`${ROUTES.WORKLOADS}/${workloadId}`, { 
+            const response = await dataService.updateData(`${ROUTES.WORKLOADS}/${workloadId}`, {
                 workload: tempWorkloadValue,
                 collaborator_id: collaboratorId, // Añadido
                 period_id: periodId, // Añadido
@@ -82,8 +108,30 @@ export const SemesterWorkload = () => {
             console.error('Error updating workload:', error);
             console.error('Validation errors:', error.response.data);
             showNotification('error', 'Error al actualizar el workload.');
-         }
+        }
     };
+
+    const buildFilterQuery = (term) => {
+        const baseFields = [
+          'collaborator.user.name',
+          'collaborator.user.last_name',
+          'collaborator.user.second_last_name',
+          'workload'
+        ];
+      
+        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
+        return queries.join('');
+      };
+
+      const handleSearch = () => {
+        if (searchTerm.trim() === '') {
+            fetchWorkloads(1); // if searchTerm is empty, fetch all workloads
+        } else {
+            const filterQuery = buildFilterQuery(searchTerm);
+            fetchWorkloads(1, filterQuery); // if searchTerm is not empty, fetch filtered workloads
+        }
+      };
+      
 
 
     return (
@@ -101,8 +149,21 @@ export const SemesterWorkload = () => {
                     </div>
                     <div className="search-filter-container">
                         <div className="search-box">
-                            <input type="text" placeholder="Búsqueda" className="search-input" />
-                            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+                            <input
+                                type="text"
+                                placeholder="Búsqueda"
+                                className="search-input"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                onKeyPress={(event) => {
+                                    if(event.key === 'Enter') handleSearch();
+                                  }}
+                            />
+                            <FontAwesomeIcon 
+  icon={faSearch} 
+  className="search-icon" 
+  onClick={handleSearch}
+/>
                         </div>
                         <button className="filter-button">
                             <span className="filter-lines">
@@ -125,42 +186,42 @@ export const SemesterWorkload = () => {
                         </tr>
                     </thead>
                     <tbody>
-                    {workloads.map((workload) => (
-                        <tr key={workload.id}>
-                            <td>{`${workload.collaborator.user.name} ${workload.collaborator.user.last_name} ${workload.collaborator.user.second_last_name}`}</td>
-                            <td className="workload-container">
-                                {editingWorkloadId === workload.id ? (
-                                    <input
-                                        type="number"
-                                        value={tempWorkloadValue}
-                                        onChange={handleWorkloadChange}
-                                        // onBlur={handleSaveWorkload} 
-                                        className="input-edit" // Clase CSS para estilo
-                                    />
-                                ) : (
-                                    <div className="bar-container">
-                                        <div className="workload-bar" style={{ width: `${(workload.workload / 1.5) * 100}%` }}></div>
-                                    </div>
-                                )}
-                            </td>
-                            <td className="workload-number-container">
-                                <span className="workload-number">{editingWorkloadId === workload.id ? tempWorkloadValue : workload.workload}</span>
-                            </td>
-                            <td>
-                                {editingWorkloadId === workload.id ? (
-                                    <button onClick={() => handleSaveWorkload(workload.id, workload.collaborator.id, workload.period.id)} className="btn-guardar"> 
-                                    Guardar
-                                </button>
-                                ) : (
-                                    <button className="btn-editar" onClick={() => handleEditClick(workload.id, workload.workload)}>
-                                        <FontAwesomeIcon icon={faEdit} />
-                                        Editar
-                                    </button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                        {workloads.map((workload) => (
+                            <tr key={workload.id}>
+                                <td>{`${workload.collaborator.user.name} ${workload.collaborator.user.last_name} ${workload.collaborator.user.second_last_name}`}</td>
+                                <td className="workload-container">
+                                    {editingWorkloadId === workload.id ? (
+                                        <input
+                                            type="number"
+                                            value={tempWorkloadValue}
+                                            onChange={handleWorkloadChange}
+                                            // onBlur={handleSaveWorkload} 
+                                            className="input-edit" // Clase CSS para estilo
+                                        />
+                                    ) : (
+                                        <div className="bar-container">
+                                            <div className="workload-bar" style={{ width: `${(workload.workload / 1.5) * 100}%` }}></div>
+                                        </div>
+                                    )}
+                                </td>
+                                <td className="workload-number-container">
+                                    <span className="workload-number">{editingWorkloadId === workload.id ? tempWorkloadValue : workload.workload}</span>
+                                </td>
+                                <td>
+                                    {editingWorkloadId === workload.id ? (
+                                        <button onClick={() => handleSaveWorkload(workload.id, workload.collaborator.id, workload.period.id)} className="btn-guardar">
+                                            Guardar
+                                        </button>
+                                    ) : (
+                                        <button className="btn-editar" onClick={() => handleEditClick(workload.id, workload.workload)}>
+                                            <FontAwesomeIcon icon={faEdit} />
+                                            Editar
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
                 </table>
 
                 <div className="pagination-container">
