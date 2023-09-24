@@ -1,81 +1,35 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import useWorkloads from './hooks/useWorkloads';
+import { SearchBar } from '../../../common/components/SearchBar/SearchBar';
+import { Table } from '../../../common/components/Table/Table';
+import { Pagination } from '../../../common/components/Pagination/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faEdit } from '@fortawesome/free-solid-svg-icons';
-
-import './SemesterWorkload.css';
-import dataService from '../../../services/dataService'; // Asegúrate de ajustar la ruta correcta
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import dataService from '../../../services/dataService';
 import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
-import { set } from 'date-fns';
+import './SemesterWorkload.css';
+
 
 export const SemesterWorkload = () => {
+    const {
+        workloads,
+        currentPage,
+        totalItems,
+        searchTerm,
+        setSearchTerm,
+        setDebouncedSearchTerm,
+        handlePageChange,
+        setWorkloads,
+    } = useWorkloads();
 
-    const [workloads, setWorkloads] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalItems, setTotalItems] = useState(0);
     const [editingWorkloadId, setEditingWorkloadId] = useState(null);
     const [tempWorkloadValue, setTempWorkloadValue] = useState(null);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
-
-
     const { showNotification } = useContext(NotificationContext);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-    };
-
-
-    const fetchWorkloads = async (page = 1, filterQuery = '') => {
-        setCurrentPage(page);
-        try {
-            const responseData = await dataService.readData(`${ROUTES.WORKLOADS}?included=collaborator.user,period.creator.user&perPage=10&page=${page}${filterQuery}`);
-            setWorkloads(responseData.data.data);
-            setTotalItems(responseData.data.total);
-            console.log('workloads', responseData.data);
-        } catch (error) {
-            console.error('Error fetching workloads:', error);
-            showNotification('error', 'Error al obtener la carga semestral');
-        }
-    };
-
-    useEffect(() => {
-        // establece un temporizador para retrasar la ejecución de la búsqueda
-        const timerId = setTimeout(() => {
-            setDebouncedSearchTerm(searchTerm);
-        }, 300); // 300ms de retardo
-    
-        // limpia el temporizador si el usuario escribe antes de que el temporizador termine
-        return () => clearTimeout(timerId);
-    }, [searchTerm]);
-    
-    useEffect(() => {
-        if (debouncedSearchTerm.trim() === '') {
-            fetchWorkloads(1); // Si debouncedSearchTerm está vacío, mostrar todos los elementos (sin filtro).
-        } else {
-            const filterQuery = buildFilterQuery(debouncedSearchTerm);
-            fetchWorkloads(1, filterQuery); // Si debouncedSearchTerm tiene un valor, aplicar el filtro.
-        }
-    }, [debouncedSearchTerm]);
-
-    useEffect(() => {
-        fetchWorkloads();
-    }, []); // Este useEffect se ejecutará una vez cuando el componente se monte.
-    useEffect(() => {
-        fetchWorkloads(currentPage);
-    }, [currentPage]); // Este useEffect se ejecutará cada vez que currentPage cambie.
-
-
-    const handleNextPage = () => {
-        if (currentPage * 10 < totalItems) {
-            setCurrentPage((prevPage) => prevPage + 1);
-        }
-    };
-
-    const handlePreviousPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
+        setDebouncedSearchTerm(event.target.value);
     };
 
     const handleEditClick = (workloadId, workloadValue) => {
@@ -85,54 +39,72 @@ export const SemesterWorkload = () => {
 
     const handleWorkloadChange = (e) => {
         let value = e.target.value;
-        if (value < 0) value = 0; // Establecer el valor a 0 si es negativo
+        if (value < 0) value = 0;
         setTempWorkloadValue(value);
     };
 
     const handleSaveWorkload = async (workloadId, collaboratorId, periodId) => {
-        if (tempWorkloadValue < 0) return showNotification('error', 'El valor del workload debe ser mayor o igual a cero.');
+        if (tempWorkloadValue < 0) return showNotification('error', 'The workload value must be zero or positive.');
 
         try {
-            console.log('workloadId', workloadId);
             const response = await dataService.updateData(`${ROUTES.WORKLOADS}/${workloadId}`, {
                 workload: tempWorkloadValue,
-                collaborator_id: collaboratorId, // Añadido
-                period_id: periodId, // Añadido
+                collaborator_id: collaboratorId,
+                period_id: periodId,
             });
-            console.log('Workload updated successfully:', response.data);
             setWorkloads(workloads.map(w => w.id === workloadId ? { ...w, workload: tempWorkloadValue } : w));
             setEditingWorkloadId(null);
             setTempWorkloadValue(null);
-            showNotification('success', 'Workload actualizado con éxito.');
+            showNotification('success', 'Workload successfully updated.');
         } catch (error) {
             console.error('Error updating workload:', error);
-            console.error('Validation errors:', error.response.data);
-            showNotification('error', 'Error al actualizar el workload.');
+            showNotification('error', 'Error updating the workload.');
         }
     };
 
-    const buildFilterQuery = (term) => {
-        const baseFields = [
-          'collaborator.user.name',
-          'collaborator.user.last_name',
-          'collaborator.user.second_last_name',
-          'workload'
-        ];
-      
-        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
-        return queries.join('');
-      };
 
-      const handleSearch = () => {
-        if (searchTerm.trim() === '') {
-            fetchWorkloads(1); // if searchTerm is empty, fetch all workloads
-        } else {
-            const filterQuery = buildFilterQuery(searchTerm);
-            fetchWorkloads(1, filterQuery); // if searchTerm is not empty, fetch filtered workloads
-        }
-      };
-      
+    const NombreColumn = ({ row }) =>
+        `${row.collaborator.user.name} ${row.collaborator.user.last_name} ${row.collaborator.user.second_last_name}`;
 
+    const CargaColumn = ({ row, editingWorkloadId, tempWorkloadValue, handleWorkloadChange }) => (
+        <div className="workload-container">
+            {editingWorkloadId === row.id ? (
+                <input
+                    type="number"
+                    value={tempWorkloadValue}
+                    onChange={handleWorkloadChange}
+                    className="input-edit"
+                />
+            ) : (
+                <div className="bar-container">
+                    <div
+                        className={`workload-bar ${row.workload > 1.5 ? 'workload-bar-red' : 'workload-bar-blue'}`}
+                        style={{ width: `${(row.workload / 1.5) * 100}%` }} 
+                    />
+                </div>
+            )}
+        </div>
+    );
+
+    const WorkloadNumberColumn = ({ row, editingWorkloadId, tempWorkloadValue }) => (
+        <span className="workload-number"> {editingWorkloadId === row.id ? tempWorkloadValue : row.workload} </span>
+    );
+
+    const ActionColumn = ({ row, editingWorkloadId, handleSaveWorkload, handleEditClick }) => (
+        <div>
+            {editingWorkloadId === row.id 
+                ? (<button onClick={() => handleSaveWorkload(row.id, row.collaborator.id, row.period.id)} className="btn-guardar"> Guardar </button>)
+                : (<button className="btn-editar" onClick={() => handleEditClick(row.id, row.workload)}> <FontAwesomeIcon icon={faEdit} /> Editar </button>)
+            }
+        </div>
+    );
+
+    const columns = [
+        { header: 'Nombre', render: row => <NombreColumn row={row} /> },
+        { header: 'Carga', render: row => <CargaColumn row={row} editingWorkloadId={editingWorkloadId} tempWorkloadValue={tempWorkloadValue} handleWorkloadChange={handleWorkloadChange} /> },
+        { header: '', render: row => <WorkloadNumberColumn row={row} editingWorkloadId={editingWorkloadId} tempWorkloadValue={tempWorkloadValue} /> },
+        { header: '', render: row => <ActionColumn row={row} editingWorkloadId={editingWorkloadId} handleSaveWorkload={handleSaveWorkload} handleEditClick={handleEditClick} /> },
+    ];
 
     return (
         <div className="semester-workload-container">
@@ -147,90 +119,24 @@ export const SemesterWorkload = () => {
                         </div>
                         <p className="header-subtitle">Ingrese o modifique la carga semestral</p>
                     </div>
+
                     <div className="search-filter-container">
-                        <div className="search-box">
-                            <input
-                                type="text"
-                                placeholder="Búsqueda"
-                                className="search-input"
-                                value={searchTerm}
-                                onChange={handleSearchChange}
-                                onKeyPress={(event) => {
-                                    if(event.key === 'Enter') handleSearch();
-                                  }}
-                            />
-                            <FontAwesomeIcon 
-  icon={faSearch} 
-  className="search-icon" 
-  onClick={handleSearch}
-/>
-                        </div>
+                        <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} />
+
                         <button className="filter-button">
                             <span className="filter-lines">
                                 <span className="line line-large"></span>
                                 <span className="line line-medium"></span>
                                 <span className="line line-small"></span>
                             </span>
-                            Filtros
+                            Filtros  {/* PENDIENTE */}
                         </button>
                     </div>
                 </div>
 
-                <table className="workload-table">
-                    <thead>
-                        <tr className="custom-background">
-                            <th>Nombre</th>
-                            <th>Carga</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {workloads.map((workload) => (
-                            <tr key={workload.id}>
-                                <td>{`${workload.collaborator.user.name} ${workload.collaborator.user.last_name} ${workload.collaborator.user.second_last_name}`}</td>
-                                <td className="workload-container">
-                                    {editingWorkloadId === workload.id ? (
-                                        <input
-                                            type="number"
-                                            value={tempWorkloadValue}
-                                            onChange={handleWorkloadChange}
-                                            // onBlur={handleSaveWorkload} 
-                                            className="input-edit" // Clase CSS para estilo
-                                        />
-                                    ) : (
-                                        <div className="bar-container">
-                                            <div className="workload-bar" style={{ width: `${(workload.workload / 1.5) * 100}%` }}></div>
-                                        </div>
-                                    )}
-                                </td>
-                                <td className="workload-number-container">
-                                    <span className="workload-number">{editingWorkloadId === workload.id ? tempWorkloadValue : workload.workload}</span>
-                                </td>
-                                <td>
-                                    {editingWorkloadId === workload.id ? (
-                                        <button onClick={() => handleSaveWorkload(workload.id, workload.collaborator.id, workload.period.id)} className="btn-guardar">
-                                            Guardar
-                                        </button>
-                                    ) : (
-                                        <button className="btn-editar" onClick={() => handleEditClick(workload.id, workload.workload)}>
-                                            <FontAwesomeIcon icon={faEdit} />
-                                            Editar
-                                        </button>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <Table className="workload-table" columns={columns} data={workloads} />
 
-                <div className="pagination-container">
-                    <span className="items-info">{(currentPage - 1) * 10 + 1}-{Math.min(currentPage * 10, totalItems)} of {totalItems} items</span>
-                    <div className="pagination-buttons">
-                        <button className="pagination-button" onClick={handlePreviousPage} disabled={currentPage <= 1}>Anterior</button>
-                        <button className="pagination-button" onClick={handleNextPage} disabled={currentPage * 10 >= totalItems}>Siguiente</button>
-                    </div>
-                </div>
+                <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} />
             </div>
         </div>
     );
