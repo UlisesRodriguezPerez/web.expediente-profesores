@@ -7,6 +7,7 @@
     background-image: url('./../../assets/images/layouts/background.png');
     background-size: cover; 
     background-position: center;
+    display: flex;
 }
 
 .sidebar-top {
@@ -54,4 +55,53 @@
 
 .logout-action {
     font-size: 1rem;
+}
+
+.toggle-sidebar-btn {
+    display: none;
+    position: fixed;
+    right: 15px; /* Aumentar la distancia del borde derecho */
+    top: 15px; /* Aumentar la distancia del borde superior */
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.3); /* Blanco con opacidad para suavizar */
+    color: white;
+    border: none;
+    padding: 8px; /* Reducir el padding para hacer el botón más pequeño */
+    border-radius: 4px; /* Bordes menos redondeados */
+    z-index: 1000;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); /* Sombra sutil para destacar sobre la imagen de fondo */
+}
+
+.bar {
+    background-color: #666; /* Gris más suave */
+    height: 2px; /* Reducir la altura para barras más delgadas */
+    margin: 4px 0; /* Reducir el margen */
+    width: 20px; /* Reducir el ancho */
+}
+
+.beside-logout {
+    /* right: unset;  */
+    /* top: 49rem; */
+    bottom: 1rem;
+    right: 200px;
+    position: sticky;
+    margin-left: 10px;
+    background-color: #FFFFFF;
+}
+
+@media (max-width: 920px) {
+    .toggle-sidebar-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar.visible {
+        display: flex;
+    }
 }
