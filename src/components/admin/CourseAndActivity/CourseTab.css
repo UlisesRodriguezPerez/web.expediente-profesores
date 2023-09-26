@@ -1,0 +1,13 @@
+
+.course-tab-container {
+    /* display: flex; */
+    width:60vw;
+    margin-top: 35px;
+    /* justify-content: space-evenly; */
+}
+
+.course-selection {
+    margin-top: 20px;
+    /* display: flex;
+    align-items: center; */
+}

@@ -24,7 +24,7 @@ export const AdminDashboard = () => {
 
     const cardsData = [
         { image: calendarImage, title: 'ABRIR PERIODO', backgroundColor: 'deep-blue', path: '/open-period' },
-        { image: calendarImage, title: 'CURSOS Y ACTIVIDADES', backgroundColor: 'teal', path: '/courses' },
+        { image: calendarImage, title: 'CURSOS Y ACTIVIDADES', backgroundColor: 'teal', path: '/courses-and-activities' },
         { image: calendarImage, title: 'CARGA SEMESTRAL', backgroundColor: 'bright-red', path: '/semester-workload' },
         { image: calendarImage, title: 'CONSULTAS', backgroundColor: 'royal-blue', path: '/consults' },
     ];

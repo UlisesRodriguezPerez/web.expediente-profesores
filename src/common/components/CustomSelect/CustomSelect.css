@@ -1,0 +1,30 @@
+.custom-select-container {
+    display: flex;
+    align-items: start-start;
+    align-items: center;
+}
+
+.custom-select-container label {
+    margin-right: 10px;
+}
+
+.width-select {
+    width: 250px;
+}
+
+.dropdown-indicator {
+    cursor: pointer;
+    padding: 8px;
+}
+
+
+.filter label,
+.course-selection label {
+  margin-right: 10px;
+}
+
+.label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-right: 10px;
+}
