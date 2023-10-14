@@ -15,6 +15,7 @@ import { CourseAndActivityView } from './views/adminViews/CourseAndActivity/Cour
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
 import { PerfilTeacherView } from './views/teacherViews/PerfilTeacher/PerfilTeacherView';
 import { MyCoursesView } from './views/teacherViews/MyCourses/MyCoursesView';
+import { MyActivitiesView } from './views/teacherViews/MyActivities/MyActivitiesView';
 
 export const Router = () => {
   return (
@@ -31,6 +32,7 @@ export const Router = () => {
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
         <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilTeacherView} />} />
         <Route path="/teacher-my-courses" element={<RoleBasedRoute requiredRoles={['admin']} component={MyCoursesView} />} />
+        <Route path="/teacher-my-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={MyActivitiesView} />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>
