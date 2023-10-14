@@ -13,6 +13,7 @@ import { OpenPeriod } from './views/adminViews/OpenPeriod/OpenPeriodView';
 import { SemesterWorkloadView } from './views/adminViews/SemesterWorkload/SemesterWorkloadView';
 import { CourseAndActivityView } from './views/adminViews/CourseAndActivity/CourseAndActivityView';
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
+import { PerfilTeacherView } from './views/teacherViews/PerfilTeacher/PerfilTeacherView';
 
 export const Router = () => {
   return (
@@ -27,6 +28,7 @@ export const Router = () => {
         <Route path="/semester-workload" element={<RoleBasedRoute requiredRoles={['admin']} component={SemesterWorkloadView} />} />
         <Route path="/courses-and-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={CourseAndActivityView} />} />
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
+        <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilTeacherView} />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>
