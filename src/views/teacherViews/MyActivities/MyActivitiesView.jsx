@@ -25,7 +25,7 @@ export const PerfilAdminView = () => {
 
     return (
         <MainLayout sidebarOptions={sidebarOptions} onLogout={customHandleLogout}>
-            <main className="perfil-admin-content">
+            <main className="my-activities-teacher-content">
                 <MyActivitiesComponent/>
             </main>
         </MainLayout>
