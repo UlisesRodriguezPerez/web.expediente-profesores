@@ -7,7 +7,7 @@ import { MyCoursesComponent } from '../../../components/teacher/myCourses/MyCour
 
 // para todas las view es copiar y pegar igual
 
-export const PerfilAdminView = () => {
+export const MyCoursesView = () => {
     const { handleLogout } = useAuth();
     const navigate = useNavigate();
 

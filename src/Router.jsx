@@ -30,9 +30,9 @@ export const Router = () => {
         <Route path="/semester-workload" element={<RoleBasedRoute requiredRoles={['admin']} component={SemesterWorkloadView} />} />
         <Route path="/courses-and-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={CourseAndActivityView} />} />
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
-        <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilTeacherView} />} />
-        <Route path="/teacher-my-courses" element={<RoleBasedRoute requiredRoles={['admin']} component={MyCoursesView} />} />
-        <Route path="/teacher-my-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={MyActivitiesView} />} />
+        <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['teacher']} component={PerfilTeacherView} />} />
+        <Route path="/teacher-my-courses" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyCoursesView} />} />
+        <Route path="/teacher-my-activities" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesView} />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>

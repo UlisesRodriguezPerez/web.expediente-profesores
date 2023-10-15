@@ -7,7 +7,7 @@ import { MyActivitiesComponent } from '../../../components/teacher/myActivities/
 
 // para todas las view es copiar y pegar igual
 
-export const PerfilAdminView = () => {
+export const MyActivitiesView = () => {
     const { handleLogout } = useAuth();
     const navigate = useNavigate();
 
