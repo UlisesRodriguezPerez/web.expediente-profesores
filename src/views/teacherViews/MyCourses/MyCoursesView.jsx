@@ -17,10 +17,8 @@ export const MyCoursesView = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/profile" },
-        { title: "CARGA SEMESTRAL", path: "/semester-workload" },
-        { title: "CURSOS Y ACTIVIDADES", path: "/courses-and-activities" },
-        { title: "CONSULTAS", path: "/consults" },
+        { title: "MI PERFIL", path: "/perfil-teacher" },
+        { title: "MIS ACTIVIDADES", path: "/teacher-my-activities" },
     ];
 
     return (

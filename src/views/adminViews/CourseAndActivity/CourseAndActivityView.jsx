@@ -16,7 +16,7 @@ export const CourseAndActivityView = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/profile" },
+        { title: "MI PERFIL", path: "/perfil-admin" },
         { title: "ABRIR PERIODO", path: "/open-period" },
         { title: "CARGA SEMESTRAL", path: "/semester-workload" },
         { title: "CONSULTAS", path: "/consults" },
