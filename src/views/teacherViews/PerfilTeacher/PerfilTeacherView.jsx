@@ -17,8 +17,8 @@ export const PerfilTeacherView = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/perfil-teacher" },
-        { title: "CURSOS Y ACTIVIDADES", path: "/courses-and-activities" },
+        { title: "MIS CURSOS", path: "/teacher-my-courses" },
+        { title: "MIS ACTIVIDADES", path: "/courses-and-activities" },
     ];
 
     return (
