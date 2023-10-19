@@ -37,6 +37,8 @@ export const PerfilTeacherComponent = () => {
     //  const responseData = await dataService.readData(ROUTES.POSITIONS, id_position);
     const [name_position, setNamePosition] = useState('');
 
+    // ------------------- fin de la variables ---------------------------
+
     const { showNotification } = useContext(NotificationContext);
 
     const handleSubmit = async () => {
