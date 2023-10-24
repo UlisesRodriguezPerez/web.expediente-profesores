@@ -1,12 +1,13 @@
-// src/views/SemesterWorkloadView.js
-
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import './MyActivitiesView.css';
 import MainLayout from '../../../layouts/MainLayout/MainLayout';
-import { CourseAndActivity } from '../../../components/admin/CourseAndActivity/CourseAndActivity';
+import { MyActivitiesComponent } from '../../../components/teacher/myActivities/MyActivitiesComponent';
 
-export const CourseAndActivityView = () => {
+// para todas las view es copiar y pegar igual
+
+export const MyActivitiesView = () => {
     const { handleLogout } = useAuth();
     const navigate = useNavigate();
 
@@ -16,19 +17,16 @@ export const CourseAndActivityView = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/perfil-admin" },
-        { title: "ABRIR PERIODO", path: "/open-period" },
-        { title: "CARGA SEMESTRAL", path: "/semester-workload" },
-        { title: "CONSULTAS", path: "/consults" },
+        { title: "MI PERFIL", path: "/perfil-teacher" },
+        { title: "MIS CURSOS", path: "/teacher-my-courses" },
     ];
 
     return (
         <MainLayout sidebarOptions={sidebarOptions} onLogout={customHandleLogout}>
-            <main className="open-period-content">
-                <CourseAndActivity />
+            <main className="my-activities-teacher-content">
+                <MyActivitiesComponent/>
             </main>
         </MainLayout>
     );
 };
 
-// export default SemesterWorkloadView;
