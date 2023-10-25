@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import DateRangePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import './MyActivitiesComponent.css';
+import './MyActivitiesInternationalizationComponent.css';
 import ROUTES from '../../../enums/routes';
 import dataService from '../../../services/dataService';
 // dataservices es para obtener la informacion de la base de datos
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 
-export const MyActivitiesComponent = () => {
+export const MyActivitiesInternationalizationComponent = () => {
     const [name, setName] = useState('');
     const [lastname1, setLastname1]  = useState('');
     const [lastname2, setLastname2]  = useState('');
@@ -23,7 +23,7 @@ export const MyActivitiesComponent = () => {
 
     return (
         //la pagina en si
-        <div className="perfil-admin-container">
+        <div className="activities-internationalization-container">
         
         </div>
     );

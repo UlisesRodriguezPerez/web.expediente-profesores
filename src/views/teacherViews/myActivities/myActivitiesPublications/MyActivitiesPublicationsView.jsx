@@ -1,13 +1,13 @@
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import './MyActivitiesView.css';
+import './MyActivitiesPublicationsView.css';
 import MainLayout from '../../../layouts/MainLayout/MainLayout';
-import { MyActivitiesComponent } from '../../../components/teacher/myActivities/MyActivitiesComponent';
+import { MyActivitiesPublicationsComponent } from '../../../components/teacher/myActivities/MyActivitiesPublications/MyActivitiesPublicationsComponent';
 
 // para todas las view es copiar y pegar igual
 
-export const MyActivitiesView = () => {
+export const MyActivitiesPublicationsView = () => {
     const { handleLogout } = useAuth();
     const navigate = useNavigate();
 
@@ -23,8 +23,8 @@ export const MyActivitiesView = () => {
 
     return (
         <MainLayout sidebarOptions={sidebarOptions} onLogout={customHandleLogout}>
-            <main className="my-activities-teacher-content">
-                <MyActivitiesComponent/>
+            <main className="activities-publications-container">
+                <MyActivitiesPublicationsComponent/>
             </main>
         </MainLayout>
     );

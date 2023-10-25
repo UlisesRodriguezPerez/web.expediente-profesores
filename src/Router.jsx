@@ -15,7 +15,9 @@ import { CourseAndActivityView } from './views/adminViews/CourseAndActivity/Cour
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
 import { PerfilTeacherView } from './views/teacherViews/PerfilTeacher/PerfilTeacherView';
 import { MyCoursesView } from './views/teacherViews/MyCourses/MyCoursesView';
-import { MyActivitiesView } from './views/teacherViews/MyActivities/MyActivitiesView';
+import { MyActivitiesTrainingFormationView } from './views/teacherViews/myActivities/myActivitiesTraining/myActivitiesTrainingFormation/MyActivitiesTrainingFormationView';
+import { MyActivitiesTrainingPedagogicalView } from './views/teacherViews/myActivities/myActivitiesTraining/myActivitiesTrainingPedagogical/MyActivitiesTrainingPedagogicalView';
+import { MyActivitiesTrainingTechniquesView } from './views/teacherViews/myActivities/myActivitiesTraining/myActivitiesTrainingTechniques/MyActivitiesTrainingTechniquesView';
 
 export const Router = () => {
   return (
@@ -32,7 +34,9 @@ export const Router = () => {
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
         <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['teacher']} component={PerfilTeacherView} />} />
         <Route path="/teacher-my-courses" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyCoursesView} />} />
-        <Route path="/teacher-my-activities" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesView} />} />
+        <Route path="/training-types" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesTrainingFormationView} />} />
+        <Route path="/pedagogical-trainings" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesTrainingPedagogicalView} />} />
+        <Route path="/technical-trainings" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesTrainingTechniquesView} />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>
