@@ -12,10 +12,7 @@ import { RoleBasedRoute } from './components/routes/RoleBasedRoute';
 import { OpenPeriod } from './views/adminViews/OpenPeriod/OpenPeriodView';
 import { SemesterWorkloadView } from './views/adminViews/SemesterWorkload/SemesterWorkloadView';
 import { CourseAndActivityView } from './views/adminViews/CourseAndActivity/CourseAndActivityView';
-import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
 import { PerfilTeacherView } from './views/teacherViews/PerfilTeacher/PerfilTeacherView';
-import { MyCoursesView } from './views/teacherViews/MyCourses/MyCoursesView';
-import { MyActivitiesView } from './views/teacherViews/MyActivities/MyActivitiesView';
 
 export const Router = () => {
   return (
@@ -29,10 +26,7 @@ export const Router = () => {
         <Route path="/open-period" element={<RoleBasedRoute requiredRoles={['admin']} component={OpenPeriod} />} />
         <Route path="/semester-workload" element={<RoleBasedRoute requiredRoles={['admin']} component={SemesterWorkloadView} />} />
         <Route path="/courses-and-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={CourseAndActivityView} />} />
-        <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
         <Route path="/perfil-teacher" element={<RoleBasedRoute requiredRoles={['teacher']} component={PerfilTeacherView} />} />
-        <Route path="/teacher-my-courses" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyCoursesView} />} />
-        <Route path="/teacher-my-activities" element={<RoleBasedRoute requiredRoles={['teacher']} component={MyActivitiesView} />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>

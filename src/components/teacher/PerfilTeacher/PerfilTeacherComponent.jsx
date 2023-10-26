@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import DateRangePicker from "react-datepicker";
+import React, { useState, useCallback, useEffect } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import './PerfilTeacherComponent.css';
 import ROUTES from '../../../enums/routes';
@@ -10,15 +9,7 @@ import { NotificationContext } from '../../../contexts/NotificationContext/Notif
 
 export const PerfilTeacherComponent = () => {
     // id del usuario que abre la pagina
-    const [id, setUserPage] = useState(0);
-    // ids del collaborador, los datos que buscamos
-    //  const responseData = await dataService.readData(ROUTES.COLLABORATORS, id);
-    const [id_user, setUserId] = useState(0);
-    const [id_position, setUserPosition] = useState(0);
-    const [id_category, setUserCategory] = useState(0);
-    const [id_appointment, setUserAppointment] = useState(0);
-    const [id_degree, setUserDegree] = useState(0);
-    const [id_campus, setUserCampus] = useState(0);
+    const [id, setUserPage] = useState(14);
     // aqui van la busqueda de los valores strings
     //  const responseData = await dataService.readData(ROUTES.USERS, id_user);
     const [name_users, setNameUser] = useState('');
@@ -38,17 +29,70 @@ export const PerfilTeacherComponent = () => {
     const [name_position, setNamePosition] = useState('');
 
     // ------------------- fin de la variables ---------------------------
-
+    
     const { showNotification } = useContext(NotificationContext);
 
-    const handleSubmit = async () => {
-        //console.log(name, lastname1, lastname2, phone, email);
-    };
+    const handleSubmit = useCallback( async () => {
+        try {
+            // Realiza las solicitudes HTTP para obtener los datos de los colaboradores y usuarios
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${11}&included=user,campus,category,position,degree,appointment`);
+            //collaboratorsResponse
+            //console.log("Llamado api --- ");
+            console.log(collaboratorsResponse.data.data[0]);
+
+            setNameUser(collaboratorsResponse.data.data[0].user.name);
+            setLastnameUser(collaboratorsResponse.data.data[0].user.last_name);
+            setSecondlastUser(collaboratorsResponse.data.data[0].user.second_last_name);
+            setPhoneUser(collaboratorsResponse.data.data[0].user.phone);
+            setEmailUser(collaboratorsResponse.data.data[0].user.email);
+            
+            setNameCampus(collaboratorsResponse.data.data[0].campus.name);
+            setTecCategory(collaboratorsResponse.data.data[0].category.name);
+            setNamePosition(collaboratorsResponse.data.data[0].position.name);
+            setAcademicDegrees(collaboratorsResponse.data.data[0].degree.name);
+            setNameAppointment(collaboratorsResponse.data.data[0].appointment.name);
+        } catch (error) {
+            console.error('Error al obtener los datos:', error);
+            showNotification('error', 'Error al obtener los datos');
+        }
+    }, [showNotification] );
+
+    // Llama a handleSubmit al iniciar sesión
+    useEffect(() => {
+        // obtener el id del usuario que inicio seccion
+        setUserPage(localStorage.getItem('userId'));
+        console.log(id);
+
+        handleSubmit();
+    }, [handleSubmit, id] ); 
 
     return (
-        //la pagina en si
-        <div className="perfil-admin-container">
-        
+        <div className="perfil-teacher-container">
+            <h1>Perfil del Usuario</h1>
+            <div>
+            <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
+            </div>
+            <div>
+            <strong>Teléfono:</strong> {phone_users}
+            </div>
+            <div>
+            <strong>Correo Electrónico:</strong> {email_users}
+            </div>
+            <div>
+            <strong>Categoría Técnica:</strong> {name_tec_category}
+            </div>
+            <div>
+            <strong>Área de Nombramiento:</strong> {name_appointment}
+            </div>
+            <div>
+            <strong>Grado Académico:</strong> {name_academic_degrees}
+            </div>
+            <div>
+            <strong>Campus:</strong> {name_campus}
+            </div>
+            <div>
+            <strong>Cargo:</strong> {name_position}
+            </div>
         </div>
-    );
+        );
 }
