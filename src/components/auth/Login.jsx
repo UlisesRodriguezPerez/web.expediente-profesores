@@ -138,7 +138,7 @@ export const Login = () => {
                 </div>
 
                 <p>
-                    <Link to="/">
+                    <Link to="/password-loss">
                         ¿Olvidó su contraseña? 
                     </Link> 
                 </p>

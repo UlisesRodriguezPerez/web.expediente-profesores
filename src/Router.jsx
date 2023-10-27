@@ -2,8 +2,10 @@
 
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Register } from './components/auth/Register';
+import { RegisterView } from './views/loginViews/registerView/RegisterView';
 import { LoginView } from './views/loginViews/loginView/LoginView';
+import { PasswordLossView } from './views/loginViews/passwordLossView/PasswordLossView';
+import { PasswordResetView } from './views/loginViews/passwordReset/PasswordResetView';
 import { Home } from './components/home/Home';
 import { AdminDashboard } from './components/home/AdminDashboard/AdminDashboard';
 import { UserDashboard } from './components/home/userDashboard';
@@ -18,8 +20,10 @@ export const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginView component={LoginView}/>} />
+        <Route path="/password-loss" element={<PasswordLossView component={PasswordLossView}/>} />
+        <Route path="/password-reset" element={<PasswordResetView component={PasswordResetView}/>} />
         <Route path="/" element={<PrivateRoute component={Home} />} />
-        <Route path="/register" element={<RoleBasedRoute requiredRoles={['admin']} component={Register} />} />
+        <Route path="/register" element={<RoleBasedRoute requiredRoles={['admin']} component={RegisterView} />} />
         <Route path="/admin-dashboard" element={<RoleBasedRoute requiredRoles={['admin']} component={AdminDashboard} />} />
         <Route path="/user-dashboard" element={<RoleBasedRoute requiredRoles={['user', 'admin']} component={UserDashboard} />} />
         <Route path="/open-period" element={<RoleBasedRoute requiredRoles={['admin']} component={OpenPeriod} />} />
