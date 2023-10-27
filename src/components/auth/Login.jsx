@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import api from '../../api/api';
 import ROUTES from '../../enums/routes';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import dataService from '../../services/dataService';
 
 export const Login = () => {
@@ -127,16 +127,25 @@ export const Login = () => {
 
     return (
         <div>
-            <h2>Login</h2>
+            <h2>Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
                 <input type="email" name="email" placeholder="Email" onChange={handleInputChange} />
                 {errors.email && <p>{errors.email[0]}</p>}
 
-                <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
-                {errors.password && <p>{errors.password[0]}</p>}
+                <div>
+                    <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
+                    {errors.password && <p>{errors.password[0]}</p>}
+                </div>
 
+                <p>
+                    <Link to="/">
+                        ¿Olvidó su contraseña? 
+                    </Link> 
+                </p>
                 <button type="submit">Login</button>
+                
             </form>
+            
         </div>
     );
 }
