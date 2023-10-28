@@ -4,7 +4,7 @@ import ROUTES from '../../enums/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import dataService from '../../services/dataService';
 //import headerimage from './src/assets/images/layouts/header-tec.png';
-import './login.css';
+import './estilo.css';
 
 export const Login = () => {
     const navigate = useNavigate();

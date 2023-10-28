@@ -15,8 +15,8 @@ export const PasswordReset = () => {
             <input name="password" type="text" id="password" placeholder="Nueva contraseña"></input>
             <input name="password-confirmation" type="text" id="password-confirmation" placeholder="Confirme contraseña"></input>
             <button type="submit">Reiniciar contraseña</button>
+            <p>¿No recibió el correo?</p>
             <p>
-                ¿No recibió el correo? 
                 <Link to="/password-loss">
                     Presione para volver a enviar 
                 </Link> 

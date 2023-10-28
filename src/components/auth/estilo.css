@@ -11,12 +11,13 @@ h2 {
 }
 
 p {
-    margin-left: 60px;
     font-weight: bold;
     font-size: 14px;
+    margin-left: 60px;
+    padding-right: 60px;
 }
 
-p a {
+a {
     color: black;
     text-decoration: underline;
 }
@@ -25,14 +26,24 @@ input {
     margin-left: 55px;
     border-radius: 5px;
     margin-bottom: 10px;
-    width: 200px; /* Aumenta el ancho del input */
+    width: 200px;
     padding: 8px;
+    display: block;
 }
 
 button {
     margin: 30px 0 10px 55px;
     border-radius: 5px;
-    width: 200px; /* Aumenta el ancho del botón */
+    width: 200px;
+    padding: 8px;
+    color: white;
+    background-color: #003366;
+}
+
+button[type="submit"] {
+    margin: 30px 0 10px 55px;
+    border-radius: 5px;
+    width: 200px;
     padding: 8px;
     color: white;
     background-color: #003366;
