@@ -1,0 +1,39 @@
+img {
+    width: 200px; 
+    height: auto; 
+    margin-bottom: 20px; 
+}
+
+h2 {
+    font-size: 42px;
+    color: #1e4f8f;
+    margin: 70px;
+}
+
+p {
+    margin-left: 60px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+p a {
+    color: black;
+    text-decoration: underline;
+}
+
+input {
+    margin-left: 55px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 200px; /* Aumenta el ancho del input */
+    padding: 8px;
+}
+
+button {
+    margin: 30px 0 10px 55px;
+    border-radius: 5px;
+    width: 200px; /* Aumenta el ancho del botón */
+    padding: 8px;
+    color: white;
+    background-color: #003366;
+}

@@ -3,6 +3,8 @@ import api from '../../api/api';
 import ROUTES from '../../enums/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import dataService from '../../services/dataService';
+//import headerimage from './src/assets/images/layouts/header-tec.png';
+import './login.css';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -124,7 +126,7 @@ export const Login = () => {
             setErrors(err.response.data.errors);
         }
     };
-
+    //<img type="logo" src={headerimage} alt="Logo del TEC" />
     return (
         <div>
             <h2>Iniciar Sesión</h2>
