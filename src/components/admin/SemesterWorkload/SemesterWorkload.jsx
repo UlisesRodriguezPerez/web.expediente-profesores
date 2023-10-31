@@ -121,7 +121,7 @@ export const SemesterWorkload = () => {
                     </div>
 
                     <div className="search-filter-container">
-                        <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} />
+                        <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
 
                         <button className="filter-button">
                             <span className="filter-lines">

@@ -7,7 +7,7 @@ export const Table = ({ columns, data, className }) => {
       <thead>
         <tr className="custom-background">
           {columns.map((col, index) => (
-            <th key={`${col.header}-${index}`}>{col.header}</th>
+            <th key={`${col.header}-${index}`} className={col.headerClass || ''} >{col.header}</th>
           ))}
         </tr>
       </thead>

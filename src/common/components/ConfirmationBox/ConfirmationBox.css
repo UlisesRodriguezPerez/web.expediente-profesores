@@ -1,34 +1,40 @@
 .confirmation-box-container {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    margin-top: 10vh;
-  }
-  
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  margin-top: 8vh;
+}
+
+.box-content {
+  width: 60vh;
+  background-color: #fff;
+  padding: 20px;
+  border: 2px solid #000;
+  text-align: center;
+  min-width: 200px;
+  box-sizing: border-box;
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancel-button,
+.confirm-button {
+  padding: 10px;
+  cursor: pointer;
+  border: none;
+  background-color: #ffffff;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
   .box-content {
-    width: 60vh;
-    background-color: #fff;
-    padding: 20px;
-    border: 2px solid #000;
-    text-align: center;
-    min-width: 200px;
+    width: 100%;
+    padding: 0 15px;
   }
-  
-  .button-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .cancel-button,
-  .confirm-button {
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-    background-color: #ffffff;
-    font-weight: 600;
-    
-  }
-  
+}

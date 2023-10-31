@@ -1,0 +1,80 @@
+/* Contenedor principal del componente */
+.header-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* Asegurándonos que tome todo el ancho */
+}
+
+/* Estilo para el botón de DESCARGAR EXCEL */
+.header-btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+.header-btn:hover {
+    background-color: #0056b3;
+    /* Un tono más oscuro de azul para el hover */
+}
+
+/* Espacio entre el ícono y el texto dentro del botón */
+.header-btn .fa-arrow-down {
+    margin-right: 10px;
+}
+
+.header-register-section {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-left: 20px;
+    /* Agrega un poco de espacio al principio para "Registrar actividad" */
+}
+
+.header-register-section h3 {
+    margin: 0;
+    margin-right: auto;
+    /* Esto hará que "Registrar actividad" quede a la izquierda y los tabs a la derecha */
+}
+
+.tab-container-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    /* Esto alinea el TabContainer a la derecha */
+    width: 100%;
+}
+
+
+.width-85 {
+    width: 85%;
+}
+
+@media (max-width: 768px) {
+    .header-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        /* Espaciado entre los elementos */
+    }
+
+    .header-btn {
+        width: 100%;
+        justify-content: center;
+        /* Centra el contenido del botón */
+    }
+}

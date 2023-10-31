@@ -1,13 +1,16 @@
-
 .course-tab-container {
-    /* display: flex; */
-    width:60vw;
+    width: 60vw;
     margin-top: 35px;
-    /* justify-content: space-evenly; */
-}
-
-.course-selection {
+  }
+  
+  .course-selection {
     margin-top: 20px;
-    /* display: flex;
-    align-items: center; */
-}
+  }
+  
+  @media (max-width: 768px) {
+    .course-tab-container {
+      width: 100%;
+      padding: 0 15px;
+    }
+  }
+  

@@ -1,0 +1,79 @@
+/* HistoricTab.css */
+
+.historic-tab-container {
+    padding: 20px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.historic-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.historic-table th, .historic-table td {
+    text-align: center; /* Centra el texto de las celdas */
+    padding-inline: 10px;
+    padding-block: 20px; 
+    
+}
+
+.historic-table tr {
+    border-bottom: 1px solid #ddd; /* Añade una línea entre las filas */
+}
+
+.historic-table tr:hover {
+    background-color: #f1f1f1; /* Cambia el color de fondo de la fila al pasar el cursor sobre ella */
+}
+
+
+.workload-bar {
+    height: 20px; 
+    border-radius: 5px; 
+}
+
+.workload-bar-red {
+    background-color: red;
+}
+
+.workload-bar-blue {
+    background-color: blue;
+}
+
+.bar-container {
+    position: relative;
+    width: 100%;
+    background-color: #e0e0e0;
+}
+
+.workload-value {
+    text-align: center; 
+    margin-left: 10px; 
+}
+
+.workload-header {
+    width: 30px;
+}
+
+@media (max-width: 768px) {
+    /* Adjust styles for smaller screens */
+    .search-filter-container {
+        flex-direction: column; /* Stacks the search bar and filter button on top of each other */
+    }
+    
+    .historic-table th, .historic-table td {
+        padding: 0.5em; /* Reduces padding on smaller screens */
+    }
+    
+    .workload-value {
+        margin-left: 5px; /* Reduces margin on smaller screens */
+    }
+}

@@ -50,7 +50,12 @@ export const CourseAndActivity = () => {
         },
         {
             title: 'ACTIVIDAD',
-            component: <ActivityTab />
+            component: 
+                <ActivityTab
+                    textBoxValue={textBoxValue}
+                    onCancel={handleCancel}
+                    data={{selectedTeacher, selectedPeriod}}
+                />
         }
     ];
 

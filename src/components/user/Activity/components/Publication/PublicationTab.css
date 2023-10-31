@@ -1,0 +1,58 @@
+/* PublicationTab.css */
+
+.publication-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-pair {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 30px;
+}
+
+.input-publication {
+    flex: 1;
+    padding: 10px;
+    margin-right: 30px; /* Espacio entre inputs */
+    border: 1px solid lightgray;
+    outline: none;
+}
+
+.input-pair:last-child .input-publication {
+    margin-right: 0;
+}
+
+.button-publication {
+    align-self: flex-end; /* Alinear el botón a la derecha */
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 80px;
+}
+
+/* Estilos responsivos para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .input-pair {
+        flex-direction: column; /* Cambia a orientación vertical */
+        align-items: center; /* Alinea los inputs al centro */
+    }
+
+    .input-publication {
+        margin-right: 0; /* Elimina el margen derecho */
+        margin-bottom: 15px; /* Espacio entre los inputs en orientación vertical */
+        width: 100%; /* Ocupa todo el ancho disponible */
+    }
+
+    .button-publication {
+        margin-right: 0;
+        align-self: center; /* Centra el botón */
+    }
+}

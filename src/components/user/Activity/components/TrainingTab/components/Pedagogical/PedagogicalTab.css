@@ -1,0 +1,30 @@
+/* PedagogicalComponent.css */
+
+.div-pedagogical {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+
+
+.input-pedagogical {
+    width: 90%; /* Ancho grande, pero no al 100% */
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid lightgray; /* Borde gris ligero */
+    outline: none;
+  }
+  
+  .button-pedagogical {
+    display: block;
+    background-color: black; /* Fondo negro */
+    color: white; /* Letras blancas */
+    padding: 10px 20px;
+    margin: 20px auto;
+    border: none;
+    cursor: pointer;
+    float: right; /* Alineación a la derecha */
+  }
+  

@@ -1,0 +1,57 @@
+/* TechniqueTab.css */
+
+.input-technique {
+    width: 90%;
+    padding: 10px 35px;
+    margin: 10px 0;
+    border: 1px solid lightgray;
+    outline: none;
+    box-sizing: border-box; 
+}
+
+.dropdown-technique {
+    flex: 1;
+    padding: 10px 15px;
+    margin: 10px 0;
+    border: 1px solid lightgray;
+    outline: none;
+    box-sizing: border-box; 
+}
+
+.button-technique {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    box-sizing: border-box; 
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+    margin: 0 auto; 
+}
+
+@media (max-width: 768px) {
+    .input-technique {
+        width: 100%;
+    }
+
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-technique {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .dropdown-technique {
+        width: 100%;
+    }
+}

@@ -1,0 +1,139 @@
+.custom-tab-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.custom-tab-buttons {
+    display: flex;
+    white-space: nowrap; 
+    overflow-x: auto;
+    position: relative;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.custom-tab-buttons::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-tab-buttons button {
+    cursor: pointer;
+    padding: 10px 35px;
+    background: none;
+    border: none;
+    outline: none;
+    color: #888;
+    font-size: 16px;
+    transition: color 0.3s;
+    min-width: 100px;
+    position: relative;
+}
+
+.custom-tab-buttons button:hover {
+    color: #555;
+}
+
+.custom-tab-buttons .active-tab {
+    color: #000;
+}
+
+.custom-tab-buttons .active-tab::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 2px;
+    width: 80%;
+    background-color: #034A91;
+}
+
+.custom-tab-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.custom-tab-buttons::-webkit-scrollbar {
+    height: 6px;
+}
+
+.custom-tab-buttons::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 3px;
+}
+
+.custom-tab-buttons::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.custom-tab-buttons::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 20px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 80%);
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+    .custom-tab-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .custom-tab-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .custom-tab-buttons button {
+        font-size: 14px; 
+        padding: 10px 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .custom-tab-buttons {
+        flex-direction: column;  /* Cambia la disposición de los botones a vertical */
+    }
+
+    .custom-tab-buttons button {
+        font-size: 12px; 
+        padding: 5px 15px; 
+        min-width: 80px;
+        text-align: left; /* Alinear el texto a la izquierda */
+        width: 100%;  /* Ocupa todo el ancho disponible */
+        box-sizing: border-box;  /* Incluye el padding y el borde en el ancho total del botón */
+        position: relative; /* Agregado para el posicionamiento del pseudo-elemento */
+    text-align: left;   /* Alinear el texto a la izquierda */
+    padding-left: 10px; /* Añadir algo de espacio a la izquierda para compensar */
+}
+
+/* Agregar el pseudo-elemento para la pestaña activa */
+.custom-tab-buttons .active-tab::after {
+    content: '';
+    position: absolute;
+    left: 10px;  /* Alinea con el inicio del texto */
+    bottom: 0;
+    height: 2px;
+    width: calc(100% - 20px); /* Resta el padding total (10px izquierda + 10px derecha) */
+    background-color: #034A91;
+}
+
+    .custom-tab-header {
+        gap: 5px;  /* Espacio entre el título y los botones de las pestañas */
+    }
+}

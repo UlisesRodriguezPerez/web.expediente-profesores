@@ -1,0 +1,12 @@
+.consult-view-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .consult-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  

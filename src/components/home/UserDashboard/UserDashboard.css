@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.white-text {
+    color: white;
+}
+
+.dashboard-container {
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-header {
+    background-image: url('./../../../assets/images/admin-dashboard/header-tec.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 50px 0 0;
+    color: #fff;
+    align-items: center;
+    height: 100px;
+}
+
+.logo {
+    /* automatic heigt */
+    height: 100%;
+    width: 250px;
+    margin: 0 15px 0 0;
+    padding-inline: 15px;
+    background-color: #AFAAB4;
+}
+
+.user-actions {
+    display: flex;
+    gap: 20px;
+}
+
+.profile-action,
+.logout-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-icon,
+.logout-icon {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    color: #fff;
+}
+
+.dashboard-main {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 10px;
+    padding: 20px;
+    justify-items: center;
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+.card {
+    width: 400px;
+    height: 250px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.deep-blue {
+    background-color: #221863;
+}
+
+.teal {
+    background-color: #00888F;
+}
+
+.bright-red {
+    background-color: #AB2125;
+}
+
+.royal-blue {
+    background-color: #06529D;
+}
+
+.card:hover {
+    background-color: #f5f5f5;
+}
+
+.card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
+    margin-top: 30px;
+}
+
+.action-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    color: white;
+    /* Set text color to white */
+    /* ...any other styles... */
+}
+
+/* If you want to ensure that the FontAwesome icons also inherit the white color */
+.action-button .faUser,
+.action-button .logout-icon {
+    color: inherit;
+}
+
+/* focus styles for accessibility */
+.action-button:focus {
+    outline: auto 2px Highlight;
+    /* Or another color */
+    outline-offset: 2px;
+}
+
+@media (max-width: 950px) {
+    .dashboard-main {
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        gap: 20px;
+    }
+
+    .card {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
