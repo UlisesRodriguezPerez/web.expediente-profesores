@@ -15,7 +15,7 @@ export const OpenPeriod = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/profile" },
+        { title: "MI PERFIL", path: "/perfil-admin" },
         { title: "CARGA SEMESTRAL", path: "/semester-workload" },
         { title: "CURSOS Y ACTIVIDADES", path: "/courses-and-activities" },
         { title: "CONSULTAS", path: "/consults" },
