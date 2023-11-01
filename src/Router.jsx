@@ -18,6 +18,7 @@ import { ConsultView } from './views/adminViews/Consult/ConsultView';
 import { HistoryView } from './views/userViews/History/HistoryView';
 import { ActivityView } from './views/userViews/Activity/ActivityView';
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
+import { UserProfileView } from './views/userViews/UserProfile/UserProfileView';
 
 // temp component
 const TempComponent = () => {
@@ -45,7 +46,7 @@ export const Router = () => {
         <Route path="/consults" element={<RoleBasedRoute requiredRoles={['admin']} component={ConsultView} />} />
         <Route path="/activities" element={<RoleBasedRoute requiredRoles={['user']} component={ActivityView} />} />
         <Route path="/history" element={<RoleBasedRoute requiredRoles={['user']} component={HistoryView} />} />
-        <Route path="/profile" element={<RoleBasedRoute requiredRoles={['user']} component={TempComponent} />} />
+        <Route path="/profile" element={<RoleBasedRoute requiredRoles={['user']} component={UserProfileView} />} />
         <Route path="/courses" element={<RoleBasedRoute requiredRoles={['user']} component={TempComponent} />} />
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
         {/* Other routes */}
