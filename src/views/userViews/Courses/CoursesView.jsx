@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '../../../layouts/MainLayout/MainLayout';
-import './HistoryView.css'
-import { HistoryComponent } from '../../../components/user/History/HistoryComponent';
+import './CoursesView.css'
+import { CoursesComponent } from '../../../components/user/Courses/CoursesComponent';
 
 
-export const HistoryView = () => {
+export const CoursesView = () => {
     const { handleLogout } = useAuth();
     const navigate = useNavigate();
 
@@ -19,15 +18,14 @@ export const HistoryView = () => {
     const sidebarOptions = [
         { title: "MI PERFIL", path: "/profile" },
         { title: "ACTIVIDADES", path: "/activities" },
-        { title: "MIS CURSOS", path: "/courses" },
+        { title: "MI HISTORIAL", path: "/history"},
     ];
 
     return (
         <MainLayout sidebarOptions={sidebarOptions} onLogout={customHandleLogout}>
-            <main className="open-period-content">
-                <HistoryComponent />
+            <main className="courses-content">
+                <CoursesComponent />
             </main>
         </MainLayout>
     );
 };
-

@@ -17,7 +17,7 @@ export const PasswordLossView = () => {
     };
 
     const sidebarOptions = [
-        { title: "Optimice su flujo de trabajo" },
+        
     ];
 
     return (

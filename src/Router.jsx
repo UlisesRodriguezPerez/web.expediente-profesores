@@ -19,6 +19,7 @@ import { HistoryView } from './views/userViews/History/HistoryView';
 import { ActivityView } from './views/userViews/Activity/ActivityView';
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
 import { UserProfileView } from './views/userViews/UserProfile/UserProfileView';
+import { CoursesView } from './views/userViews/Courses/CoursesView';
 
 // temp component
 const TempComponent = () => {
@@ -39,7 +40,7 @@ export const Router = () => {
         <Route path="/" element={<PrivateRoute component={Home} />} />
         <Route path="/register" element={<RoleBasedRoute requiredRoles={['admin']} component={RegisterView} />} />
         <Route path="/admin-dashboard" element={<RoleBasedRoute requiredRoles={['admin']} component={AdminDashboard} />} />
-        <Route path="/user-dashboard" element={<RoleBasedRoute requiredRoles={['user', 'admin']} component={UserDashboard} />} />
+        <Route path="/user-dashboard" element={<RoleBasedRoute requiredRoles={['user']} component={UserDashboard} />} />
         <Route path="/open-period" element={<RoleBasedRoute requiredRoles={['admin']} component={OpenPeriod} />} />
         <Route path="/semester-workload" element={<RoleBasedRoute requiredRoles={['admin']} component={SemesterWorkloadView} />} />
         <Route path="/courses-and-activities" element={<RoleBasedRoute requiredRoles={['admin']} component={CourseAndActivityView} />} />
@@ -47,7 +48,7 @@ export const Router = () => {
         <Route path="/activities" element={<RoleBasedRoute requiredRoles={['user']} component={ActivityView} />} />
         <Route path="/history" element={<RoleBasedRoute requiredRoles={['user']} component={HistoryView} />} />
         <Route path="/profile" element={<RoleBasedRoute requiredRoles={['user']} component={UserProfileView} />} />
-        <Route path="/courses" element={<RoleBasedRoute requiredRoles={['user']} component={TempComponent} />} />
+        <Route path="/courses" element={<RoleBasedRoute requiredRoles={['user']} component={CoursesView} />} />
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
         {/* Other routes */}
       </Routes>

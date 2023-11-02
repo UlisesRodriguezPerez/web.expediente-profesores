@@ -19,6 +19,7 @@ export const UserProfileView = () => {
     const sidebarOptions = [
         { title: "ACTIVIDADES", path: "/activities" },
         { title: "MIS CURSOS", path: "/courses" },
+        { title: "Mi HISTORIAL", path: "/history"},
     ];
 
     return (
