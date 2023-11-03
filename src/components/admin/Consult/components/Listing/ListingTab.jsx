@@ -22,7 +22,59 @@ export const ListingTab = () => {
         { id: 2, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
         { id: 3, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
         { id: 4, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 5, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 6, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 7, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 8, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 9, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 10, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 11, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 12, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 12, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 14, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 15, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 16, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 17, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 18, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 19, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
+        { id: 20, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
     ]);
+
+    // mostrar el filtro
+    const [showFilters, setShowFilters] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+  
+    const handleFilterButtonClick = () => {
+        setShowFilters(!showFilters);
+    };
+    // filtro
+  
+    const handleOptionChange = (event) => {
+        const option = event.target.value;
+        if (selectedOptions.includes(option)) {
+            setSelectedOptions(selectedOptions.filter((item) => item !== option));
+        } else {
+            setSelectedOptions([...selectedOptions, option]);
+        }
+        handleAlertOptions();
+    };
+
+    const handleAlertOptions = () => {
+        alert(`Opciones seleccionadas: ${selectedOptions.join(', ')}`);
+    };
+    // filtro
+
+    const handleExportButton = () => {
+        alert(`Acciones para el boton de exportar`);
+    };
+
+    const handleAddButton = () => {
+        alert(`Acciones para el boton de anadir`);
+    };
+
+    const handleDeleteButton= () => {
+        alert(`Acciones para el boton de borrar`);
+    };
 
     const handleRowSelect = (id) => {
         const newSelectedRows = new Set(selectedRows);
@@ -99,10 +151,10 @@ export const ListingTab = () => {
                     </div>
 
                     <div className="listing-actions-container">
-                        <button className="action-button delete-button">
+                        <button className="action-button delete-button" onClick={handleDeleteButton}>
                             <FontAwesomeIcon icon={faTrash} /> Eliminar
                         </button>
-                        <button className="filter-button">
+                        <button className="filter-button" onClick={handleFilterButtonClick}>
                             <span className="filter-lines">
                                 <span className="line line-large"></span>
                                 <span className="line line-medium"></span>
@@ -110,10 +162,34 @@ export const ListingTab = () => {
                             </span>
                             Filtros  {/* PENDIENTE */}
                         </button>
-                        <button className="action-button export-button">
+                        {/* Las opciones del filtro */}
+                        {showFilters && (
+                            <div className="filter-options">
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option1"
+                                checked={selectedOptions.includes('option1')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 1
+                            </label>
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option2"
+                                checked={selectedOptions.includes('option2')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 2
+                            </label>
+                            {/* Agrega más opciones de filtros según lo necesites */}
+                            </div>
+                        )}
+                        <button className="action-button export-button" onClick={handleExportButton}>
                             <FontAwesomeIcon icon={faFileExport} /> Exportar
                         </button>
-                        <button className="action-button add-button">
+                        <button className="action-button add-button" onClick={handleAddButton}>
                             <FontAwesomeIcon icon={faPlus} /> Agregar
                         </button>
                     </div>

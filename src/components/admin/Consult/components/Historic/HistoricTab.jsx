@@ -10,6 +10,7 @@ export const HistoricTab = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     // Datos falsos para visualización
     const [data, setData] = useState([
         { periodo: '2023-I', cursos: 5, actividades: 10, workload: 1.5 },
@@ -28,13 +29,49 @@ export const HistoricTab = () => {
         { periodo: '2029-II', cursos: 5, actividades: 12, workload: 1.6 },
     ]);
 
+    // mostrar el filtro
+    const [showFilters, setShowFilters] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+  
+    const handleFilterButtonClick = () => {
+      setShowFilters(!showFilters);
+    };
+    // filtro
+    const handleOptionChange = (event) => {
+        const option = event.target.value;
+        if (selectedOptions.includes(option)) {
+          setSelectedOptions(selectedOptions.filter((item) => item !== option));
+        } else {
+          setSelectedOptions([...selectedOptions, option]);
+        }
+        handleAlertOptions();
+      };
+  
+      const handleAlertOptions = () => {
+          alert(`Opciones seleccionadas: ${selectedOptions.join(', ')}`);
+        };
+      // filtro
+
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
         setDebouncedSearchTerm(event.target.value);
     };
 
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        
+        if (pageNumber === 'next'){
+            setCurrentPage(currentPage + 1);
+            alert(`Page +1`);
+        }
+        else if(pageNumber === 'prev'){
+            if(currentPage > 0) {
+                setCurrentPage(currentPage + -1);
+                alert(`Page -1`);
+            }
+            
+        }
+        
+        //setCurrentPage(pageNumber);
         // Actualizar datos basados en la nueva página
     };
 
@@ -60,7 +97,7 @@ export const HistoricTab = () => {
             <div className="search-filter-container">
                 <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
 
-                <button className="filter-button">
+                <button className="filter-button" onClick={handleFilterButtonClick}>
                     <span className="filter-lines">
                         <span className="line line-large"></span>
                         <span className="line line-medium"></span>
@@ -68,8 +105,36 @@ export const HistoricTab = () => {
                     </span>
                     Filtros  {/* PENDIENTE */}
                 </button>
+
+                {showFilters && (
+                    <div className="filter-options">
+                        <label>
+                            <input
+                            type="checkbox"
+                            value="option1"
+                            checked={selectedOptions.includes('option1')}
+                            onChange={handleOptionChange}
+                            />{' '}
+                            Opción 1
+                        </label>
+                        <label>
+                            <input
+                            type="checkbox"
+                            value="option2"
+                            checked={selectedOptions.includes('option2')}
+                            onChange={handleOptionChange}
+                            />{' '}
+                            Opción 2
+                        </label>
+                        {/* Agrega más opciones de filtros según lo necesites */}
+                    </div>
+                )}
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
+            <Table 
+                className="historic-table" 
+                columns={columns} 
+                data={data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)}
+            />
             <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} />
         </div>
     );
