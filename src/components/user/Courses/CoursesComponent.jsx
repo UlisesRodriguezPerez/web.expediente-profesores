@@ -9,6 +9,7 @@ export const CoursesComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     // Datos falsos para visualización
     const [data, setData] = useState([
         { nombre: 'Curso 01', periodo: '2023-II' },
@@ -32,18 +33,22 @@ export const CoursesComponent = () => {
     };
 
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        
+        if (pageNumber === 'next'){
+            setCurrentPage(currentPage + 1);
+            alert(`Page +1`);
+        }
+        else if(pageNumber === 'prev'){
+            if(currentPage > 0) {
+                setCurrentPage(currentPage + -1);
+                alert(`Page -1`);
+            }
+            
+        }
+        
+        //setCurrentPage(pageNumber);
         // Actualizar datos basados en la nueva página
     };
-
-    const CargaHistoricaColumn = ({ row }) => (
-        <div className="bar-container">
-            <div
-                className={`workload-bar ${row.workload > 1.5 ? 'workload-bar-red' : 'workload-bar-blue'}`}
-                style={{ width: `${(row.workload / 1.5) * 100}%` }}
-            />
-        </div>
-    );
 
     const columns = [
         { header: 'Nombre', render: row => <span>{row.nombre}</span> },
@@ -55,7 +60,11 @@ export const CoursesComponent = () => {
             <div className="courses-header-container">
                 <h2>Mis Cursos</h2>
             </div>
-            <Table className="courses-table" columns={columns} data={data} />
+            <Table 
+                className="courses-table" 
+                columns={columns} 
+                data={data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)}
+            />
             <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className='width-95' />
         </div>
     );

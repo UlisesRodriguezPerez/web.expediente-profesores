@@ -3,9 +3,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import './PerfilAdminComponent.css';
 import ROUTES from '../../../enums/routes';
 import dataService from '../../../services/dataService';
+//import headerimage from './src/assets/images/layouts/header-tec.png';
 // dataservices es para obtener la informacion de la base de datos
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
+import { Link } from 'react-router-dom';
+
 
 export const PerfilAdminComponent = () => {
     // id del usuario que abre la pagina
@@ -66,8 +69,11 @@ export const PerfilAdminComponent = () => {
         handleSubmit();
     }, [handleSubmit, id] ); 
 
+    // <div><img src={headerimage} alt="Logo" className="sidebar-logo" /></div>
+
     return (
         <div className="admin-user-profile">
+          
           <h1>Perfil del Usuario Administrador</h1>
           <div>
             <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
@@ -93,6 +99,9 @@ export const PerfilAdminComponent = () => {
           <div>
             <strong>Cargo:</strong> {name_position}
           </div>
+          <Link to="/admin-dashboard">
+            <button>Admin Dashboarda</button>
+          </Link>
         </div>
       );
 }

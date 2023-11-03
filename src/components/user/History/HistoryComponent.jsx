@@ -10,6 +10,7 @@ export const HistoryComponent = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     // Datos falsos para visualización
     const [data, setData] = useState([
         { periodo: '2023-I', cursos: 5, actividades: 10, workload: 1.5 },
@@ -34,7 +35,20 @@ export const HistoryComponent = () => {
     };
 
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        
+        if (pageNumber === 'next'){
+            setCurrentPage(currentPage + 1);
+            alert(`Page +1`);
+        }
+        else if(pageNumber === 'prev'){
+            if(currentPage > 0) {
+                setCurrentPage(currentPage + -1);
+                alert(`Page -1`);
+            }
+            
+        }
+        
+        //setCurrentPage(pageNumber);
         // Actualizar datos basados en la nueva página
     };
 
@@ -60,7 +74,11 @@ export const HistoryComponent = () => {
             <div className="history-header-container">
                 <h2>Mi Historial</h2>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
+            <Table 
+                className="historic-table" 
+                columns={columns} 
+                data={data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)} 
+            />
             <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className='width-95' />
         </div>
     );

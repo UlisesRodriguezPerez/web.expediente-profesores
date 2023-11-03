@@ -6,6 +6,7 @@ import dataService from '../../../services/dataService';
 // dataservices es para obtener la informacion de la base de datos
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
+import { Link } from 'react-router-dom';
 
 export const UserProfileComponent = () => {
     // id del usuario que abre la pagina
@@ -93,6 +94,9 @@ export const UserProfileComponent = () => {
           <div>
             <strong>Cargo:</strong> {name_position}
           </div>
+          <Link to="/user-dashboard">
+            <button>User Dashboard</button>
+          </Link>
         </div>
       );
 }
