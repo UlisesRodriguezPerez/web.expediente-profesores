@@ -32,7 +32,7 @@ export const Register = () => {
 
     return (
         <div>
-            <h2>Register</h2>
+            <h2 type="auth-text">Register</h2>
             <form onSubmit={handleSubmit}>
                 <input type="register-text" name="name" placeholder="Name" onChange={handleInputChange} />
                 {errors.name && <p>{errors.name[0]}</p>}

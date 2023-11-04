@@ -66,11 +66,11 @@ export const PasswordReset = () => {
 
     return (
         <div>
-            <h2>Reinicio de contraseña</h2>
-            <p>Enviamos el código a -variable del correo- </p>
+            <h2 type="auth-text">Reinicio de contraseña</h2>
+            <p type="auth-text">Enviamos el código a -variable del correo- </p>
             
             <input 
-                type="text"
+                type="pass-reset-text"
                 id="code" 
                 placeholder="Código"
                 value={vCode}
@@ -78,7 +78,7 @@ export const PasswordReset = () => {
             >
             </input>
             <input 
-                name="password"
+                name="pass-reset-password"
                 type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="Nueva contraseña"
@@ -96,22 +96,25 @@ export const PasswordReset = () => {
             >
             </input>
 
-            {passwordMatchError && <p>{passwordMatchError}</p>}
-            {codeMatchError && <p>{codeMatchError}</p>}
+            {passwordMatchError && <p type="auth-text">{passwordMatchError}</p>}
+            {codeMatchError && <p type="auth-text">{codeMatchError}</p>}
 
-            <button onClick={togglePasswordVisibility}>
+            <button type="show" onClick={togglePasswordVisibility}>
                 {showPassword ? "Ocultar Contraseña" : "Mostrar Contraseña"}
             </button>
-            <p> </p>
+            <p type="auth-text"> </p>
             <button type="submit" onClick={sendResetPassword}>Reiniciar contraseña</button>
-            <p>¿No recibió el correo?</p>
-            <p>
+            <p type="auth-text">¿No recibió el correo?</p>
+            <p type="auth-text">
                 <Link to="/password-loss">
                     Presione para volver a enviar 
                 </Link> 
             </p>
-
-            <button type="button" onClick={() => window.history.back()}>Atrás</button>
+            <p type="auth-text">
+                <Link to="/login">
+                    Presione para volver al login
+                </Link> 
+            </p>
         </div>
     );
 }

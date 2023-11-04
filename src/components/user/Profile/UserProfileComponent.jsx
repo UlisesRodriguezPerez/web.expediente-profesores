@@ -7,6 +7,9 @@ import dataService from '../../../services/dataService';
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 
 export const UserProfileComponent = () => {
     // id del usuario que abre la pagina
@@ -30,6 +33,12 @@ export const UserProfileComponent = () => {
     const [name_position, setNamePosition] = useState('');
 
     // ------------------- fin de la variables ---------------------------
+
+    const [showDetails, setShowDetails] = useState(false);
+
+    const toggleDetails = () => {
+      setShowDetails(!showDetails);
+    };
     
     const { showNotification } = useContext(NotificationContext);
 
@@ -69,34 +78,52 @@ export const UserProfileComponent = () => {
 
     return (
         <div className="user-profile">
-          <h1>Perfil del Usuario</h1>
-          <div>
-            <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
+          <h1 type="user-text-tittle">Perfil del Usuario</h1>
+
+          <div className="user-info">
+            <div type="user-icon">
+              <span className="button-icon"><FontAwesomeIcon icon={faUserTie} /></span>   
+            </div>
+            <div type="user-data">
+              <div>
+                <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
+              </div>
+              <div>
+                <strong>Grado Académico:</strong> {name_academic_degrees}
+              </div>
+            </div>
           </div>
-          <div>
-            <strong>Teléfono:</strong> {phone_users}
+
+          <div className="user-contact">
+            <div>
+              <strong>Teléfono:</strong> {phone_users}
+            </div>
+            <div>
+              <strong>Correo Electrónico:</strong> {email_users}
+            </div>
           </div>
+
           <div>
-            <strong>Correo Electrónico:</strong> {email_users}
+            <h2 className="title">Detalles</h2>
+            <div className={showDetails ? 'details-container show' : 'details-container'}>
+              <div>
+                <strong>Cargo:</strong> {name_position}
+              </div>
+              <div>
+                <strong>Campus:</strong> {name_campus}
+              </div>
+              <div>
+                <strong>Categoría Técnica:</strong> {name_tec_category}
+              </div>
+              <div>
+                <strong>Área de Nombramiento:</strong> {name_appointment}
+              </div>
+            </div>
+            <button className="toggle-button" onClick={toggleDetails}>
+              {showDetails ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+            </button> 
           </div>
-          <div>
-            <strong>Categoría Técnica:</strong> {name_tec_category}
-          </div>
-          <div>
-            <strong>Área de Nombramiento:</strong> {name_appointment}
-          </div>
-          <div>
-            <strong>Grado Académico:</strong> {name_academic_degrees}
-          </div>
-          <div>
-            <strong>Campus:</strong> {name_campus}
-          </div>
-          <div>
-            <strong>Cargo:</strong> {name_position}
-          </div>
-          <Link to="/user-dashboard">
-            <button>User Dashboard</button>
-          </Link>
+
         </div>
       );
 }

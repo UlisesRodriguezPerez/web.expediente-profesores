@@ -6,6 +6,10 @@ import './DownloadReportTab.css';
 export const DownloadReportTab = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('');
 
+    const handleDownload = async () => {
+
+    }
+
     return (
         <div className='download-container'>
             <div className="period-dropdown-search-container" style={{ paddingTop: '20px' }}>

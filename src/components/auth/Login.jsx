@@ -129,17 +129,17 @@ export const Login = () => {
     //<img type="logo" src={headerimage} alt="Logo del TEC" />
     return (
         <div>
-            <h2>Iniciar Sesión</h2>
+            <h2 type="auth-text">Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" onChange={handleInputChange} />
-                {errors.email && <p>{errors.email[0]}</p>}
+                <input type="login-email" name="email" placeholder="Email" onChange={handleInputChange} />
+                {errors.email && <p type="auth-text">{errors.email[0]}</p>}
 
                 <div>
-                    <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
-                    {errors.password && <p>{errors.password[0]}</p>}
+                    <input type="login-password" name="password" placeholder="Password" onChange={handleInputChange} />
+                    {errors.password && <p type="auth-text">{errors.password[0]}</p>}
                 </div>
 
-                <p>
+                <p type="auth-text">
                     <Link to="/password-loss">
                         ¿Olvidó su contraseña? 
                     </Link> 

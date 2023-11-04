@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/api';
 import ROUTES from '../../enums/routes';
-import { Link, useNavigate } from 'react-router-dom';
 import dataService from '../../services/dataService';
 
 export const PasswordLoss = () => {
@@ -44,12 +44,11 @@ export const PasswordLoss = () => {
 
         try {
             setVerificationCode(generateSixDigitCode());
-            console.error('Probando el boton');
-            console.error('Email: ', email);
-            console.error('Codigo: ', verificationCode);
+            alert('Probando el boton');
             //sendMail(email, verificationCode);
             // primero debo verificar que el correo exista
             // if else de la respuesta
+            
         } catch (error) {
             console.error('Error sending message');
         }
@@ -57,22 +56,27 @@ export const PasswordLoss = () => {
 
     return (
         <div>
-            <h2>¿Olvidó su contraseña?</h2>
-            <p>Ingrese su dirección electrónica y le </p>
-            <p>enviaremos un código para reiniciar su contraseña.</p>
-            <p>__________________________________________________</p>
-            <p>Ingresa su correo:</p>
+            <h2 type="auth-text">¿Olvidó su contraseña?</h2>
+            <p type="auth-text">Ingrese su dirección electrónica y le </p>
+            <p type="auth-text">enviaremos un código para reiniciar su contraseña.</p>
+            <p type="auth-text">__________________________________________________</p>
+            <p type="auth-text">Ingresa su correo:</p>
             <input 
-                type="text" 
+                type="pass-loss-text" 
                 id="loss_email" 
                 placeholder="Correo electrónico"
                 value={email}
                 onChange={handleEmailChange}
             >
             </input>
-            <button type="submit" onClick={sendResetCode}>Continuar</button>
+            <button type="submit" onClick={sendResetCode}>Mandar</button>
             <p> </p>
             <button type="button" onClick={() => window.history.back()}>Atrás</button>
+            <p type="auth-text">
+                <Link to="/password-reset">
+                    Resetear contraseña 
+                </Link> 
+            </p>
         </div>
     );
 }
