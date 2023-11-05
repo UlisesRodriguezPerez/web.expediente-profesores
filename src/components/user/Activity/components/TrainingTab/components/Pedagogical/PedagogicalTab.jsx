@@ -18,23 +18,27 @@ export const PedagogicalTab = () => {
         return; // Not continue if any field is empty
       }
 
-      const responseUserId = await dataService.readData(ROUTES.USERS, localStorage.getItem('userId'));
+      const userValue = JSON.parse(localStorage.getItem('user'));
+      console.log(`ID = ${userValue.id}`);
       //Obtener periodo
 
+      //agregar actividad
+      /*
       await dataService.createData(`${ROUTES.ACTIVITIES}`, {
         period_id:5,
-        creator_id: responseUserId,
-        involved_id: responseUserId,
+        creator_id: userValue.id,
+        involved_id: userValue.id,
         name: course 
       });
 
       const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${responseUserId},[name]=${course}&included=id`);
 
+      //agregar 
       await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, {
         activity_id:responseActivityId.data.data[0].activity_id,
         institution_name: institution
       });
-
+      */
       showNotification('success', 'Actividad asignada exitosamente');
     }
     catch (error) {

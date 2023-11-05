@@ -70,8 +70,10 @@ export const UserProfileComponent = () => {
     // Llama a handleSubmit al iniciar sesión
     useEffect(() => {
         // obtener el id del usuario que inicio seccion
-        setUserPage(localStorage.getItem('userId'));
-        console.log(id);
+        const userValue = JSON.parse(localStorage.getItem('user'));
+        console.log(`ID = ${userValue.id}`);
+        setUserPage(userValue.id);
+        //console.log(`ID = ${id}`);
 
         handleSubmit();
     }, [handleSubmit, id] ); 
