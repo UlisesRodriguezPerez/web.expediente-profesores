@@ -1,0 +1,139 @@
+/* Modal base styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Higher than most elements to ensure it's on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Scroll if needed */
+    background-color: rgba(0, 0, 0, 0.4); /* Black with opacity */
+  }
+  
+  .modal--active {
+    display: block; /* Show the modal when active */
+  }
+  
+  .modal__content {
+    background-color: #fefefe;
+    margin: 10% auto; /* 10% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 5px;
+  }
+  
+  .modal__close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .modal__close:hover,
+  .modal__close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  /* Form styles */
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-row {
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 0 -15px; /* Corrects spacing for child elements */
+  }
+  
+  .form-group {
+    padding: 0 15px; /* Spacing for each form field */
+    flex: 1 1 50%; /* Sets to half width */
+    max-width: 50%; /* Ensures the max width is 50% */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input[type="text"],
+  .form-group input[type="email"],
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Checkbox and roles styles */
+  .form-roles,
+  .form-checkbox {
+    margin-bottom: 20px;
+  }
+  
+  .form-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+  }
+  
+  .form-checkbox label {
+    margin-left: 5px;
+  }
+  
+  /* Submit button styles */
+  .form__submit-button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .form__submit-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .form-group {
+      flex-basis: 100%; /* Full width on smaller screens */
+      max-width: 100%; /* Full width on smaller screens */
+    }
+  
+    .modal__content {
+      width: 90%; /* More width on smaller screens */
+    }
+  
+    .form-roles {
+      flex-direction: column;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .form-group input[type="text"],
+    .form-group input[type="email"],
+    .form-group select,
+    .form__submit-button {
+      padding: 12px;
+    }
+  }
+
+  @media (max-width: 650px) {
+      .form-row {
+    flex-wrap: wrap;
+  }
+  }
+  

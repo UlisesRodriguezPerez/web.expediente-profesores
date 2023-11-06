@@ -23,13 +23,9 @@ const useWorkloads = () => {
         }
     }, []);
 
-    const handlePageChange = (direction) => {
-        if (direction === 'next' && currentPage * 10 < totalItems) {
-            setCurrentPage((prevPage) => prevPage + 1);
-        } else if (direction === 'prev' && currentPage > 1) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
-    };
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+      };
 
     const buildFilterQuery = (term) => {
         const baseFields = [

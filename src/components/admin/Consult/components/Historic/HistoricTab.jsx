@@ -1,42 +1,77 @@
 // HistoricTab.jsx
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table } from '../../../../../common/components/Table/Table';
 import { Pagination } from '../../../../../common/components/Pagination/Pagination';
-import { SearchBar } from './../../../../../common/components/SearchBar/SearchBar';
 import './HistoricTab.css';
+import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext';
+import ROUTES from '../../../../../enums/routes';
+import dataService from '../../../../../services/dataService';
+import { CustomSelect } from '../../../../../common/components/CustomSelect/CustomSelect';
+
+const ITEMS_PER_PAGE = 10;
+const DEFAULT_TEACHER_VALUE = -1;
 
 export const HistoricTab = () => {
 
+    const [collaborator, setCollaborator] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    // Datos falsos para visualización
-    const [data, setData] = useState([
-        { periodo: '2023-I', cursos: 5, actividades: 10, workload: 1.5 },
-        { periodo: '2023-II', cursos: 3, actividades: 8, workload: 1.2 },
-        { periodo: '2024-I', cursos: 4, actividades: 12, workload: 1.8 },
-        { periodo: '2024-II', cursos: 2, actividades: 6, workload: 0.9 },
-        { periodo: '2025-I', cursos: 6, actividades: 14, workload: 2.0 },
-        { periodo: '2025-II', cursos: 3, actividades: 9, workload: 1.3 },
-        { periodo: '2026-I', cursos: 5, actividades: 11, workload: 1.6 },
-        { periodo: '2026-II', cursos: 4, actividades: 10, workload: 1.4 },
-        { periodo: '2027-I', cursos: 5, actividades: 13, workload: 1.7 },
-        { periodo: '2027-II', cursos: 3, actividades: 8, workload: 1.2 },
-        { periodo: '2028-I', cursos: 6, actividades: 15, workload: 2.1 },
-        { periodo: '2028-II', cursos: 2, actividades: 7, workload: 1.0 },
-        { periodo: '2029-I', cursos: 4, actividades: 10, workload: 1.4 },
-        { periodo: '2029-II', cursos: 5, actividades: 12, workload: 1.6 },
-    ]);
+    const [totalItems, setTotalItems] = useState(0);
+    const [teacherOptions, setTeacherOptions] = useState([]);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
+    const { showNotification } = useContext(NotificationContext);
 
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-        setDebouncedSearchTerm(event.target.value);
+    const fetchTeachers = async () => {
+        try {
+            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user`);
+            const userTeachers = response.data.data.filter(teacher =>
+                teacher.user.roles.some(role => role.name === 'user')
+            );
+            setTeacherOptions(userTeachers.map(teacher => ({
+                label: `${teacher.user.name} ${teacher.user.last_name}`,
+                value: teacher.id
+            })));
+        } catch (error) {
+            console.error('Error fetching teachers:', error);
+            showNotification('Error al cargar los profesores', 'error');
+        }
     };
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        // Actualizar datos basados en la nueva página
+    const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
+        try {
+            const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
+            const response = await dataService.readData(
+                `${ROUTES.COLLABORATORS}?included=user,workloads.period.activities&perPage=${ITEMS_PER_PAGE}&page=${page}&exactfilter[id]=${queryId}`
+            );
+            const workloads = response.data.data[0]?.workloads ?? [];
+
+            setCollaborator(workloads.map(workload => ({
+                cursos: workload.period.activities.length, // PENDIENTE CURSOS NO EXISTE EN LA DB
+                actividades: workload.period.activities.length,
+                workload: workload.workload,
+                period: workload.period.name,
+            })));
+
+            setTotalItems(workloads.length);
+        } catch (error) {
+            console.error('Error fetching collaborators:', error);
+            showNotification('Error al cargar los colaboradores', 'error');
+        }
     };
+
+
+    const handlePageChange = (newPage) => {
+        setCurrentPage(newPage);
+    };
+
+    useEffect(() => {
+        fetchTeachers();
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        fetchData(currentPage, selectedTeacher?.value);
+    }, [currentPage, selectedTeacher]);
+
 
     const CargaHistoricaColumn = ({ row }) => (
         <div className="bar-container">
@@ -48,7 +83,7 @@ export const HistoricTab = () => {
     );
 
     const columns = [
-        { header: 'Periodo', render: row => <span>{row.periodo}</span> },
+        { header: 'Periodo', render: row => <span>{row.period}</span> },
         { header: 'Cursos', render: row => <span>{row.cursos}</span> },
         { header: 'Actividades', render: row => <span>{row.actividades}</span> },
         { header: 'Carga', render: row => <CargaHistoricaColumn row={row} /> },
@@ -58,7 +93,15 @@ export const HistoricTab = () => {
     return (
         <div className="historic-tab-container">
             <div className="search-filter-container">
-                <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
+                <div className="filter">
+                    <CustomSelect
+                        options={teacherOptions}
+                        onChange={(option) => setSelectedTeacher(option)}
+                        label="Profesor"
+                        placeholder="Profesor"
+                        value={selectedTeacher}
+                    />
+                </div>
 
                 <button className="filter-button">
                     <span className="filter-lines">
@@ -69,8 +112,10 @@ export const HistoricTab = () => {
                     Filtros  {/* PENDIENTE */}
                 </button>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} />
+            <Table className="historic-table" columns={columns} data={collaborator}
+            />
+
+            <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} />
         </div>
     );
 };

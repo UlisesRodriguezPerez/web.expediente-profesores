@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { SearchBar } from '../../../../../common/components/SearchBar/SearchBar';
 import { Table } from '../../../../../common/components/Table/Table';
 import { Pagination } from '../../../../../common/components/Pagination/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +6,7 @@ import { faEdit, faTrash, faFileExport, faPlus } from '@fortawesome/free-solid-s
 import dataService from '../../../../../services/dataService';
 import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext';
 import './ListingTab.css';
+import { ProfessorFormModal } from './components/ProfessorFormModal/ProfessorFormModal';
 
 export const ListingTab = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,6 +16,8 @@ export const ListingTab = () => {
     const { showNotification } = useContext(NotificationContext);
     const [selectedRows, setSelectedRows] = useState(new Set());
 
+    const [isFormModalVisible, setIsFormModalVisible] = useState(false);
+    const [editingProfessor, setEditingProfessor] = useState(null);
 
     const [data, setData] = useState([
         { id: 1, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
@@ -23,6 +25,50 @@ export const ListingTab = () => {
         { id: 3, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
         { id: 4, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
     ]);
+
+
+    const handleDeleteSelected = async () => {
+        try {
+            // Aquí llamarías al método del API para eliminar los profesores,
+            // luego actualizarías tu estado para reflejar los cambios.
+            await Promise.all([...selectedRows].map(id => dataService.deleteData(id)));
+            setSelectedRows(new Set());
+            showNotification('Profesores eliminados con éxito', 'success');
+
+
+
+        } catch (error) {
+            console.error('Error deleting selected professors:', error);
+            showNotification('Error al eliminar profesores', 'error');
+        }
+    };
+
+    const handleAddClick = () => {
+        setEditingProfessor(null);
+        setIsFormModalVisible(true);
+    };
+
+    const handleEditClick = (professor) => {
+        setEditingProfessor(professor); // current professor
+        setIsFormModalVisible(true);
+    };
+
+    const handleSubmitForm = async (professorData) => {
+        try {
+            let response;
+            if (editingProfessor) {
+                response = await dataService.updateData(professorData);
+            } else {
+                response = await dataService.createData(professorData);
+            }
+
+            setIsFormModalVisible(false);
+            showNotification('Profesor guardado con éxito', 'success');
+        } catch (error) {
+            console.error('Error saving professor:', error);
+            showNotification('Error al guardar profesor', 'error');
+        }
+    };
 
     const handleRowSelect = (id) => {
         const newSelectedRows = new Set(selectedRows);
@@ -38,20 +84,9 @@ export const ListingTab = () => {
         setCurrentPage(pageNumber);
     };
 
-    const handleSearchChange = (event) => {
-
-    };
-
-    const handleEditClick = (workloadId, workloadValue) => {
-
-    };
-
-    const handleRemoveClick = async (workloadId) => {
-    };
-
     const ActionColumn = ({ row, editingWorkloadId, handleSaveWorkload, handleEditClick }) => (
         <div>
-            {editingWorkloadId === row.id 
+            {editingWorkloadId === row.id
                 ? (<button onClick={() => handleSaveWorkload(row.id, row.collaborator.id, row.period.id)} className="btn-guardar"> Guardar </button>)
                 : (<button className="btn-editar" onClick={() => handleEditClick(row.id, row.workload)}> <FontAwesomeIcon icon={faEdit} /> Editar </button>)
             }
@@ -82,7 +117,7 @@ export const ListingTab = () => {
         { header: 'Grado Académico', render: row => <span>{row.grade}</span> },
         { header: 'Tipo de nombramiento', render: row => <span>{row.appoinmentType}</span> },
         { header: 'Cargo', render: row => <span >{row.position}</span> },
-        { header: '', render: row => <ActionColumn row={row} editingWorkloadId={() => {}}  /> },
+        { header: '', render: row => <ActionColumn row={row} editingWorkloadId={() => { }} /> },
 
     ];
 
@@ -99,7 +134,11 @@ export const ListingTab = () => {
                     </div>
 
                     <div className="listing-actions-container">
-                        <button className="action-button delete-button">
+                        <button
+                            className="action-button delete-button"
+                            onClick={handleDeleteSelected}
+                            disabled={selectedRows.size === 0}
+                        >
                             <FontAwesomeIcon icon={faTrash} /> Eliminar
                         </button>
                         <button className="filter-button">
@@ -113,7 +152,10 @@ export const ListingTab = () => {
                         <button className="action-button export-button">
                             <FontAwesomeIcon icon={faFileExport} /> Exportar
                         </button>
-                        <button className="action-button add-button">
+                        <button
+                            className="action-button add-button"
+                            onClick={handleAddClick}
+                        >
                             <FontAwesomeIcon icon={faPlus} /> Agregar
                         </button>
                     </div>
@@ -123,6 +165,14 @@ export const ListingTab = () => {
 
                 <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} />
             </div>
+            {isFormModalVisible && (
+                <ProfessorFormModal
+                    isVisible={isFormModalVisible}
+                    onClose={() => setIsFormModalVisible(false)}
+                    onSubmit={handleSubmitForm}
+                    professor={editingProfessor}
+                />
+            )}
         </div>
     );
 };
