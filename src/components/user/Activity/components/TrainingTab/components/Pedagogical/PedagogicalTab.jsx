@@ -20,7 +20,7 @@ export const PedagogicalTab = () => {
 
       const userValue = JSON.parse(localStorage.getItem('user'));
       console.log(`ID = ${userValue.id}`);
-      //Obtener periodo
+      //OBTENER PERIODO
 
       //agregar actividad
       /*
@@ -30,10 +30,12 @@ export const PedagogicalTab = () => {
         involved_id: userValue.id,
         name: course 
       });
-
-      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${responseUserId},[name]=${course}&included=id`);
-
-      //agregar 
+      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${userValue.id},[name]=${course}&included=id`);
+      */
+      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[id]=${11}`);
+      console.log(responseActivityId);
+      /*
+      //agregar capacitacion PEDAGOGICA
       await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, {
         activity_id:responseActivityId.data.data[0].activity_id,
         institution_name: institution

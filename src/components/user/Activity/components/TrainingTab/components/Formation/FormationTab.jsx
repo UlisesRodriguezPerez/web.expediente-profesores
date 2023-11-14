@@ -12,6 +12,44 @@ export const FormationTab = () => {
     const handleAddFormation = () => {
         
         alert(`Programa: ${programa}\nUniversidad: ${universidad}\nGrado Académico: ${gradoAcademico}\nAño de Inicio: ${anioInicio}\nAño de Fin: ${anioFin}`);
+        try{
+            if (!programa || !universidad || !gradoAcademico || !anioInicio || !anioFin) {
+              showNotification('error', 'Todos los campos son requeridos.');
+              return; // Not continue if any field is empty
+            }
+      
+            const userValue = JSON.parse(localStorage.getItem('user'));
+            console.log(`ID = ${userValue.id}`);
+            //OBTENER PERIODO
+      
+            //agregar actividad
+            /*
+            await dataService.createData(`${ROUTES.ACTIVITIES}`, {
+              period_id:5,
+              creator_id: userValue.id,
+              involved_id: userValue.id,
+              name: course 
+            });
+            
+            //ARREGLAR FILTRO
+            const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${userValue.id},[name]=${course}&included=id`);
+            console.log(responseActivityId);
+            
+            //agregar capacitacion FORMACION CAMBIAR NOMBRES
+            await dataService.createData(`${ROUTES.***********ARREGLAR*RUTA************_TRAININGS}`, {
+              activity_id:responseActivityId.data.data[0].activity_id,
+              institution_name: universidad,
+              programa: programa,
+              gradoAcademico: gradoAcademico,
+              anioInicio: anioInicio,
+              anioFin: anioFin
+            });
+            */
+            showNotification('success', 'Actividad asignada exitosamente');
+          }
+          catch (error) {
+            console.error('Error al guardar actividad pedagogica:', error);
+          }
     };
 
     return (
