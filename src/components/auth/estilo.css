@@ -22,7 +22,8 @@ input[type="pass-loss-text"],
 input[type="pass-reset-text"],
 input[type="pass-reset-password"],
 input[type="password-confirmation"],
-input[type="register-text"] {
+input[type="register-text"],
+input[type="reset-email-text"] {
     margin-left: 55px;
     border-radius: 5px;
     margin-bottom: 10px;

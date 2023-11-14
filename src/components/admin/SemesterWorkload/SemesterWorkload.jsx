@@ -27,29 +27,10 @@ export const SemesterWorkload = () => {
     const [tempWorkloadValue, setTempWorkloadValue] = useState(null);
     const { showNotification } = useContext(NotificationContext);
 
-    // mostrar el filtro
-    const [showFilters, setShowFilters] = useState(false);
-    const [selectedOptions, setSelectedOptions] = useState([]);
   
-    const handleFilterButtonClick = () => {
-      setShowFilters(!showFilters);
+    const handleTemp = () => {
+      alert("hola mundo");
     };
-    // filtro
-  
-    const handleOptionChange = (event) => {
-      const option = event.target.value;
-      if (selectedOptions.includes(option)) {
-        setSelectedOptions(selectedOptions.filter((item) => item !== option));
-      } else {
-        setSelectedOptions([...selectedOptions, option]);
-      }
-      handleAlertOptions();
-    };
-
-    const handleAlertOptions = () => {
-        alert(`Opciones seleccionadas: ${selectedOptions.join(', ')}`);
-      };
-    // filtro
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -147,7 +128,7 @@ export const SemesterWorkload = () => {
                     <div className="search-filter-container">
                         <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
 
-                        <button className="filter-button" onClick={handleFilterButtonClick} >
+                        <button className="filter-button" onClick={handleTemp} >
                             <span className="filter-lines">
                                 <span className="line line-large"></span>
                                 <span className="line line-medium"></span>
@@ -155,32 +136,7 @@ export const SemesterWorkload = () => {
                             </span>
                             Filtros  {/* PENDIENTE */}
                         </button>
-
-                        {showFilters && (
-                            <div className="filter-options">
-                            <label>
-                                <input
-                                type="checkbox"
-                                value="option1"
-                                checked={selectedOptions.includes('option1')}
-                                onChange={handleOptionChange}
-                                />{' '}
-                                Opción 1
-                            </label>
-                            <label>
-                                <input
-                                type="checkbox"
-                                value="option2"
-                                checked={selectedOptions.includes('option2')}
-                                onChange={handleOptionChange}
-                                />{' '}
-                                Opción 2
-                            </label>
-                            {/* Agrega más opciones de filtros según lo necesites */}
-                            </div>
-                        )}
-
-                        
+   
                     </div>
                 </div>
 

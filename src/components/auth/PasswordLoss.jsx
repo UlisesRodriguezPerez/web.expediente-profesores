@@ -7,6 +7,9 @@ import dataService from '../../services/dataService';
 export const PasswordLoss = () => {
 
     const [email, setEmail] = useState('');
+
+    // para varaibles anteriores
+    const navigate = useNavigate();  // Agrega esta línea
     
     const handleEmailChange = (e) => { setEmail(e.target.value); };
 
@@ -18,39 +21,30 @@ export const PasswordLoss = () => {
       
     const [verificationCode, setVerificationCode] = useState(generateSixDigitCode());
 
-    /*
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey('TU_API_KEY_DE_SENDGRID');
+    const [formData, setFormData] = useState({
+        email: '',
+        token: '',
+        created_at: ''
+    });
 
-    const sendMail = async (D_email, V_code) => {
-        const msg = {
-            to: D_email,
-            from: 'tu_email@tudominio.com', // Debe ser un email verificado en SendGrid
-            subject: 'Código de restablecimiento de contraseña',
-            text: `Tu código de verificación es: ${V_code}`,
-            html: `<strong>Tu código de verificación es:</strong> ${V_code}`
-        };
-        
-        try {
-            await sgMail.send(msg);
-            console.log('Email sendig');
-        } catch (error) {
-            console.error('Error to sending the email', error);
-        }
-    };
-    */
+    const [errors, setErrors] = useState({});
 
     const sendResetCode = async () => {
-
         try {
-            setVerificationCode(generateSixDigitCode());
-            alert('Probando el boton');
-            //sendMail(email, verificationCode);
-            // primero debo verificar que el correo exista
-            // if else de la respuesta
-            
+            const newVerificationCode = generateSixDigitCode();
+            setVerificationCode(newVerificationCode);
+
+            formData.email = email;
+            formData.token = verificationCode.toString();
+
+            // aqui el api para el password_resets
+            //await dataService.createData(`${ROUTES.}`)
+
+            navigate(`/password-reset`);
+
         } catch (error) {
-            console.error('Error sending message');
+            console.error('Error sending reset code:', error);
+            // Agrega lógica adicional para manejar el error
         }
     }
 
@@ -72,11 +66,7 @@ export const PasswordLoss = () => {
             <button type="submit" onClick={sendResetCode}>Mandar</button>
             <p> </p>
             <button type="button" onClick={() => window.history.back()}>Atrás</button>
-            <p type="auth-text">
-                <Link to="/password-reset">
-                    Resetear contraseña 
-                </Link> 
-            </p>
+            
         </div>
     );
 }

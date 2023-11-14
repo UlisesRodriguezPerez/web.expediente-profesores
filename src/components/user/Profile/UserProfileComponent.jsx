@@ -9,11 +9,16 @@ import { NotificationContext } from '../../../contexts/NotificationContext/Notif
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserTie } from '@fortawesome/free-solid-svg-icons';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faEnvelope, faMobileAlt, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
 
 export const UserProfileComponent = () => {
     // id del usuario que abre la pagina
-    const [id, setUserPage] = useState(5);
+    const idValue = JSON.parse(localStorage.getItem('user'));
+    const userId = idValue.id;
+    const [id, setUserPage] = useState(userId);
+
+    // Actualizar el estado usando la función setUserPage
+    //setUserPage(userId);
     // aqui van la busqueda de los valores strings
     //  const responseData = await dataService.readData(ROUTES.USERS, id_user);
     const [name_users, setNameUser] = useState('');
@@ -45,7 +50,7 @@ export const UserProfileComponent = () => {
     const handleSubmit = useCallback( async () => {
         try {
             // Realiza las solicitudes HTTP para obtener los datos de los colaboradores y usuarios
-            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${11}&included=user,campus,category,position,degree,appointment`);
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${id}&included=user,campus,category,position,degree,appointment`);
             //collaboratorsResponse
             //console.log("Llamado api --- ");
             console.log(collaboratorsResponse.data.data[0]);
@@ -70,11 +75,11 @@ export const UserProfileComponent = () => {
     // Llama a handleSubmit al iniciar sesión
     useEffect(() => {
         // obtener el id del usuario que inicio seccion
-        setUserPage(localStorage.getItem('userId'));
-        console.log(id);
+        const idValue = JSON.parse(localStorage.getItem('user'));
+        setUserPage(idValue.id);
 
         handleSubmit();
-    }, [handleSubmit, id] ); 
+    }, [handleSubmit, setUserPage] ); 
 
     return (
         <div className="user-profile">
@@ -82,7 +87,7 @@ export const UserProfileComponent = () => {
 
           <div className="user-info">
             <div type="user-icon">
-              <span className="button-icon"><FontAwesomeIcon icon={faUserTie} /></span>   
+             <span className="button-icon"><FontAwesomeIcon icon={faUserGraduate} /></span>   
             </div>
             <div type="user-data">
               <div>
@@ -96,10 +101,10 @@ export const UserProfileComponent = () => {
 
           <div className="user-contact">
             <div>
-              <strong>Teléfono:</strong> {phone_users}
+              <strong><FontAwesomeIcon icon={faMobileAlt} />  Teléfono:</strong> {phone_users}
             </div>
             <div>
-              <strong>Correo Electrónico:</strong> {email_users}
+              <strong><FontAwesomeIcon icon={faEnvelope}  />  Correo Electrónico:</strong> {email_users}
             </div>
           </div>
 

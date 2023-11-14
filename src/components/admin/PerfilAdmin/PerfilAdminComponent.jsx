@@ -8,11 +8,15 @@ import dataService from '../../../services/dataService';
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 
 export const PerfilAdminComponent = () => {
     // id del usuario que abre la pagina
-    const [id, setUserPage] = useState(5);
+    const [id, setUserPage] = useState(0);
     // aqui van la busqueda de los valores strings
     //  const responseData = await dataService.readData(ROUTES.USERS, id_user);
     const [name_users, setNameUser] = useState('');
@@ -32,13 +36,20 @@ export const PerfilAdminComponent = () => {
     const [name_position, setNamePosition] = useState('');
 
     // ------------------- fin de la variables ---------------------------
+
+    const [showDetails, setShowDetails] = useState(false);
+
+    const toggleDetails = () => {
+      setShowDetails(!showDetails);
+    };
     
     const { showNotification } = useContext(NotificationContext);
 
     const handleSubmit = useCallback( async () => {
         try {
             // Realiza las solicitudes HTTP para obtener los datos de los colaboradores y usuarios
-            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${11}&included=user,campus,category,position,degree,appointment`);
+            console.log(`ID? = ${id}`);
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${id}&included=user,campus,category,position,degree,appointment`);
             //collaboratorsResponse
             //console.log("Llamado api --- ");
             console.log(collaboratorsResponse.data.data[0]);
@@ -63,45 +74,62 @@ export const PerfilAdminComponent = () => {
     // Llama a handleSubmit al iniciar sesión
     useEffect(() => {
         // obtener el id del usuario que inicio seccion
-        setUserPage(localStorage.getItem('userId'));
-        console.log(id);
+        const idValue = JSON.parse(localStorage.getItem('user'));
+        console.log(`ID = ${idValue.id}`);
+        setUserPage(idValue.id);
+
 
         handleSubmit();
     }, [handleSubmit, id] ); 
 
-    // <div><img src={headerimage} alt="Logo" className="sidebar-logo" /></div>
-
     return (
-        <div className="admin-user-profile">
-          
-          <h1>Perfil del Usuario Administrador</h1>
-          <div>
-            <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
+        <div className="admin-profile">
+          <h1 type="user-text-tittle">Perfil del Administrador</h1>
+
+          <div className="user-info">
+            <div type="user-icon">
+              <span className="button-icon"><FontAwesomeIcon icon={faUserTie} /></span>   
+            </div>
+            <div type="user-data">
+              <div>
+                <strong>Nombre:</strong> {name_users} {last_name_users} {second_last_name_users}
+              </div>
+              <div>
+                <strong>Grado Académico:</strong> {name_academic_degrees}
+              </div>
+            </div>
           </div>
-          <div>
-            <strong>Teléfono:</strong> {phone_users}
+
+          <div className="user-contact">
+            <div>
+              <strong><FontAwesomeIcon icon={faMobileAlt} />  Teléfono:</strong> {phone_users}
+            </div>
+            <div>
+              <strong><FontAwesomeIcon icon={faEnvelope}  />  Correo Electrónico:</strong> {email_users}
+            </div>
           </div>
+
           <div>
-            <strong>Correo Electrónico:</strong> {email_users}
+            <h2 className="title">Detalles</h2>
+            <div className={showDetails ? 'details-container show' : 'details-container'}>
+              <div>
+                <strong>Cargo:</strong> {name_position}
+              </div>
+              <div>
+                <strong>Campus:</strong> {name_campus}
+              </div>
+              <div>
+                <strong>Categoría Técnica:</strong> {name_tec_category}
+              </div>
+              <div>
+                <strong>Área de Nombramiento:</strong> {name_appointment}
+              </div>
+            </div>
+            <button className="toggle-button" onClick={toggleDetails}>
+              {showDetails ? <FontAwesomeIcon icon={faChevronUp} /> : <FontAwesomeIcon icon={faChevronDown} />}
+            </button> 
           </div>
-          <div>
-            <strong>Categoría Técnica:</strong> {name_tec_category}
-          </div>
-          <div>
-            <strong>Área de Nombramiento:</strong> {name_appointment}
-          </div>
-          <div>
-            <strong>Grado Académico:</strong> {name_academic_degrees}
-          </div>
-          <div>
-            <strong>Campus:</strong> {name_campus}
-          </div>
-          <div>
-            <strong>Cargo:</strong> {name_position}
-          </div>
-          <Link to="/admin-dashboard">
-            <button>Admin Dashboarda</button>
-          </Link>
+
         </div>
       );
 }
