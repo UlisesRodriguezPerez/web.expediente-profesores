@@ -18,29 +18,19 @@ export const PedagogicalTab = () => {
         return; // Not continue if any field is empty
       }
 
-      const userValue = JSON.parse(localStorage.getItem('user'));
-      console.log(`ID = ${userValue.id}`);
-      //OBTENER PERIODO
+      // AUTOMATICO, NO ES NECESARIO
+      //const userValue = JSON.parse(localStorage.getItem('user'));
+      //console.log(`ID = ${userValue.id}`);
+      
 
-      //agregar actividad
+      //agregar actividad CAPACITACION PEDAGOGICA
       /*
-      await dataService.createData(`${ROUTES.ACTIVITIES}`, {
-        period_id:5,
-        creator_id: userValue.id,
-        involved_id: userValue.id,
-        name: course 
-      });
-      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${userValue.id},[name]=${course}&included=id`);
-      */
-      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[id]=${11}`);
-      console.log(responseActivityId);
-      /*
-      //agregar capacitacion PEDAGOGICA
-      await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, {
-        activity_id:responseActivityId.data.data[0].activity_id,
-        institution_name: institution
+      await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+        name: course,
+        institution_name
       });
       */
+      
       showNotification('success', 'Actividad asignada exitosamente');
     }
     catch (error) {
