@@ -17,31 +17,14 @@ export const TechniqueTab = () => {
         return; // Not continue if any field is empty
       }
 
-      const userValue = JSON.parse(localStorage.getItem('user'));
-      console.log(`ID = ${userValue.id}`);
-      //OBTENER PERIODO
-
-      //agregar actividad
+      //agregar actividad CAPACITACION TÉCNICA
       /*
-      await dataService.createData(`${ROUTES.ACTIVITIES}`, {
-        period_id:5,
-        creator_id: userValue.id,
-        involved_id: userValue.id,
-        name: course 
-      });
-      
-      //ARREGLAR FILTRO
-      const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${userValue.id},[name]=${course}&included=id`);
-      console.log(responseActivityId);
-      
-      //agregar capacitacion tecnica
-      await dataService.createData(`${ROUTES.TECHNICAL_TRAININGS}`, {
-        activity_id:responseActivityId.data.data[0].activity_id,
-        training_type_id: activityType,
-        institution_name: "",
-        semester_hours: "0"
+      await dataService.createData(`${ROUTES.TECHNICAL_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+        id_training_types: activityType,
+        name: activity
       });
       */
+     
       showNotification('success', 'Actividad asignada exitosamente');
     }
     catch (error) {
