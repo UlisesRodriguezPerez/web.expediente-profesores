@@ -12,6 +12,29 @@ export const InternationalizationTab = () => {
         alert(
         `Actividad: ${actividad}\nTipo de Actividad: ${tipoActividad}\nUniversidad donde se desarrolla: ${universidad}\nPaís donde se desarrolla: ${pais}`
         );
+
+        try{
+            if (!actividad || !tipoActividad || !universidad || !pais) {
+              showNotification('error', 'Todos los campos son requeridos.');
+              return; // Not continue if any field is empty
+            }
+
+            //agregar actividad INTERNACIONALIZACION
+            /*
+            await dataService.createData(`${ROUTES.INTERNATIONALIZATIONS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                name: actividad,
+                activity_type_id: tipoActividad,
+                university_name: universidad,
+                pais: pais
+            });
+            */
+       
+            showNotification('success', 'Actividad asignada exitosamente');
+        }
+        catch (error) {
+        console.error('Error al guardar actividad pedagogica:', error);
+        }
+
     }
 
     return (
