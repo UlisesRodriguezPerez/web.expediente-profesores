@@ -40,3 +40,9 @@
     border: none;
     cursor: pointer;
 }
+
+.reset-button {
+    background-color: white;
+    color: black;
+    margin: 10px 5px 5px 10px;
+}

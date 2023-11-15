@@ -6,7 +6,7 @@ import dataService from '../../../services/dataService';
 // dataservices es para obtener la informacion de la base de datos
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown, faChevronUp, faEnvelope, faMobileAlt, faUserGraduate } from '@fortawesome/free-solid-svg-icons';
@@ -81,6 +81,13 @@ export const UserProfileComponent = () => {
         handleSubmit();
     }, [handleSubmit, setUserPage] ); 
 
+    // moverme de pantalla
+    const navigate = useNavigate(); 
+
+    const navigateToPasswordReset = () => {
+      navigate('/password-reset');  // Redirige a '/password-reset'
+    };
+
     return (
         <div className="user-profile">
           <h1 type="user-text-tittle">Perfil del Usuario</h1>
@@ -122,6 +129,9 @@ export const UserProfileComponent = () => {
               </div>
               <div>
                 <strong>Área de Nombramiento:</strong> {name_appointment}
+              </div>
+              <div>
+                <button className="reset-button" onClick={navigateToPasswordReset}>Cambiar Contrasena</button>
               </div>
             </div>
             <button className="toggle-button" onClick={toggleDetails}>

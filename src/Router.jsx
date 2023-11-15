@@ -36,7 +36,7 @@ export const Router = () => {
       <Routes>
         <Route path="/login" element={<LoginView component={LoginView}/>} />
         <Route path="/password-loss" element={<PasswordLossView component={PasswordLossView}/>} />
-        <Route path="/password-reset" element={<PasswordResetView component={PasswordResetView}/>} />
+        <Route path="/password-reset" element={<PasswordResetView requiredRoles={['admin','user']} component={PasswordResetView}/>} />
         <Route path="/" element={<PrivateRoute component={Home} />} />
         <Route path="/register" element={<RoleBasedRoute requiredRoles={['admin']} component={RegisterView} />} />
         <Route path="/admin-dashboard" element={<RoleBasedRoute requiredRoles={['admin']} component={AdminDashboard} />} />

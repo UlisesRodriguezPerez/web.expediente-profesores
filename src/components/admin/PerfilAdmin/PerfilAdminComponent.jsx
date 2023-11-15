@@ -7,7 +7,7 @@ import dataService from '../../../services/dataService';
 // dataservices es para obtener la informacion de la base de datos
 import { useContext } from 'react';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
@@ -44,6 +44,13 @@ export const PerfilAdminComponent = () => {
     };
     
     const { showNotification } = useContext(NotificationContext);
+
+    // moverme de pantalla
+    const navigate = useNavigate(); 
+
+    const navigateToPasswordReset = () => {
+      navigate('/password-reset');  // Redirige a '/password-reset'
+    };
 
     const handleSubmit = useCallback( async () => {
         try {
@@ -123,6 +130,9 @@ export const PerfilAdminComponent = () => {
               </div>
               <div>
                 <strong>Área de Nombramiento:</strong> {name_appointment}
+              </div>
+              <div>
+                <button className="reset-button" onClick={navigateToPasswordReset}>Cambiar Contrasena</button>
               </div>
             </div>
             <button className="toggle-button" onClick={toggleDetails}>

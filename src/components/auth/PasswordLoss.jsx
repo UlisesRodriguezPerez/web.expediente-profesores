@@ -40,7 +40,7 @@ export const PasswordLoss = () => {
             // aqui el api para el password_resets
             //await dataService.createData(`${ROUTES.}`)
 
-            navigate(`/password-reset`);
+            navigate(`/login`);
 
         } catch (error) {
             console.error('Error sending reset code:', error);

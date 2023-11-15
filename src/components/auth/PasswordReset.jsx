@@ -10,6 +10,9 @@ export const PasswordReset = () => {
     const [vCode, setVCode] = useState(0);
     const [code, setCode] = useState(0);
     const [showPassword, setShowPassword] = useState(false);
+
+    //ocultar cosas
+    const [showStats, setShowStats] = useState(false);
     
     //const { showNotification } = useContext(NotificationContext);
     
@@ -54,6 +57,7 @@ export const PasswordReset = () => {
                     setPasswordMatchError('');
                     // aqui va el codigo de update
                     // ...
+                    //await dataService.updateData()
                 } else {
                     console.error('Las contraseñas no son iguales');
                     setPasswordMatchError('Las contraseñas no son iguales');
@@ -71,13 +75,15 @@ export const PasswordReset = () => {
         setnewPassword('');
         setnewPasswordV('');
         setEmail('');
+        
+        window.history.back();
     };
     
 
     return (
         <div>
             <h2 type="auth-text">Reinicio de contraseña</h2>
-            <p type="auth-text">Enviamos el código </p>
+            {showStats && <p type="auth-text">Enviamos el código </p> }
 
             <input
                 type="reset-email-text"
@@ -87,14 +93,14 @@ export const PasswordReset = () => {
                 onChange={handleEmailChange}
             >
             </input>
-            <input 
+            {showStats && <input 
                 type="pass-reset-text"
                 id="code" 
                 placeholder="Código"
                 value={vCode}
                 onChange={handleVCodeChange}
             >
-            </input>
+            </input> }
             <input 
                 name="pass-reset-password"
                 type={showPassword ? "text" : "password"}
@@ -122,17 +128,17 @@ export const PasswordReset = () => {
             </button>
             <p type="auth-text"> </p>
             <button type="submit" onClick={sendResetPassword}>Reiniciar contraseña</button>
-            <p type="auth-text">¿No recibió el correo?</p>
-            <p type="auth-text">
+            {showStats && <p type="auth-text">¿No recibió el correo?</p> }
+            {showStats && <p type="auth-text">
                 <Link to="/password-loss">
                     Presione para volver a enviar 
                 </Link> 
-            </p>
-            <p type="auth-text">
+            </p>}
+            {showStats && <p type="auth-text">
                 <Link to="/login">
                     Presione para volver al login
                 </Link> 
-            </p>
+            </p>}
         </div>
     );
 }
