@@ -17,34 +17,18 @@ export const FormationTab = () => {
               showNotification('error', 'Todos los campos son requeridos.');
               return; // Not continue if any field is empty
             }
-      
-            const userValue = JSON.parse(localStorage.getItem('user'));
-            console.log(`ID = ${userValue.id}`);
-            //OBTENER PERIODO
-      
-            //agregar actividad
+
+            //agregar actividad CAPACITACION FORMACION
             /*
-            await dataService.createData(`${ROUTES.ACTIVITIES}`, {
-              period_id:5,
-              creator_id: userValue.id,
-              involved_id: userValue.id,
-              name: course 
-            });
-            
-            //ARREGLAR FILTRO
-            const responseActivityId = await dataService.readData(`${ROUTES.ACTIVITIES}?filter[creator_id]=${userValue.id},[name]=${course}&included=id`);
-            console.log(responseActivityId);
-            
-            //agregar capacitacion FORMACION CAMBIAR NOMBRES
-            await dataService.createData(`${ROUTES.***********ARREGLAR*RUTA************_TRAININGS}`, {
-              activity_id:responseActivityId.data.data[0].activity_id,
-              institution_name: universidad,
-              programa: programa,
-              gradoAcademico: gradoAcademico,
-              anioInicio: anioInicio,
-              anioFin: anioFin
+            await dataService.createData(`${ROUTES.FORMATION_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                name: programa,
+                university_name: universidad,
+                academic_degree: gradoAcademico,
+                anno_Inicio: anioInicio,
+                anno_Fin: anioFin
             });
             */
+       
             showNotification('success', 'Actividad asignada exitosamente');
           }
           catch (error) {
