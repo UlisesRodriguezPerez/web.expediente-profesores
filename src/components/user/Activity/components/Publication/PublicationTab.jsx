@@ -30,7 +30,7 @@ export const PublicationTab = () => {
 
             /*
             //CREAR TIPO DE PUBLICACION
-            await dataService.createData(`${ROUTES.PUBLICATIONS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+            await dataService.createData(`${ROUTES.PUBLICATION_TYPES}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
                 name: tipoPublicacion,
                 description: 0
             });
