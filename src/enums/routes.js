@@ -20,6 +20,8 @@ const ROUTES = {
     WORK_UNITS_AND_ADDITIONAL_COURSES: '/work-units-and-additional-courses',
     USERS: '/users',
     WORKLOADS: '/workloads',
+    COURSES: '/courses',
+    FORMATION_TRAININGS: '/formation-trainings',
 
     REGISTER: '/register',
     LOGIN: '/login'

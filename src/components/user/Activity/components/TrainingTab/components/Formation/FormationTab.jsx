@@ -6,32 +6,38 @@ import { NotificationContext } from '../../../../../../../contexts/NotificationC
 
 export const FormationTab = () => {
 
-    const [programa, setPrograma] = useState('');
-    const [universidad, setUniversidad] = useState('');
-    const [gradoAcademico, setGradoAcademico] = useState('');
-    const [anioInicio, setAnioInicio] = useState('');
-    const [anioFin, setAnioFin] = useState('');
+    const [program, setProgram] = useState('');
+    const [university, setUniversity] = useState('');
+    const [academicDegree, setAcademicDegree] = useState('');
+    const [startYear, setStartYear] = useState('');
+    const [endYear, setEndYear] = useState('');
     const { showNotification } = useContext(NotificationContext);
 
-    const handleAddFormation = () => {
+    const currentUserId = JSON.parse(localStorage.getItem('user')).id;
+
+    const handleAddFormation = async () => {
         
-        alert(`Programa: ${programa}\nUniversidad: ${universidad}\nGrado Académico: ${gradoAcademico}\nAño de Inicio: ${anioInicio}\nAño de Fin: ${anioFin}`);
         try{
-            if (!programa || !universidad || !gradoAcademico || !anioInicio || !anioFin) {
+            if (!program || !university || !academicDegree || !startYear || !endYear) {
               showNotification('error', 'Todos los campos son requeridos.');
-              return; // Not continue if any field is empty
+              return; 
             }
 
-            //agregar actividad CAPACITACION FORMACION
-            /*
-            await dataService.createData(`${ROUTES.FORMATION_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
-                name: programa,
-                university_name: universidad,
-                academic_degree: gradoAcademico,
-                anno_Inicio: anioInicio,
-                anno_Fin: anioFin
+            
+            const response = await dataService.createData(`${ROUTES.FORMATION_TRAININGS}`, {
+                name: program,
+                university: university,
+                academic_degree: academicDegree,
+                start_year: startYear,
+                end_year: endYear,
+                user_id: currentUserId,
             });
-            */
+
+            setProgram('');
+            setUniversity('');
+            setAcademicDegree('');
+            setStartYear('');
+            setEndYear('');
        
             showNotification('success', 'Actividad asignada exitosamente');
           }
@@ -45,31 +51,30 @@ export const FormationTab = () => {
             <input
                 className="input-formation"
                 placeholder="Programa"
-                value={programa}
-                onChange={(e) => setPrograma(e.target.value)}
+                value={program}
+                onChange={(e) => setProgram(e.target.value)}
             />
             <input
                 className="input-formation"
                 placeholder="Universidad"
-                value={universidad}
-                onChange={(e) => setUniversidad(e.target.value)}
+                value={university}
+                onChange={(e) => setUniversity(e.target.value)}
             />
             <input
                 className="input-formation"
                 placeholder="Grado Académico"
-                value={gradoAcademico}
-                onChange={(e) => setGradoAcademico(e.target.value)}
+                value={academicDegree}
+                onChange={(e) => setAcademicDegree(e.target.value)}
             />
 
             <div className="year-container">
                 <select 
                     className="input-year" 
                     defaultValue=""
-                    onChange={(e) => setAnioInicio(e.target.value)}
+                    onChange={(e) => setStartYear(e.target.value)}
                 >
                     <option value="" disabled>Año de Inicio</option>
-                    {/* Añade años desde 5 años en el futuro hasta 20 años en el pasado */}
-                    {Array.from({ length: 25 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
+                    {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>
@@ -77,11 +82,10 @@ export const FormationTab = () => {
                 <select 
                     className="input-year" 
                     defaultValue=""
-                    onChange={(e) => setAnioFin(e.target.value)}
+                    onChange={(e) => setEndYear(e.target.value)}
                 >
                     <option value="" disabled>Año de Fin</option>
-                    {/* Añade años desde 5 años en el futuro hasta 20 años en el pasado */}
-                    {Array.from({ length: 25 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
+                    {Array.from({ length: 10 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
                         <option key={year} value={year}>{year}</option>
                     ))}
                 </select>

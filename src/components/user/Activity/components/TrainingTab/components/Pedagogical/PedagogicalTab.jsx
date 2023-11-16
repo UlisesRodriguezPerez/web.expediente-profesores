@@ -9,28 +9,27 @@ export const PedagogicalTab = () => {
   const [course, setCourse] = useState(''); 
   const [institution, setInstitution] = useState('');
   const { showNotification } = useContext(NotificationContext);
+
+  const currentUserId = JSON.parse(localStorage.getItem('user')).id;
   
   const handleAddPedagogical = async () => {
-    alert(`Curso: ${course}\nInstitución: ${institution}`);
     try{
       if (!course || !institution) {
         showNotification('error', 'Todos los campos son requeridos.');
         return; // Not continue if any field is empty
       }
-
-      // AUTOMATICO, NO ES NECESARIO
-      //const userValue = JSON.parse(localStorage.getItem('user'));
-      //console.log(`ID = ${userValue.id}`);
       
-
-      //agregar actividad CAPACITACION PEDAGOGICA
-      /*
-      await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+      const response = await dataService.createData(`${ROUTES.PEDAGOGICAL_TRAININGS}`, {
         name: course,
-        institution_name
+        institution_name: institution,
+        user_id: currentUserId,
+
       });
-      */
-      
+
+      setCourse('');
+      setInstitution('');
+    
+      console.log('response', response);
       showNotification('success', 'Actividad asignada exitosamente');
     }
     catch (error) {
