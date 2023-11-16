@@ -7,18 +7,19 @@ import { NotificationContext } from '../../../../../contexts/NotificationContext
 import ROUTES from '../../../../../enums/routes';
 import dataService from '../../../../../services/dataService';
 import { CustomSelect } from '../../../../../common/components/CustomSelect/CustomSelect';
+import usePagination from '../../../../../hooks/usePagination';
+import useSearch from '../../../../../hooks/useSearch';
 
 const ITEMS_PER_PAGE = 10;
 const DEFAULT_TEACHER_VALUE = -1;
 
 export const HistoricTab = () => {
-
-    const [collaborator, setCollaborator] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalItems, setTotalItems] = useState(0);
+    const { showNotification } = useContext(NotificationContext);
+    const [records, setRecords] = useState([]);
+    const { currentPage, setCurrentPage, totalItems, setTotalItems, handlePageChange } = usePagination();
+    const { searchTerm, setSearchTerm, debouncedSearchTerm, searchFilterQuery } = useSearch('', (searchTerm) => `?search=${searchTerm}`);
     const [teacherOptions, setTeacherOptions] = useState([]);
     const [selectedTeacher, setSelectedTeacher] = useState(null);
-    const { showNotification } = useContext(NotificationContext);
 
     const fetchTeachers = async () => {
         try {
@@ -39,39 +40,17 @@ export const HistoricTab = () => {
     const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
         try {
             const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
+            // Cambia la URL y los parámetros según tus necesidades
             const response = await dataService.readData(
-                `${ROUTES.COLLABORATORS}?included=user,workloads.period.activities&perPage=${ITEMS_PER_PAGE}&page=${page}&exactfilter[id]=${queryId}`
+                `${ROUTES.COLLABORATORS}/${queryId}/period-details/${page}`
             );
-            const workloads = response.data.data[0]?.workloads ?? [];
-
-            setCollaborator(workloads.map(workload => ({
-                cursos: workload.period.activities.length, // PENDIENTE CURSOS NO EXISTE EN LA DB
-                actividades: workload.period.activities.length,
-                workload: workload.workload,
-                period: workload.period.name,
-            })));
-
-            setTotalItems(workloads.length);
+            setRecords(response.data);
+            setTotalItems(response.data.length);
         } catch (error) {
-            console.error('Error fetching collaborators:', error);
-            showNotification('error','Error al cargar los colaboradores');
+            console.error('Error fetching records:', error);
+            showNotification('error', 'Error al cargar los registros');
         }
     };
-
-
-    const handlePageChange = (newPage) => {
-        setCurrentPage(newPage);
-    };
-
-    useEffect(() => {
-        fetchTeachers();
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        fetchData(currentPage, selectedTeacher?.value);
-    }, [currentPage, selectedTeacher]);
-
 
     const CargaHistoricaColumn = ({ row }) => (
         <div className="bar-container">
@@ -89,6 +68,15 @@ export const HistoricTab = () => {
         { header: 'Carga', render: row => <CargaHistoricaColumn row={row} /> },
         { header: '', render: row => <span className="worload-value">{row.workload}</span>, headerClass: 'workload-header' },
     ];
+
+    useEffect(() => {
+        fetchTeachers();
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        fetchData(currentPage, selectedTeacher?.value);
+    }, [currentPage, selectedTeacher]);
 
     return (
         <div className="historic-tab-container">
@@ -109,14 +97,13 @@ export const HistoricTab = () => {
                         <span className="line line-medium"></span>
                         <span className="line line-small"></span>
                     </span>
-                    Filtros  {/* PENDIENTE */}
+                    Filtros
                 </button>
             </div>
-            <Table className="historic-table" columns={columns} data={collaborator}
-            />
-
+            <Table className="historic-table" columns={columns} data={records} />
             <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} />
         </div>
     );
 };
 
+export default HistoricTab;
