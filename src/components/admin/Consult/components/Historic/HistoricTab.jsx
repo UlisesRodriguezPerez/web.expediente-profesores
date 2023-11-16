@@ -40,18 +40,25 @@ export const HistoricTab = () => {
         try {
             const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
             const response = await dataService.readData(
-                `${ROUTES.COLLABORATORS}?included=user,workloads.period.activities&perPage=${ITEMS_PER_PAGE}&page=${page}&exactfilter[id]=${queryId}`
+                `${ROUTES.COLLABORATORS}/${teacherId}/period-details-admin?included=user,workloads.period.courses&perPage=${ITEMS_PER_PAGE}&page=${page}`
             );
-            const workloads = response.data.data[0]?.workloads ?? [];
 
-            setCollaborator(workloads.map(workload => ({
-                cursos: workload.period.activities.length, // PENDIENTE CURSOS NO EXISTE EN LA DB
-                actividades: workload.period.activities.length,
-                workload: workload.workload,
-                period: workload.period.name,
-            })));
+            const periodDetails = response.data.data;
 
-            setTotalItems(workloads.length);
+            console.log('periodDetails', periodDetails)
+
+            // Transforma los datos en el formato esperado por la tabla.
+            const transformedData = periodDetails.map(detail => ({
+                cursos: detail.courses_count,
+                actividades: detail.activities_count,
+                workload: detail.workload,
+                period: detail.period_name,
+            }));
+            
+
+            setCollaborator(transformedData);
+
+            setTotalItems(response.data.total);
         } catch (error) {
             console.error('Error fetching collaborators:', error);
             showNotification('error','Error al cargar los colaboradores');
