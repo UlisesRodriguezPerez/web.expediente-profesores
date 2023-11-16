@@ -4,6 +4,7 @@ import { CustomSelect } from '../../../common/components/CustomSelect/CustomSele
 import { ConfirmationBox } from '../../../common/components/ConfirmationBox/ConfirmationBox';
 import './CourseTab.css';
 import dataService from '../../../services/dataService';
+import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCancel, onConfirm, data }) => {
     const { showNotification } = useContext(NotificationContext);
@@ -13,7 +14,7 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
             if(!data.selectedCourse || !data.selectedTeacher || !data.selectedPeriod) {
                 
                 showNotification('error', 'Todos los campos son requeridos.');
-                return; // Not continue if any field is empty
+                return;
             }
             const response = await dataService.createData('courendpoint', {
                 course: data.selectedCourse.value,

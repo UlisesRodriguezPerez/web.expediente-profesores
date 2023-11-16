@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './InternationalizationTab.css';
 import dataService from '../../../../../services/dataService.js'
 import ROUTES from '../../../../../enums/routes';
@@ -6,66 +6,96 @@ import { NotificationContext } from '../../../../../contexts/NotificationContext
 
 export const InternationalizationTab = () => {
 
-    const [actividad, setActividad] = useState('');
-    const [tipoActividad, setTipoActividad] = useState('');
-    const [universidad, setUniversidad] = useState('');
-    const [pais, setPais] = useState('');
+    const [name, setName] = useState('');
+    const [activityType, setActivityType] = useState('');
+    const [activityOptions, setActivityOptions] = useState([]);
+    const [university_name, setUniversity] = useState('');
+    const [country, setCountry] = useState('');
     const { showNotification } = useContext(NotificationContext);
 
-    const handleAddInternationalization = () => {
-        alert(
-        `Actividad: ${actividad}\nTipo de Actividad: ${tipoActividad}\nUniversidad donde se desarrolla: ${universidad}\nPaís donde se desarrolla: ${pais}`
-        );
+    const currentUserId = JSON.parse(localStorage.getItem('user')).id;
 
+    const getTypeOptions = async () => { //ESTO ES PORQUE EL TIPO ES UN DROPDOWN -> REVISAR
+        try {
+          const response = await dataService.readData(`${ROUTES.INTERNATIONALIZATIONS_TYPES}`); //RUTA NO EXISTE, DEBE CREARSE
+          console.log('internacionalization types', response.data.data)
+          const activityOptions = response.data.data.map(activity => ({ value: activity.id, label: activity.name }));
+          
+          setActivityOptions(activityOptions);
+          
+    
+        } catch (error) {
+          console.error('Error fetching activity types:', error);
+          showNotification('error', 'Error al cargar los tipos de actividad');
+        }
+      }
+    
+    const handleAddInternationalization = async() => {
         try{
-            if (!actividad || !tipoActividad || !universidad || !pais) {
+            if (!name || !activityType || !university_name || !country) {
               showNotification('error', 'Todos los campos son requeridos.');
-              return; // Not continue if any field is empty
+              return;
             }
 
-            //agregar actividad INTERNACIONALIZACION
-            /*
-            await dataService.createData(`${ROUTES.INTERNATIONALIZATIONS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
-                name: actividad,
-                activity_type_id: tipoActividad,
-                university_name: universidad,
-                pais: pais
+            const response = await dataService.createData(`${ROUTES.INTERNATIONALIZATIONS}`, {
+                name: name,
+                activity_type_id: activityType,
+                university_name: university_name,
+                country: country,
+                user_id: currentUserId,
             });
-            */
+
+            setName('');
+            setActivityType('');
+            setUniversity('');
+            setCountry('');
+            
        
             showNotification('success', 'Actividad asignada exitosamente');
         }
         catch (error) {
-        console.error('Error al guardar actividad pedagogica:', error);
+        console.error('Error al guardar actividad internacionalizacion:', error);
         }
 
     }
+
+    useEffect(() => {
+        getTypeOptions();
+      }
+      , []);
 
     return (
         <div className="internationalization-container">
             <input 
                 className="input-internationalization" 
                 placeholder="Actividad"
-                value={actividad}
-                onChange={(e) => setActividad(e.target.value)} 
+                value={name}
+                onChange={(e) => setName(e.target.value)} 
             />
-            <input 
-                className="input-internationalization" 
-                placeholder="Tipo de Actividad"
-                value={tipoActividad}
-                onChange={(e) => setTipoActividad(e.target.value)}  
-            />
+            <select 
+                className="dropdown-internationalization"
+                value={activityType}
+                onChange={(e) => setActivityType(e.target.value)}
+            >
+                <option value="" disabled selected hidden>Tipo de actividad</option>
+                {activityOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                    {option.label}
+                </option>
+                ))}
+
+            </select>
             <input 
                 className="input-internationalization" 
                 placeholder="Universidad donde se desarrolla" 
-                value={universidad}
-                onChange={(e) => setUniversidad(e.target.value)} 
+                value={university_name}
+                onChange={(e) => setUniversity(e.target.value)} 
             />
             <input 
                 className="input-internationalization" 
                 placeholder="País donde se desarrolla" 
-                value={pais}
-                onChange={(e) => setPais(e.target.value)} 
+                value={country}
+                onChange={(e) => setCountry(e.target.value)} 
             />
             <button className="button-internationalization" onClick={handleAddInternationalization}>+ AGREGAR</button>
         </div>

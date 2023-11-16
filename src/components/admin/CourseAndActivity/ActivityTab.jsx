@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { ConfirmationBox } from './../../../common/components/ConfirmationBox/ConfirmationBox';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 import dataService from '../../../services/dataService';
+import ROUTES from '../../../enums/routes';
 import './ActivityTab.css';
 
 export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
@@ -15,8 +16,9 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
             if (!data.selectedTeacher || !data.selectedPeriod || !description || !weeklyHours) {
 
                 showNotification('error', 'Todos los campos son requeridos.');
-                return; // Not continue if any field is empty
+                return;
             }
+            /* //ESTO YA ESTABA ACA PERO CREO QUE NO FUNCIONA
             await dataService.createData('courendpoint', {
                 teacher: data.selectedTeacher.value,
                 period: data.selectedPeriod.value,
@@ -27,21 +29,17 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
             console.log('period', data.selectedPeriod.value);
             console.log('description', description);
             console.log('weeklyHours', weeklyHours);
-            console.log('success');
+            console.log('success');*/
 
-            /*
-            //agregar actividad GENERAL
-            await dataService.createData(`${ROUTES.GENERAL_ACTIVITIES}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+            const response = await dataService.createData(`${ROUTES.GENERAL_ACTIVITIES}`, { //CREAR RUTA
+                teacher: data.selectedTeacher.value,
+                period: data.selectedPeriod.value,
                 name: description,
-                hours: weeklyHours
+                hours: weeklyHours,
             });
 
-            //ASOCIAR CON EL PROFE Y EL PERIODO
 
-            */
-
-
-            showNotification('success', 'Actividad asignada exitosamente (pendiente guardar en DB)');
+            showNotification('success', 'Actividad asignada exitosamente');
         } catch (error) {
             console.error('error');
             showNotification('error', 'Error al asignar la actividad');
