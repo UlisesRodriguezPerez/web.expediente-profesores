@@ -1,24 +1,25 @@
+// useSearch.js
 import { useState, useEffect } from 'react';
 
-export const useSearch = (onSearch) => {
-    const [term, setTerm] = useState('');
-    const [debouncedTerm, setDebouncedTerm] = useState('');
+const useSearch = (initialSearchTerm = '', buildFilterQuery, delay = 500) => {
+    const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(initialSearchTerm);
 
     useEffect(() => {
-        console.log('Setting debounced term to:', term);
-        const timerId = setTimeout(() => {
-            setDebouncedTerm(term);
-        }, 300); // 300ms delay
+        const handler = setTimeout(() => {
+            if (searchTerm !== debouncedSearchTerm) {
+                setDebouncedSearchTerm(searchTerm);
+            }
+        }, delay);
 
-        return () => clearTimeout(timerId);
-    }, [term]);
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [searchTerm, delay]);
 
-    useEffect(() => {
-        if (debouncedTerm === term) return; 
-        console.log('Effect: onSearch with debouncedTerm:', debouncedTerm);
-        onSearch(debouncedTerm);
-    }, [debouncedTerm, onSearch]);
+    const searchFilterQuery = buildFilterQuery ? buildFilterQuery(debouncedSearchTerm) : '';
 
-    return [term, setTerm];
+    return { searchTerm, setSearchTerm, debouncedSearchTerm, searchFilterQuery };
 };
 
+export default useSearch;

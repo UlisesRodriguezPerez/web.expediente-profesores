@@ -1,10 +1,53 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import './DownloadReportTab.css';
+import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext';
+import ROUTES from '../../../../../enums/routes';
+import dataService from '../../../../../services/dataService';
 
 export const DownloadReportTab = () => {
+    const { showNotification } = useContext(NotificationContext);
     const [selectedPeriod, setSelectedPeriod] = useState('');
+
+    const [periods, setPeriods] = useState([]);
+
+
+
+    const fetchPeriods = async () => {
+        try {
+            const response = await dataService.readData(`${ROUTES.PERIODS}`);
+
+            setPeriods(response.data.data.map(period => ({
+                label: period.name,
+                value: period.id
+            })));
+
+            console.log('periods', periods);
+
+        } catch (error) {
+            console.error('Error fetching periods:', error);
+            showNotification('error', 'Error al cargar los periodos');
+        }
+    }
+
+    useEffect(() => {
+        fetchPeriods();
+    }
+        , []);
+
+    const handleDownload = async () => {
+        try{
+            // const response = await dataService.readData(`RUTA AL API`);
+            const response ='pending';
+            console.log('response', response);
+
+        } catch (error) {
+            console.error('Error fetching periods:', error);
+            showNotification('error', 'Error al cargar los periodos');
+        }
+    }
+
 
     return (
         <div className='download-container'>
@@ -17,10 +60,11 @@ export const DownloadReportTab = () => {
                         placeholder="Periodo"
                     >
                         <option value="" disabled>Periodo</option>
-                        {/* Aquí puedes agregar las opciones de tu periodo */}
-                        <option value="2023-1">2023-1</option>
-                        <option value="2023-2">2023-2</option>
-                        {/* ... */}
+                        {periods.map(period => (
+                            <option key={period.value} value={period.value}>
+                                {period.label}
+                            </option>
+                        ))}
                     </select>
                     <FontAwesomeIcon icon={faArrowDown} className="arrow-icon" />
                 </div>
@@ -30,7 +74,9 @@ export const DownloadReportTab = () => {
 
             </div>
             <div className="download-button-container">
-                <button className="download-button">
+                
+                <button className={`download-button  ${!selectedPeriod ? 'download-button-inactive' : ''}`}
+                disabled={!selectedPeriod} onClick={handleDownload}>
                     <FontAwesomeIcon icon={faArrowDown} />
                     DESCARGAR
                 </button>

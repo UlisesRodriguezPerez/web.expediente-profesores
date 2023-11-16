@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Table } from '../../../../../common/components/Table/Table';
 import { Pagination } from '../../../../../common/components/Pagination/Pagination';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,10 @@ import dataService from '../../../../../services/dataService';
 import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext';
 import './ListingTab.css';
 import { ProfessorFormModal } from './components/ProfessorFormModal/ProfessorFormModal';
+import ROUTES from '../../../../../enums/routes';
+
+const ITEMS_PER_PAGE = 10;
+const DEFAULT_TEACHER_VALUE = -1;
 
 export const ListingTab = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -19,27 +23,39 @@ export const ListingTab = () => {
     const [isFormModalVisible, setIsFormModalVisible] = useState(false);
     const [editingProfessor, setEditingProfessor] = useState(null);
 
-    const [data, setData] = useState([
-        { id: 1, name: 'Juan', campus: 'Campus 1', grade: '1', appoinmentType: 'Planta', position: 'Profesor' },
-        { id: 2, name: 'Pedro', campus: 'Campus 2', grade: '2', appoinmentType: 'Planta', position: 'Profesor' },
-        { id: 3, name: 'Luis', campus: 'Campus 3', grade: '3', appoinmentType: 'Planta', position: 'Profesor' },
-        { id: 4, name: 'Carlos', campus: 'Campus 4', grade: '4', appoinmentType: 'Planta', position: 'Profesor' },
-    ]);
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
+            try {
+                const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
+                const response = await dataService.readData(
+                    `${ROUTES.COLLABORATORS}?included=user,position,category,appointment,degree,campus&perPage=${ITEMS_PER_PAGE}&page=${page}`);
+                setData(response.data.data);
+                setTotalItems(response.data.total);
+                console.log('collaborators', response.data);
+            } catch (error) {
+                showNotification('error', 'Error al cargar los datos');
+            }
+        };
+
+        fetchData( currentPage, DEFAULT_TEACHER_VALUE);
+    }, [DEFAULT_TEACHER_VALUE, ITEMS_PER_PAGE, ROUTES.COLLABORATORS, currentPage]);
 
 
     const handleDeleteSelected = async () => {
         try {
             // Aquí llamarías al método del API para eliminar los profesores,
             // luego actualizarías tu estado para reflejar los cambios.
-            await Promise.all([...selectedRows].map(id => dataService.deleteData(id)));
+            await Promise.all([...selectedRows].map(id => dataService.deleteData(`${ROUTES.COLLABORATORS}/${id}`)));
             setSelectedRows(new Set());
-            showNotification('Profesores eliminados con éxito', 'success');
+            showNotification('success', 'Profesores eliminados con éxito');
 
 
 
         } catch (error) {
             console.error('Error deleting selected professors:', error);
-            showNotification('Error al eliminar profesores', 'error');
+            showNotification('error', 'Error al eliminar profesores');
         }
     };
 
@@ -49,6 +65,7 @@ export const ListingTab = () => {
     };
 
     const handleEditClick = (professor) => {
+        console.log('professor', professor);
         setEditingProfessor(professor); // current professor
         setIsFormModalVisible(true);
     };
@@ -57,16 +74,69 @@ export const ListingTab = () => {
         try {
             let response;
             if (editingProfessor) {
-                response = await dataService.updateData(professorData);
+
+                console.log('professorData update', professorData);
+                // Update user table
+                response = await dataService.updateData(`${ROUTES.USERS}/${professorData.userId}`, {
+                    id: professorData.userId,
+                    name: professorData.name,
+                    last_name: professorData.lastName,
+                    second_last_name: professorData.secondLastName,
+                    phone: professorData.phone,
+                    email: professorData.email,
+                    roles: professorData.roleIds,
+                });
+
+                console.log('professorData update reponse', professorData);
+
+                // Update collaborator table
+                response = await dataService.updateData(`${ROUTES.COLLABORATORS}/${professorData.collaboratorId}`, {
+                    id: professorData.collaboratorId,
+                    user_id: professorData.userId,
+                    position_id: professorData.positionId,
+                    category_id: professorData.tecCategoryId,
+                    appointment_id: professorData.appointmentTypeId,
+                    degree_id: professorData.academicDegreeId,
+                    campus_id: professorData.campusId,
+                });
+
+                showNotification('success', 'Profesor actualizado con éxito');
+                
             } else {
-                response = await dataService.createData(professorData);
+                console.log('professorData create', professorData);
+                response = await dataService.createData(ROUTES.USERS, {
+                    name: professorData.name,
+                    last_name: professorData.lastName,
+                    second_last_name: professorData.secondLastName,
+                    phone: professorData.phone,
+                    email: professorData.email,
+                    password: '12345678',
+                    password_confirmation: '12345678',
+                    roles: professorData.roleIds,
+                });
+
+                const user = response.data.data;
+                console.log('user create', response.data.data);
+
+                response = await dataService.createData(ROUTES.COLLABORATORS, {
+                    user_id: user.id,
+                    position_id: professorData.positionId,
+                    category_id: professorData.tecCategoryId,
+                    appointment_id: professorData.appointmentTypeId,
+                    degree_id: professorData.academicDegreeId,
+                    campus_id: professorData.campusId,
+                });
+
+                console.log('collaborator create', response.data.data);
+
+                showNotification('success', 'Profesor creado con éxito');
             }
 
             setIsFormModalVisible(false);
-            showNotification('Profesor guardado con éxito', 'success');
+            
         } catch (error) {
             console.error('Error saving professor:', error);
-            showNotification('Error al guardar profesor', 'error');
+            showNotification('error', 'Error al guardar profesor');
         }
     };
 
@@ -84,14 +154,13 @@ export const ListingTab = () => {
         setCurrentPage(pageNumber);
     };
 
-    const ActionColumn = ({ row, editingWorkloadId, handleSaveWorkload, handleEditClick }) => (
+    const ActionColumn = ({ row, handleEditClick }) => (
         <div>
-            {editingWorkloadId === row.id
-                ? (<button onClick={() => handleSaveWorkload(row.id, row.collaborator.id, row.period.id)} className="btn-guardar"> Guardar </button>)
-                : (<button className="btn-editar" onClick={() => handleEditClick(row.id, row.workload)}> <FontAwesomeIcon icon={faEdit} /> Editar </button>)
-            }
+          <button className="btn-editar" onClick={() => handleEditClick(row)}> 
+            <FontAwesomeIcon icon={faEdit} /> Editar 
+          </button>
         </div>
-    );
+      );
 
     const columns = [
         {
@@ -112,12 +181,12 @@ export const ListingTab = () => {
                 />
             )
         },
-        { header: 'Campus', render: row => <span>{row.campus}</span> },
-        { header: 'Nombre', render: row => <span>{row.name}</span> },
-        { header: 'Grado Académico', render: row => <span>{row.grade}</span> },
-        { header: 'Tipo de nombramiento', render: row => <span>{row.appoinmentType}</span> },
-        { header: 'Cargo', render: row => <span >{row.position}</span> },
-        { header: '', render: row => <ActionColumn row={row} editingWorkloadId={() => { }} /> },
+        { header: 'Campus', render: row => <span>{row.campus.name}</span> },
+        { header: 'Nombre', render: row => <span>{row.user.name}</span> },
+        { header: 'Grado Académico', render: row => <span>{row.degree.name}</span> },
+        { header: 'Tipo de nombramiento', render: row => <span>{row.appointment.name}</span> },
+        { header: 'Cargo', render: row => <span >{row.position.name}</span> },
+        { header: '', render: row => <ActionColumn row={row} handleEditClick={handleEditClick} /> },
 
     ];
 
@@ -135,7 +204,8 @@ export const ListingTab = () => {
 
                     <div className="listing-actions-container">
                         <button
-                            className="action-button delete-button"
+                            // className="action-button delete-button"
+                            className={`action-button delete-button ${selectedRows.size === 0 ? 'delete-button-inactive' : ''}`}
                             onClick={handleDeleteSelected}
                             disabled={selectedRows.size === 0}
                         >

@@ -58,6 +58,12 @@
     justify-content: center;
 }
 
+.download-button-inactive {
+    /* Estilos cuando el botón está desactivado */
+    background-color: gray; /* O el color que prefieras */
+    cursor: not-allowed;
+}
+
 .download-button-container {
     margin-top: 40px;
 

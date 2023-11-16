@@ -15,11 +15,11 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
                 showNotification('error', 'Todos los campos son requeridos.');
                 return; // Not continue if any field is empty
             }
-            // await dataService.createData('courendpoint', {
-            //     course: data.selectedCourse.value,
-            //     teacher: data.selectedTeacher.value,
-            //     period: data.selectedPeriod.value
-            // });
+            const response = await dataService.createData('courendpoint', {
+                course: data.selectedCourse.value,
+                teacher: data.selectedTeacher.value,
+                period: data.selectedPeriod.value
+            });
             console.log('course', data.selectedCourse);
             console.log('teacher', data.selectedTeacher.value);
             console.log('period', data.selectedPeriod.value);

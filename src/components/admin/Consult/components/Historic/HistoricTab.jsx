@@ -32,7 +32,7 @@ export const HistoricTab = () => {
             })));
         } catch (error) {
             console.error('Error fetching teachers:', error);
-            showNotification('Error al cargar los profesores', 'error');
+            showNotification('error', 'Error al cargar los profesores' );
         }
     };
 
@@ -54,7 +54,7 @@ export const HistoricTab = () => {
             setTotalItems(workloads.length);
         } catch (error) {
             console.error('Error fetching collaborators:', error);
-            showNotification('Error al cargar los colaboradores', 'error');
+            showNotification('error','Error al cargar los colaboradores');
         }
     };
 

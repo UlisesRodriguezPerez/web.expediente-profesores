@@ -50,8 +50,15 @@
 
 .delete-button {
     background-color: transparent;
+    color: rgb(255, 0, 0);
+    border: none;
+}
+
+.delete-button-inactive {
+    background-color: transparent;
     color: rgb(74, 70, 70);
     border: none;
+    cursor: not-allowed;
 }
 
 .filter-button {

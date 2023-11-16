@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { ConfirmationBox } from './../../../common/components/ConfirmationBox/ConfirmationBox';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
+import dataService from '../../../services/dataService';
 import './ActivityTab.css';
 
 export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
@@ -16,12 +17,12 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
                 showNotification('error', 'Todos los campos son requeridos.');
                 return; // Not continue if any field is empty
             }
-            // await dataService.createData('courendpoint', {
-            //     teacher: data.selectedTeacher.value,
-            //     period: data.selectedPeriod.value,
-            //     description: description,
-            //     weeklyHours: weeklyHours
-            // });
+            await dataService.createData('courendpoint', {
+                teacher: data.selectedTeacher.value,
+                period: data.selectedPeriod.value,
+                description: description,
+                weeklyHours: weeklyHours
+            });
             console.log('teacher', data.selectedTeacher.value);
             console.log('period', data.selectedPeriod.value);
             console.log('description', description);

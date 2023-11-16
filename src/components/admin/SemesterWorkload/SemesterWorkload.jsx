@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import useWorkloads from './hooks/useWorkloads';
 import { SearchBar } from '../../../common/components/SearchBar/SearchBar';
 import { Table } from '../../../common/components/Table/Table';
@@ -9,27 +9,58 @@ import dataService from '../../../services/dataService';
 import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 import './SemesterWorkload.css';
+import usePagination from '../../../hooks/usePagination';
+import useSearch from '../../../hooks/useSearch';
 
 
 export const SemesterWorkload = () => {
-    const {
-        workloads,
-        currentPage,
-        totalItems,
-        searchTerm,
-        setSearchTerm,
-        setDebouncedSearchTerm,
-        handlePageChange,
-        setWorkloads,
-    } = useWorkloads();
 
     const [editingWorkloadId, setEditingWorkloadId] = useState(null);
     const [tempWorkloadValue, setTempWorkloadValue] = useState(null);
     const { showNotification } = useContext(NotificationContext);
+    const { currentPage, setCurrentPage, totalItems, setTotalItems, handlePageChange } = usePagination();
+    const [workloads, setWorkloads] = useState([]);
+
+    const searchBuildFilterQuery = (term) => {
+        const baseFields = [
+            'collaborator.user.name',
+            'collaborator.user.last_name',
+            'collaborator.user.second_last_name',
+            'workload'
+        ];
+        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
+        return queries.join('');
+    };
+
+    const { searchTerm, setSearchTerm, searchFilterQuery } = useSearch('', searchBuildFilterQuery);
+
+    const fetchWorkloads = async () => {
+        try {
+            const responseData = await dataService.readData(`${ROUTES.WORKLOADS}?included=collaborator.user,period.creator.user&perPage=10&page=${currentPage}${searchFilterQuery}`);
+            setWorkloads(responseData.data.data);
+            setTotalItems(responseData.data.total);
+            console.log('workloads', responseData.data.data);
+        } catch (error) {
+            console.error('Error fetching workloads:', error);
+            showNotification('Error al cargar las cargas de trabajo', 'error');
+        }
+    };
+
+    useEffect(() => {
+        fetchWorkloads();
+    }, []);
+
+    useEffect(() => {
+        console.log('currentPage', currentPage);
+        console.log('searchFilterQuery', searchFilterQuery);
+        fetchWorkloads();
+        }, [currentPage, searchFilterQuery]);
+
+    
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        setDebouncedSearchTerm(event.target.value);
+        // setDebouncedSearchTerm(event.target.value);
     };
 
     const handleEditClick = (workloadId, workloadValue) => {
