@@ -17,7 +17,7 @@ export const ConsultView = () => {
     };
 
     const sidebarOptions = [
-        { title: "MI PERFIL", path: "/profile" },
+        { title: "MI PERFIL", path: "/perfil-admin" },
         { title: "ABRIR PERIODO", path: "/open-period" },
         { title: "CURSOS Y ACTIVIDADES", path: "/courses-and-activities" },
         { title: "CARGA SEMESTRAL", path: "/semester-workload" },

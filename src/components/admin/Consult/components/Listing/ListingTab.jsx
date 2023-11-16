@@ -140,6 +140,42 @@ export const ListingTab = () => {
         }
     };
 
+    // mostrar el filtro
+    const [showFilters, setShowFilters] = useState(false);
+    const [selectedOptions, setSelectedOptions] = useState([]);
+  
+    const handleFilterButtonClick = () => {
+        setShowFilters(!showFilters);
+    };
+    // filtro
+  
+    const handleOptionChange = (event) => {
+        const option = event.target.value;
+        if (selectedOptions.includes(option)) {
+            setSelectedOptions(selectedOptions.filter((item) => item !== option));
+        } else {
+            setSelectedOptions([...selectedOptions, option]);
+        }
+        handleAlertOptions();
+    };
+
+    const handleAlertOptions = () => {
+        alert(`Opciones seleccionadas: ${selectedOptions.join(', ')}`);
+    };
+    // filtro
+
+    const handleExportButton = () => {
+        alert(`Acciones para el boton de exportar`);
+    };
+
+    const handleAddButton = () => {
+        alert(`Acciones para el boton de anadir`);
+    };
+
+    const handleDeleteButton= () => {
+        alert(`Acciones para el boton de borrar`);
+    };
+
     const handleRowSelect = (id) => {
         const newSelectedRows = new Set(selectedRows);
         if (newSelectedRows.has(id)) {
@@ -211,7 +247,7 @@ export const ListingTab = () => {
                         >
                             <FontAwesomeIcon icon={faTrash} /> Eliminar
                         </button>
-                        <button className="filter-button">
+                        <button className="filter-button" onClick={handleFilterButtonClick}>
                             <span className="filter-lines">
                                 <span className="line line-large"></span>
                                 <span className="line line-medium"></span>
@@ -219,7 +255,31 @@ export const ListingTab = () => {
                             </span>
                             Filtros  {/* PENDIENTE */}
                         </button>
-                        <button className="action-button export-button">
+                        {/* Las opciones del filtro */}
+                        {showFilters && (
+                            <div className="filter-options">
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option1"
+                                checked={selectedOptions.includes('option1')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 1
+                            </label>
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option2"
+                                checked={selectedOptions.includes('option2')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 2
+                            </label>
+                            {/* Agrega más opciones de filtros según lo necesites */}
+                            </div>
+                        )}
+                        <button className="action-button export-button" onClick={handleExportButton}>
                             <FontAwesomeIcon icon={faFileExport} /> Exportar
                         </button>
                         <button

@@ -44,7 +44,7 @@ export const OpenPeriodComponent = () => {
 
     return (
         <div className="open-period-container">
-            <h2>Abrir nuevo Periodo</h2>
+            <h2 type="admin-text-opc">Abrir nuevo Periodo</h2>
             <input
                 type="text"
                 value={name}

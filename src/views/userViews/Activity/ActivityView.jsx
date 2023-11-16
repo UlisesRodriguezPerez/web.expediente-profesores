@@ -19,6 +19,7 @@ export const ActivityView = () => {
     const sidebarOptions = [
         { title: "MI PERFIL", path: "/profile" },
         { title: "MIS CURSOS", path: "/courses" },
+        { title: "MI HISTORIAL", path: "/history"},
     ];
 
     return (

@@ -22,13 +22,15 @@ export const HeaderComponent = () => {
         { title: 'INTERNACIONALIZACIONES', component: <InternationalizationTab /> },
     ];
 
+    const handleDownloadExcel = () => {
+        alert("Se preciono el boton para descargar el excel");
+    }
+
     return (
         <div className="header-container">
         <div className="header-top">
             <h2>Mis Actividades</h2>
-            <button className="header-btn" onClick={() => {
-                // Aquí puedes agregar la función para descargar el Excel
-            }}>
+            <button className="header-btn" onClick={handleDownloadExcel}>
                 <FontAwesomeIcon icon={faArrowDown} />
                 DESCARGAR EXCEL
             </button>

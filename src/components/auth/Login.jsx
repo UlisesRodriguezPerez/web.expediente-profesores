@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import api from '../../api/api';
 import ROUTES from '../../enums/routes';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import dataService from '../../services/dataService';
+//import headerimage from './src/assets/images/layouts/header-tec.png';
+import './estilo.css';
 
 export const Login = () => {
     const navigate = useNavigate();
@@ -124,19 +126,28 @@ export const Login = () => {
             setErrors(err.response.data.errors);
         }
     };
-
+    //<img type="logo" src={headerimage} alt="Logo del TEC" />
     return (
         <div>
-            <h2>Login</h2>
+            <h2 type="auth-text">Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" name="email" placeholder="Email" onChange={handleInputChange} />
-                {errors.email && <p>{errors.email[0]}</p>}
+                <input type="login-email" name="email" placeholder="Email" onChange={handleInputChange} />
+                {errors.email && <p type="auth-text">{errors.email[0]}</p>}
 
-                <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
-                {errors.password && <p>{errors.password[0]}</p>}
+                <div>
+                    <input type="login-password" name="password" placeholder="Password" onChange={handleInputChange} />
+                    {errors.password && <p type="auth-text">{errors.password[0]}</p>}
+                </div>
 
+                <p type="auth-text">
+                    <Link to="/password-loss">
+                        ¿Olvidó su contraseña? 
+                    </Link> 
+                </p>
                 <button type="submit">Login</button>
+                
             </form>
+            
         </div>
     );
 }

@@ -58,6 +58,11 @@ export const SemesterWorkload = () => {
 
     
 
+  
+    const handleTemp = () => {
+      alert("hola mundo");
+    };
+
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
         // setDebouncedSearchTerm(event.target.value);
@@ -154,7 +159,7 @@ export const SemesterWorkload = () => {
                     <div className="search-filter-container">
                         <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
 
-                        <button className="filter-button">
+                        <button className="filter-button" onClick={handleTemp} >
                             <span className="filter-lines">
                                 <span className="line line-large"></span>
                                 <span className="line line-medium"></span>
@@ -162,6 +167,7 @@ export const SemesterWorkload = () => {
                             </span>
                             Filtros  {/* PENDIENTE */}
                         </button>
+   
                     </div>
                 </div>
 

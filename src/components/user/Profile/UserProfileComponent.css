@@ -1,0 +1,48 @@
+.user-info {
+    display: flex;
+    align-items: center;
+}
+  
+.button-icon {
+    font-size: 100px; /* Aumenta el tamaño del botón */
+    margin: 50px 30px 30px 50px; /* arriba derecha abajo izquierda*/
+}
+
+.user-contact {
+    margin: 20px 0 20px 30px;
+}
+  
+.user-data {
+    display: flex;
+    flex-direction: column;
+}
+
+.details-container {
+    display: none;
+    padding: 10px;
+    background-color: #001f3f;
+    color: white;
+}
+
+.details-container.show {
+    display: block;
+}
+
+.title {
+    color: white;
+    background-color: #001f3f;
+    padding: 10px;
+}
+
+.toggle-button {
+    background-color: #001f3f;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.reset-button {
+    background-color: white;
+    color: black;
+    margin: 10px 5px 5px 10px;
+}

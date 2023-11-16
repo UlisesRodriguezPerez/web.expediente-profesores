@@ -8,10 +8,10 @@
     align-items: center;
 }
 
-.search-filter-container {
+.search-filter-container-user {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
 }
 
 .historic-table {
@@ -34,33 +34,10 @@
     background-color: #f1f1f1; /* Cambia el color de fondo de la fila al pasar el cursor sobre ella */
 }
 
-
-.workload-bar {
-    height: 20px; 
-    border-radius: 5px; 
-}
-
-.workload-bar-red {
-    background-color: red;
-}
-
-.workload-bar-blue {
-    background-color: blue;
-}
-
 .bar-container {
     position: relative;
     width: 100%;
     background-color: #e0e0e0;
-}
-
-.workload-value {
-    text-align: center; 
-    margin-left: 10px; 
-}
-
-.workload-header {
-    width: 30px;
 }
 
 .history-header-container {
@@ -68,17 +45,49 @@
     padding-bottom: 20px;
 }
 
-@media (max-width: 768px) {
-    /* Adjust styles for smaller screens */
-    .search-filter-container {
-        flex-direction: column; /* Stacks the search bar and filter button on top of each other */
-    }
-    
-    .historic-table th, .historic-table td {
-        padding: 0.5em; /* Reduces padding on smaller screens */
-    }
-    
-    .workload-value {
-        margin-left: 5px; /* Reduces margin on smaller screens */
-    }
+.records-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.records-table td:nth-child(1) {
+    width: 20%;
+    padding-left: 25px;
+    padding-block: 20px;
+}
+
+.records-table th:nth-child(1), .records-table td:nth-child(1) {
+    width: 20%;
+    padding-left: 25px;
+    padding-block: 20px;
+}
+
+.records-table th:nth-child(2), .records-table td:nth-child(2) {
+    width: 20%;
+    padding-left: 25px;
+    padding-block: 20px;
+}
+
+.records-table th:nth-child(3), .records-table td:nth-child(3) {
+    width: 20%;
+    padding-left: 25px;
+    padding-block: 20px;
+}
+
+.records-table th:nth-child(4), .records-table td:nth-child(4) {
+    width: 50%;
+    padding-right: 40px;
+}
+
+.records-table th, .records-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.records-table th {
+    font-weight: normal;
+}
+
+.records-table tr:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
 }

@@ -1,0 +1,45 @@
+h2.auth-text {
+    font-size: 42px;
+    color: #1e4f8f;
+    margin: 70px;
+}
+
+p.auth-text {
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 60px;
+    padding-right: 60px;
+}
+
+a.auth-text {
+    color: black;
+    text-decoration: underline;
+}
+
+input[type="password"],
+input[type="text"],
+input[type="pass-loss-text"],
+input[type="pass-reset-text"],
+input[type="pass-reset-password"],
+input[type="password-confirmation"],
+input[type="register-text"],
+input[type="reset-email-text"] {
+    margin-left: 55px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 200px;
+    padding: 8px;
+    display: block;
+}
+
+
+button[type="submit"],
+button[type="button"],
+button[type="show"] {
+    margin: 30px 0 10px 55px;
+    border-radius: 5px;
+    width: 200px;
+    padding: 8px;
+    color: white;
+    background-color: #003366;
+}

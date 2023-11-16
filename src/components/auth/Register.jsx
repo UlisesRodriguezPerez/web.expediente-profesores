@@ -32,27 +32,27 @@ export const Register = () => {
 
     return (
         <div>
-            <h2>Register</h2>
+            <h2 type="auth-text">Register</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="name" placeholder="Name" onChange={handleInputChange} />
+                <input type="register-text" name="name" placeholder="Name" onChange={handleInputChange} />
                 {errors.name && <p>{errors.name[0]}</p>}
 
-                <input type="text" name="last_name" placeholder="Last Name" onChange={handleInputChange} />
+                <input type="register-text" name="last_name" placeholder="Last Name" onChange={handleInputChange} />
                 {errors.last_name && <p>{errors.last_name[0]}</p>}
 
-                <input type="text" name="second_last_name" placeholder="Second Last Name" onChange={handleInputChange} />
+                <input type="register-text" name="second_last_name" placeholder="Second Last Name" onChange={handleInputChange} />
                 {errors.second_last_name && <p>{errors.second_last_name[0]}</p>}
 
-                <input type="tel" name="phone" placeholder="Phone" onChange={handleInputChange} />
+                <input type="register-text" name="phone" placeholder="Phone" onChange={handleInputChange} />
                 {errors.phone && <p>{errors.phone[0]}</p>}
 
-                <input type="email" name="email" placeholder="Email" onChange={handleInputChange} />
+                <input type="register-text" name="email" placeholder="Email" onChange={handleInputChange} />
                 {errors.email && <p>{errors.email[0]}</p>}
 
-                <input type="password" name="password" placeholder="Password" onChange={handleInputChange} />
+                <input type="register-text" name="password" placeholder="Password" onChange={handleInputChange} />
                 {errors.password && <p>{errors.password[0]}</p>}
 
-                <input type="password" name="password_confirmation" placeholder="Confirm Password" onChange={handleInputChange} />
+                <input type="register-text" name="password_confirmation" placeholder="Confirm Password" onChange={handleInputChange} />
                 {errors.password_confirmation && <p>{errors.password_confirmation[0]}</p>}
 
                 <button type="submit">Register</button>

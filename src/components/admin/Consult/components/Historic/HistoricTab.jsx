@@ -103,7 +103,7 @@ export const HistoricTab = () => {
                     />
                 </div>
 
-                <button className="filter-button">
+                <button className="filter-button" onClick={handleFilterButtonClick}>
                     <span className="filter-lines">
                         <span className="line line-large"></span>
                         <span className="line line-medium"></span>
@@ -111,6 +111,30 @@ export const HistoricTab = () => {
                     </span>
                     Filtros  {/* PENDIENTE */}
                 </button>
+
+                {showFilters && (
+                    <div className="filter-options">
+                        <label>
+                            <input
+                            type="checkbox"
+                            value="option1"
+                            checked={selectedOptions.includes('option1')}
+                            onChange={handleOptionChange}
+                            />{' '}
+                            Opción 1
+                        </label>
+                        <label>
+                            <input
+                            type="checkbox"
+                            value="option2"
+                            checked={selectedOptions.includes('option2')}
+                            onChange={handleOptionChange}
+                            />{' '}
+                            Opción 2
+                        </label>
+                        {/* Agrega más opciones de filtros según lo necesites */}
+                    </div>
+                )}
             </div>
             <Table className="historic-table" columns={columns} data={collaborator}
             />

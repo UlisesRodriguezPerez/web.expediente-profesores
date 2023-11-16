@@ -1,15 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './FormationTab.css';
 
 export const FormationTab = () => {
+
+    const [programa, setPrograma] = useState('');
+    const [universidad, setUniversidad] = useState('');
+    const [gradoAcademico, setGradoAcademico] = useState('');
+    const [anioInicio, setAnioInicio] = useState('');
+    const [anioFin, setAnioFin] = useState('');
+
+    const handleAddFormation = () => {
+        
+        alert(`Programa: ${programa}\nUniversidad: ${universidad}\nGrado Académico: ${gradoAcademico}\nAño de Inicio: ${anioInicio}\nAño de Fin: ${anioFin}`);
+    };
+
     return (
         <div className="formation-container">
-            <input className="input-formation" placeholder="Programa" />
-            <input className="input-formation" placeholder="Universidad" />
-            <input className="input-formation" placeholder="Grado Académico" />
+            <input
+                className="input-formation"
+                placeholder="Programa"
+                value={programa}
+                onChange={(e) => setPrograma(e.target.value)}
+            />
+            <input
+                className="input-formation"
+                placeholder="Universidad"
+                value={universidad}
+                onChange={(e) => setUniversidad(e.target.value)}
+            />
+            <input
+                className="input-formation"
+                placeholder="Grado Académico"
+                value={gradoAcademico}
+                onChange={(e) => setGradoAcademico(e.target.value)}
+            />
 
             <div className="year-container">
-                <select className="input-year" defaultValue="">
+                <select 
+                    className="input-year" 
+                    defaultValue=""
+                    onChange={(e) => setAnioInicio(e.target.value)}
+                >
                     <option value="" disabled>Año de Inicio</option>
                     {/* Añade años desde 5 años en el futuro hasta 20 años en el pasado */}
                     {Array.from({ length: 25 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
@@ -17,7 +48,11 @@ export const FormationTab = () => {
                     ))}
                 </select>
 
-                <select className="input-year" defaultValue="">
+                <select 
+                    className="input-year" 
+                    defaultValue=""
+                    onChange={(e) => setAnioFin(e.target.value)}
+                >
                     <option value="" disabled>Año de Fin</option>
                     {/* Añade años desde 5 años en el futuro hasta 20 años en el pasado */}
                     {Array.from({ length: 25 }, (_, i) => new Date().getFullYear() + 5 - i).map(year => (
@@ -26,7 +61,7 @@ export const FormationTab = () => {
                 </select>
             </div>
 
-            <button className="button-formation">+ AGREGAR</button>
+            <button className="button-formation" onClick={handleAddFormation}>+ AGREGAR</button>
         </div>
     );
 }

@@ -14,7 +14,7 @@ export const AdminDashboard = () => {
 
     const handleProfileClick = () => {
         // Redirect to profile page
-        navigate('/profile');
+        navigate('/perfil-admin');
     };
 
     const customHandleLogout = () => {

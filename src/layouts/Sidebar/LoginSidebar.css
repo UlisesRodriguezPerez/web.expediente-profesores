@@ -1,0 +1,33 @@
+.login-sidebar {
+    max-width: 50%;
+    width: 50%;
+    height: 100%;
+    background-image: url('./../../assets/images/layouts/background3.png');
+    background-size: cover;
+    background-position: center;
+    position: fixed;
+    right: 0; /* Fija el sidebar al lado derecho */
+    top: 0;
+    bottom: 0;
+    margin-left: -25%; /* Desplaza hacia la izquierda para ocupar la mitad */
+    display: flex;
+    flex-direction: column;
+}
+
+.title-login-sidebar {
+    color: white;
+    font-size: 2rem;
+    margin-inline: 25px;
+    font-weight: bold;
+}
+
+.words-sidebar {
+    color: white;
+    margin-inline: 25px;
+}
+
+.words2-sidebar {
+    color: white;
+    margin-inline: 25px;
+    padding-top: 550px;
+}
