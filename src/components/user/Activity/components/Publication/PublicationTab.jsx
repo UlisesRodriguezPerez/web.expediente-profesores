@@ -47,7 +47,7 @@ export const PublicationTab = () => {
             });
 
             //OBTENER EL ID DE LA PUBLICACION CREADA
-            id_publication = dataService.readData(`${ROUTES.ACTIVITIES}`) //agregar el filtro para la última
+            id_publication = dataService.readData(`${ROUTES.PUBLICATIONS}`) //agregar el filtro para la última
 
             //FALTA AGREGAR ESTUDIANTES
             await dataService.createData(`${ROUTES.STUDENTS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
