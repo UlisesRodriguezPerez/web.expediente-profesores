@@ -1,14 +1,35 @@
 import React, { useState } from 'react';
 import './TechniqueTab.css'; // Importa los nuevos estilos
+import dataService from '../../../../../../../services/dataService.js'
+import ROUTES from '../../../../../../../enums/routes'; //posiblemente arreglar
 
 export const TechniqueTab = () => {
 
   const [activity, setActivity] = useState(''); 
   const [activityType, setActivityType] = useState('');
 
-  const handleAddTechnique = () => {
+  const handleAddTechnique = async () => {
     
     alert(`Actividad: ${activity}\nTipo: ${activityType}`);
+    try{
+      if (!activity || !activityType) {
+        showNotification('error', 'Todos los campos son requeridos.');
+        return; // Not continue if any field is empty
+      }
+
+      //agregar actividad CAPACITACION TÉCNICA
+      /*
+      await dataService.createData(`${ROUTES.TECHNICAL_TRAININGS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+        id_training_types: activityType,
+        name: activity
+      });
+      */
+     
+      showNotification('success', 'Actividad asignada exitosamente');
+    }
+    catch (error) {
+      console.error('Error al guardar actividad pedagogica:', error);
+    }
   };
 
   return (

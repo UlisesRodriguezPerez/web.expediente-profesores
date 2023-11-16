@@ -28,6 +28,19 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
             console.log('description', description);
             console.log('weeklyHours', weeklyHours);
             console.log('success');
+
+            /*
+            //agregar actividad GENERAL
+            await dataService.createData(`${ROUTES.GENERAL_ACTIVITIES}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                name: description,
+                hours: weeklyHours
+            });
+
+            //ASOCIAR CON EL PROFE Y EL PERIODO
+
+            */
+
+
             showNotification('success', 'Actividad asignada exitosamente (pendiente guardar en DB)');
         } catch (error) {
             console.error('error');

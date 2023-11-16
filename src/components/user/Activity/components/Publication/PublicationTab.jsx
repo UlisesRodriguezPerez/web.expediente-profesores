@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './PublicationTab.css';
+import dataService from '../../../../../services/dataService.js'
+import ROUTES from '../../../../../enums/routes';
 
 export const PublicationTab = () => {
 
@@ -19,6 +21,49 @@ export const PublicationTab = () => {
         alert(
           `Nombre de la Publicación: ${nombrePublicacion}\nTipo de Publicación: ${tipoPublicacion}\nEstudiante(s) Participante(s): ${estudiantesParticipantes}\nEl Estudiante realiza TFG: ${estudianteRealizaTFG}\nBecado SI/NO: ${becado}\nMedio de Divulgación: ${medioDivulgacion}\nORCID: ${orcid}\nNombre de los coautores: ${coautores}\nObjetivo(s): ${objetivos}\nMetas: ${metas}`
         );
+
+        try{
+            if (!actividad || !tipoActividad || !universidad || !pais) {
+              showNotification('error', 'Todos los campos son requeridos.');
+              return; // Not continue if any field is empty
+            }
+
+            /*
+            //CREAR TIPO DE PUBLICACION
+            await dataService.createData(`${ROUTES.PUBLICATION_TYPES}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                name: tipoPublicacion,
+                description: 0
+            });
+
+            //agregar actividad PUBLICACION
+            await dataService.createData(`${ROUTES.PUBLICATIONS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                publication_type_id: idTipoPublicacion,
+                name: nombrePublicacion,
+                coauthors: coautores,
+                objectives: objetivos,
+                goals: metas,
+                dissemination_medium: medioDivulgacion,
+                ORCID: orcid
+            });
+
+            //OBTENER EL ID DE LA PUBLICACION CREADA
+            id_publication = dataService.readData(`${ROUTES.PUBLICATIONS}`) //agregar el filtro para la última
+
+            //FALTA AGREGAR ESTUDIANTES
+            await dataService.createData(`${ROUTES.STUDENTS}`, { //CONFIRMAR RUTA CORRECTA Y NOMBRES EN ING
+                publication_id: id_publication,
+                full_name: estudiantesParticipantes,
+                postgraduate_scholarship: becado,
+                TFG: estudianteRealizaTFG
+            });
+
+            */
+       
+            showNotification('success', 'Actividad asignada exitosamente');
+        }
+        catch (error) {
+        console.error('Error al guardar actividad pedagogica:', error);
+        }
     };
     
     return (
