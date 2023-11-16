@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './FormationTab.css';
 import dataService from '../../../../../../../services/dataService.js'
 import ROUTES from '../../../../../../../enums/routes';
+import { NotificationContext } from '../../../../../../../contexts/NotificationContext/NotificationContext.jsx';
 
 export const FormationTab = () => {
 
@@ -10,6 +11,7 @@ export const FormationTab = () => {
     const [gradoAcademico, setGradoAcademico] = useState('');
     const [anioInicio, setAnioInicio] = useState('');
     const [anioFin, setAnioFin] = useState('');
+    const { showNotification } = useContext(NotificationContext);
 
     const handleAddFormation = () => {
         

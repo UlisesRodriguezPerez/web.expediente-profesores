@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './PublicationTab.css';
 import dataService from '../../../../../services/dataService.js'
 import ROUTES from '../../../../../enums/routes';
+import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext.jsx';
 
 export const PublicationTab = () => {
 
@@ -16,6 +17,8 @@ export const PublicationTab = () => {
     const [objetivos, setObjetivos] = useState('');
     const [metas, setMetas] = useState('');
 
+    const { showNotification } = useContext(NotificationContext);
+
     const handleAddPublication = () => {
         
         alert(
@@ -23,10 +26,10 @@ export const PublicationTab = () => {
         );
 
         try{
-            if (!actividad || !tipoActividad || !universidad || !pais) {
-              showNotification('error', 'Todos los campos son requeridos.');
-              return; // Not continue if any field is empty
-            }
+            // if (!actividad || !tipoActividad || !universidad || !pais) {
+            //   showNotification('error', 'Todos los campos son requeridos.');
+            //   return; // Not continue if any field is empty
+            // }
 
             /*
             //CREAR TIPO DE PUBLICACION

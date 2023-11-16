@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './InternationalizationTab.css';
 import dataService from '../../../../../services/dataService.js'
 import ROUTES from '../../../../../enums/routes';
+import { NotificationContext } from '../../../../../contexts/NotificationContext/NotificationContext.jsx';
 
 export const InternationalizationTab = () => {
 
@@ -9,6 +10,7 @@ export const InternationalizationTab = () => {
     const [tipoActividad, setTipoActividad] = useState('');
     const [universidad, setUniversidad] = useState('');
     const [pais, setPais] = useState('');
+    const { showNotification } = useContext(NotificationContext);
 
     const handleAddInternationalization = () => {
         alert(

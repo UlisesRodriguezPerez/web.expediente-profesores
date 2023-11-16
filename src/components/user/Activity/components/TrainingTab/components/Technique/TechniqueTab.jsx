@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './TechniqueTab.css'; // Importa los nuevos estilos
 import dataService from '../../../../../../../services/dataService.js'
 import ROUTES from '../../../../../../../enums/routes'; //posiblemente arreglar
-
+import { NotificationContext } from '../../../../../../../contexts/NotificationContext/NotificationContext.jsx';
 export const TechniqueTab = () => {
 
   const [activity, setActivity] = useState(''); 
   const [activityType, setActivityType] = useState('');
+  const { showNotification } = useContext(NotificationContext);
 
   const handleAddTechnique = async () => {
     
