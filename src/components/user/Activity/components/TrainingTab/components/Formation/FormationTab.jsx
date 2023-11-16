@@ -42,7 +42,7 @@ export const FormationTab = () => {
             showNotification('success', 'Actividad asignada exitosamente');
           }
           catch (error) {
-            console.error('Error al guardar actividad pedagogica:', error);
+            console.error('Error al guardar actividad formación:', error);
           }
     };
 
