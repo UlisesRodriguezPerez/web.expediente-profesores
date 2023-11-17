@@ -50,7 +50,7 @@ export const UserProfileComponent = () => {
     const handleSubmit = useCallback( async () => {
         try {
             // Realiza las solicitudes HTTP para obtener los datos de los colaboradores y usuarios
-            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${id}&included=user,campus,category,position,degree,appointment`);
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?exactfilter[id]=${id}&included=user,campus,category,position,degree,appointment`);
             //collaboratorsResponse
             //console.log("Llamado api --- ");
             console.log(collaboratorsResponse.data.data[0]);

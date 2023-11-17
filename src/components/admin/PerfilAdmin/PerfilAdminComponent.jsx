@@ -56,7 +56,7 @@ export const PerfilAdminComponent = () => {
         try {
             // Realiza las solicitudes HTTP para obtener los datos de los colaboradores y usuarios
             console.log(`ID? = ${id}`);
-            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?filter[id]=${id}&included=user,campus,category,position,degree,appointment`);
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?exactfilter[id]=${id}&included=user,campus,category,position,degree,appointment`);
             //collaboratorsResponse
             //console.log("Llamado api --- ");
             console.log(collaboratorsResponse.data.data[0]);
