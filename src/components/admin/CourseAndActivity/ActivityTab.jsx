@@ -13,30 +13,22 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
 
     const handleConfirm = async () => {
         try {
-            if (!data.selectedTeacher || !data.selectedPeriod || !description || !weeklyHours) {
+            if (!data.teacher || !data.period || !description || !weeklyHours) {
 
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
             }
-            /* //ESTO YA ESTABA ACA PERO CREO QUE NO FUNCIONA
-            await dataService.createData('courendpoint', {
-                teacher: data.selectedTeacher.value,
-                period: data.selectedPeriod.value,
-                description: description,
-                weeklyHours: weeklyHours
-            });
-            console.log('teacher', data.selectedTeacher.value);
-            console.log('period', data.selectedPeriod.value);
-            console.log('description', description);
-            console.log('weeklyHours', weeklyHours);
-            console.log('success');*/
+
+            console.log('data', data);
 
             const response = await dataService.createData(`${ROUTES.GENERAL_ACTIVITIES}`, { //CREAR RUTA
-                teacher: data.selectedTeacher.value,
-                period: data.selectedPeriod.value,
+                teacher: data.teacher.value,
+                period: data.period.value,
                 name: description,
                 hours: weeklyHours,
             });
+
+            console.log('response', response);
 
 
             showNotification('success', 'Actividad asignada exitosamente');

@@ -7,6 +7,8 @@ import { TabContainer } from '../../../common/components/TabContainer/TabContain
 import { CourseTab } from './CourseTab';
 import { ActivityTab } from './ActivityTab';
 import './CourseAndActivity.css';
+import dataService from '../../../services/dataService';
+import ROUTES from '../../../enums/routes';
 // import { CourseTab } from './CourseTab';
 
 export const CourseAndActivity = () => {
@@ -22,7 +24,7 @@ export const CourseAndActivity = () => {
     const [course, setCourse] = useState('');
     const [courseOptions, setCourseOptions] = useState([]);
 
-    const defaultTextBoxValue = `Agregar el curso ${selectedCourse ? selectedCourse.value : '[ ]'} al profesor ${selectedTeacher ? selectedTeacher.value : '[ ]'}`
+    const defaultTextBoxValue = `Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`
     const [textBoxValue, setTextBoxValue] = useState(defaultTextBoxValue);
 
     //const teacherOptions = [{ value: 'profesor1', label: 'Profesor 1 profesor test' }, { value: 'profesor2', label: 'Profesor 2' }];
@@ -31,9 +33,9 @@ export const CourseAndActivity = () => {
 
     const getTeacherOptions = async () => {
         try {
-          const response = await dataService.readData(`${ROUTES.COLLABORATORS}`);
+          const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user`);
           console.log('Profesores', response.data.data)
-          const teacherOptions = response.data.data.map(teacher => ({ value: teacher.id, label: teacher.name }));
+          const teacherOptions = response.data.data.map(teacher => ({ value: teacher.id, label: teacher.user.name }));
           
           setTeacherOptions(teacherOptions);
           
@@ -75,8 +77,8 @@ export const CourseAndActivity = () => {
     }
 
     useEffect(() => {
-        setTextBoxValue(`Agregar el curso ${selectedCourse ? selectedCourse.value : '[ ]'} al profesor ${selectedTeacher ? selectedTeacher.value : '[ ]'}`)
-      }, [selectedCourse, selectedTeacher]);
+        setTextBoxValue(`Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`)
+      }, [course, teacher]);
     
     useEffect(() => {
         getTeacherOptions();

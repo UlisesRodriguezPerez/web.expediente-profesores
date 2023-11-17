@@ -6,23 +6,26 @@ import './CourseTab.css';
 import dataService from '../../../services/dataService';
 import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
-export const CourseTab = ({ courseOptions, setCourse, textBoxValue, onCancel, onConfirm, data }) => {
+export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCancel, onConfirm, data }) => {
     const { showNotification } = useContext(NotificationContext);
 
+
+    // const [course, setCourse] = useState('');
     const handleConfirm = async () => {
         try {
-            if(!data.selectedCourse || !data.selectedTeacher || !data.selectedPeriod) {
+            if(!data.course || !data.teacher || !data.period) {
                 
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
             }
-            const response = await dataService.createData(ROUTES.COLLABORATOR_COURSE_PERIOD, { //RUTA NO EXISTE
-                course: course,
-                teacher: teacher,
-                period: period
+            const response = await dataService.createData(`${ROUTES.COLLABORATORS}/${data.teacher.value}/assign-course` ,{
+                course_id: data.course.value,
+                period_id: data.period.value
             });
 
-            setCourse('');
+            console.log('response', response);
+
+            setSelectedCourse('');
             
             showNotification('success', 'Curso asignado exitosamente (pendiente guardar en DB)');
         } catch (error) {
@@ -37,7 +40,7 @@ export const CourseTab = ({ courseOptions, setCourse, textBoxValue, onCancel, on
         <div className="course-selection">
             <CustomSelect
                 options={courseOptions}
-                onChange={setCourse}
+                onChange= { (option) => setSelectedCourse(option) }
                 label="Curso"
                 placeholder="Cursos"
             />
