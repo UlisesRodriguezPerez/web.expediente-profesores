@@ -6,7 +6,7 @@ import './CourseTab.css';
 import dataService from '../../../services/dataService';
 import ROUTES from '../../../enums/routes';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
-export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCancel, onConfirm, data }) => {
+export const CourseTab = ({ courseOptions, setCourse, textBoxValue, onCancel, onConfirm, data }) => {
     const { showNotification } = useContext(NotificationContext);
 
     const handleConfirm = async () => {
@@ -16,15 +16,14 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
             }
-            const response = await dataService.createData('courendpoint', {
-                course: data.selectedCourse.value,
-                teacher: data.selectedTeacher.value,
-                period: data.selectedPeriod.value
+            const response = await dataService.createData(ROUTES.COLLABORATOR_COURSE_PERIOD, { //RUTA NO EXISTE
+                course: course,
+                teacher: teacher,
+                period: period
             });
-            console.log('course', data.selectedCourse);
-            console.log('teacher', data.selectedTeacher.value);
-            console.log('period', data.selectedPeriod.value);
-            console.log('success');
+
+            setCourse('');
+            
             showNotification('success', 'Curso asignado exitosamente (pendiente guardar en DB)');
         } catch (error) {
             console.error('error');
@@ -38,7 +37,7 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
         <div className="course-selection">
             <CustomSelect
                 options={courseOptions}
-                onChange={setSelectedCourse}
+                onChange={setCourse}
                 label="Curso"
                 placeholder="Cursos"
             />
