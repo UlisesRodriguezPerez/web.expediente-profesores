@@ -51,8 +51,6 @@ export const ListingTab = () => {
 
         const dataToExport = transformDataForExport(data);
 
-        console.log('dataToExport', dataToExport);
-
         exportToExcel(dataToExport, 'profesores', headers);
 
     };
