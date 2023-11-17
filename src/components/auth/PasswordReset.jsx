@@ -13,6 +13,9 @@ export const PasswordReset = () => {
 
     //ocultar cosas
     const [showStats, setShowStats] = useState(false);
+
+    //el usuario actual
+    const currentUser = JSON.parse(localStorage.getItem('user'));
     
     //const { showNotification } = useContext(NotificationContext);
     
@@ -45,6 +48,11 @@ export const PasswordReset = () => {
             console.error('password1: ', newPassword);
             console.error('password2: ', newPasswordV);
             console.error('Email: ', email);
+            console.error('Info: ', currentUser.email)
+            let response;
+
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?exactfilter[user.id]=${currentUser.id}&include=users`);
+            console.error('User :', collaboratorsResponse.data);
     
             // Aquí deberías realizar una solicitud a la API para enviar el código de restablecimiento y la nueva contraseña
             // ...
@@ -57,7 +65,16 @@ export const PasswordReset = () => {
                     setPasswordMatchError('');
                     // aqui va el codigo de update
                     // ...
-                    //await dataService.updateData()
+                    /*response = await dataService.updateData(`${ROUTES.USERS}/${newPassword}`, {
+                        name:,
+                        last_name:,
+                        second_last_name:,
+                        email:,
+                        email_verified_at:,
+                        phone:,
+                        password: newPassword,
+                    });*/
+                    
                 } else {
                     console.error('Las contraseñas no son iguales');
                     setPasswordMatchError('Las contraseñas no son iguales');
@@ -76,7 +93,7 @@ export const PasswordReset = () => {
         setnewPasswordV('');
         setEmail('');
         
-        window.history.back();
+        //window.history.back();
     };
     
 
