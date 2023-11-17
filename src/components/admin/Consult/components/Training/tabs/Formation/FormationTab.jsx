@@ -67,6 +67,7 @@ export const FormationTab = () => {
     }, []);
 
     useEffect(() => {
+        setCurrentPage(1);
         fetchTraining();
     }, [searchFilterQuery]);
 

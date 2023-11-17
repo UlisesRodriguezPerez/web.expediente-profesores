@@ -1,65 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { SearchBar } from "../../../../../../../common/components/SearchBar/SearchBar";
 import { Table } from "../../../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExport, faTrash, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
-import './PedagogicalTab.css';
+import { faFileExport } from '@fortawesome/free-solid-svg-icons';
+import './PedagogicalTab.css';  // Asegúrate de tener el archivo CSS adecuado
+import dataService from "../../../../../../../services/dataService";
+import ROUTES from "../../../../../../../enums/routes";
+import { NotificationContext } from "../../../../../../../contexts/NotificationContext/NotificationContext"
+import useSearch from "../../../../../../../hooks/useSearch";
 
-// Función para obtener los datos de prueba
-const getTestData = () => {
-    const data = [
-        { teacher: 'testing Test', name: 'Pedagogy 101', institution: 'Edu University', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Advanced Teaching Methods', institution: 'Teaching Institute', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Inclusive Education Workshop', institution: 'Education Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Technology Seminar', institution: 'TechEd Academy', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'Language Arts Curriculum', institution: 'Language Institute', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Mathematics Teaching Strategies', institution: 'Math Academy', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Science Education Symposium', institution: 'Science Center', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Physical Education and Health', institution: 'Health School', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Social Studies Curriculum', institution: 'Social Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'Art and Music Education', institution: 'Arts Center', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Special Education Workshop', institution: 'SpecialEd Institute', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Literacy Development Strategies', institution: 'Literacy Academy', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Critical Thinking in Education', institution: 'Critical Ed Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Leadership Seminar', institution: 'Leadership Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'History and Civics Education', institution: 'History Center', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Environmental Education Workshop', institution: 'Environment Institute', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Teaching Foreign Languages', institution: 'Language School', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Early Childhood Education', institution: 'Early Ed Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Psychology Seminar', institution: 'Psychology Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'STEM Education Workshop', institution: 'STEM Academy', period: '2022-2023' },
-    ];
-
-    return data;
-};
+const ITEMS_PER_PAGE = 10;
 
 export const PedagogicalTab = () => {
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    const [data, setData] = useState(getTestData()); // Inicializar con datos de prueba
+    const [paginatedPedagogicalData, setPaginatedPedagogicalData] = useState([]);
+    const { showNotification } = useContext(NotificationContext);
+
+    const searchBuildFilterQuery = (term) => {
+        const baseFields = [
+            'user.name',
+            'user.last_name',
+            'user.second_last_name',
+        ];
+        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
+        return queries.join('');
+    };
+
+    const getPaginatedData = () => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return pedagogicalData.slice(startIndex, endIndex);
+    };
+
+    const { searchTerm, setSearchTerm, searchFilterQuery } = useSearch('', searchBuildFilterQuery);
+
+    const [pedagogicalData, setPedagogicalData] = useState([]);
+
+    const fetchPedagogicalData = async () => { //pedagogicalTrainings.collaborator_id
+        try {
+            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,pedagogicalTrainings${searchFilterQuery}`);
+            console.log('pedagogicalData', response.data.data);
+            console.log('URL', `${ROUTES.COLLABORATORS}?included=user,pedagogicalTrainings${searchFilterQuery}`);
+
+            const pedagogicalDataFormatted = response.data.data.flatMap(collaborator => collaborator.pedagogicalTrainings.map(training => ({
+                teacher: `${collaborator.user.name}`,
+                name: training.name,
+                institution: training.institution_name,
+                period: training.period,
+            })));
+
+            console.log('pedagogicalDataFormatted', pedagogicalDataFormatted);
+
+            setPedagogicalData(pedagogicalDataFormatted);
+        } catch (error) {
+            console.error('Error fetching pedagogical data:', error);
+            showNotification('error', 'Error al cargar la información pedagógica');
+        }
+    }
+
+    useEffect(() => {
+        fetchPedagogicalData();
+    }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+        fetchPedagogicalData();
+    }, [searchFilterQuery]);
+
+    useEffect(() => {
+        setPaginatedPedagogicalData(getPaginatedData());
+    }, [currentPage, pedagogicalData]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        setDebouncedSearchTerm(event.target.value);
     };
-
-    useEffect(() => {
-        // Aquí deberías llamar a tu API para obtener los datos reales.
-        // Actualizar el estado de 'data' con los datos obtenidos.
-        // Ejemplo:
-        // fetchData(currentPage, debouncedSearchTerm);
-        // setData([...]); // Actualiza 'data' con los datos obtenidos
-    }, [currentPage, debouncedSearchTerm]);
-
-    // ... (otros estados y funciones)
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // Actualiza datos basados en la nueva página
-        // Ejemplo:
-        // fetchData(pageNumber, debouncedSearchTerm);
+        // Actualizar datos basados en la nueva página
     };
 
     const columns = [
@@ -89,8 +108,8 @@ export const PedagogicalTab = () => {
                     </button>
                 </div>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className="width-95"/>
+            <Table className="historic-table" columns={columns} data={paginatedPedagogicalData} />
+            <Pagination currentPage={currentPage} totalItems={pedagogicalData.length} onPageChange={handlePageChange} className="width-95"/>
             {/* ... (resto del código, como el formulario modal, notificaciones, etc.) */}
         </div>
     );

@@ -1,36 +1,79 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SearchBar } from "../../../../../../../common/components/SearchBar/SearchBar";
 import { Table } from "../../../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExport } from '@fortawesome/free-solid-svg-icons';
-import './TechniqueTab.css';
+import './TechniqueTab.css';  // Asegúrate de tener el archivo CSS adecuado
+import dataService from "../../../../../../../services/dataService";
+import ROUTES from "../../../../../../../enums/routes";
+import { NotificationContext } from "../../../../../../../contexts/NotificationContext/NotificationContext";
+import useSearch from "../../../../../../../hooks/useSearch";
+
+const ITEMS_PER_PAGE = 10;
 
 export const TechniqueTab = () => {
-
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    // Datos falsos para visualización
-    const [data, setData] = useState([
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
-        { teacher: 'testing Test', activity: 5, type: 10, actions: 'PENDING' },
+    const [paginatedTechniques, setPaginatedTechniques] = useState([]);
+    const { showNotification } = useContext(NotificationContext);
 
-    ]);
+    const searchBuildFilterQuery = (term) => {
+        const baseFields = [
+            'user.name',
+            'user.last_name',
+            'user.second_last_name',
+        ];
+        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
+        return queries.join('');
+    };
+
+    const getPaginatedData = () => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return techniques.slice(startIndex, endIndex);
+    };
+
+    const { searchTerm, setSearchTerm, searchFilterQuery } = useSearch('', searchBuildFilterQuery);
+
+    const [techniques, setTechniques] = useState([]);
+
+    const fetchTechniques = async () => {
+        try {
+            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,technicalTrainings${searchFilterQuery}`);
+            console.log('techniques', response.data.data);
+            console.log('URL', `${ROUTES.COLLABORATORS}?included=user,technicalTrainings${searchFilterQuery}`);
+
+            const techniquesFormatted = response.data.data.flatMap(collaborator => collaborator.technicalTrainings.map(technique => ({
+                teacher: `${collaborator.user.name}`,
+                activity: technique.activity,  
+                type: technique.type, 
+                pending: 'PENDING',
+            })));
+
+            console.log('techniquesFormatted', techniquesFormatted);
+
+            setTechniques(techniquesFormatted);
+        } catch (error) {
+            console.error('Error fetching techniques:', error);
+            showNotification('error', 'Error al cargar las técnicas');
+        }
+    }
+
+    useEffect(() => {
+        fetchTechniques();
+    }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+        fetchTechniques();
+    }, [searchFilterQuery]);
+
+    useEffect(() => {
+        setPaginatedTechniques(getPaginatedData());
+    }, [currentPage, techniques]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        setDebouncedSearchTerm(event.target.value);
     };
 
     const handlePageChange = (pageNumber) => {
@@ -42,7 +85,7 @@ export const TechniqueTab = () => {
         { header: 'Profesor', render: row => <span>{row.teacher}</span> },
         { header: 'Actividad', render: row => <span>{row.activity}</span> },
         { header: 'Tipo', render: row => <span>{row.type}</span> },
-        { header: '', render: row => <span >PENDING</span> },
+        { header: '', render: row => <span>{row.pending}</span> },
     ];
 
     return (
@@ -66,9 +109,8 @@ export const TechniqueTab = () => {
                     </button>
                 </div>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className="width-95"/>
+            <Table className="historic-table" columns={columns} data={paginatedTechniques} />
+            <Pagination currentPage={currentPage} totalItems={techniques.length} onPageChange={handlePageChange} className="width-95" />
         </div>
     );
-
 };

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { TabContainer } from './../../../common/components/TabContainer/TabContainer'
-import { HistoricTab } from './components/Historic/HistoricTab'
+import { TabContainer } from './../../../common/components/TabContainer/TabContainer';
+import { HistoricTab } from './components/Historic/HistoricTab';
 import './Consult.css'; 
 import { ListingTab } from './components/Listing/ListingTab';
-import { DownloadReportTab } from './components/DownloadReport/DownloadReportTab';
-import { TrainingTab } from './components/Training/TrainingTab';
+//import { DownloadReportTab } from './components/DownloadReport/DownloadReportTab';
 import { PublicationTab } from './components/Publication/PublicationTab';
+import { TrainingTab } from './components/Training/TrainingTab';
 import { InternationalizationTab } from './components/Internationalization/InternationalizationTab';
 
 const PlaceholderComponent = () => <div>Placeholder</div>;
