@@ -8,6 +8,7 @@ import { NotificationContext } from '../../../../../contexts/NotificationContext
 import './ListingTab.css';
 import { ProfessorFormModal } from './components/ProfessorFormModal/ProfessorFormModal';
 import ROUTES from '../../../../../enums/routes';
+import useExcelExport from '../../../../../hooks/useExcelExport';
 
 const ITEMS_PER_PAGE = 10;
 const DEFAULT_TEACHER_VALUE = -1;
@@ -25,6 +26,37 @@ export const ListingTab = () => {
 
     const [data, setData] = useState([]);
 
+    const exportToExcel = useExcelExport();
+
+    // transform data for export
+    const transformDataForExport = (data) => {
+        return data.map((row) => ({
+            Campus: row.campus.name,
+            'Nombre Profesor': `${row.user.name} ${row.user.last_name}`,
+            'Grado Académico': row.degree.name,
+            'Tipo Nombramiento': row.appointment.name,
+            Cargo: row.position.name,
+        }));
+    };
+
+    // Columns for the table
+    const handleExport = () => {
+        const headers = {
+            'Campus': 'Campus',
+            'Nombre Profesor': 'Nombre Profesor',
+            'Grado Académico': 'Grado Académico',
+            'Tipo Nombramiento': 'Tipo Nombramiento',
+            'Cargo': 'Cargo',
+        };
+
+        const dataToExport = transformDataForExport(data);
+
+        console.log('dataToExport', dataToExport);
+
+        exportToExcel(dataToExport, 'profesores', headers);
+
+    };
+
     useEffect(() => {
         const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
             try {
@@ -39,7 +71,7 @@ export const ListingTab = () => {
             }
         };
 
-        fetchData( currentPage, DEFAULT_TEACHER_VALUE);
+        fetchData(currentPage, DEFAULT_TEACHER_VALUE);
     }, [DEFAULT_TEACHER_VALUE, ITEMS_PER_PAGE, ROUTES.COLLABORATORS, currentPage]);
 
 
@@ -101,7 +133,7 @@ export const ListingTab = () => {
                 });
 
                 showNotification('success', 'Profesor actualizado con éxito');
-                
+
             } else {
                 console.log('professorData create', professorData);
                 response = await dataService.createData(ROUTES.USERS, {
@@ -133,7 +165,7 @@ export const ListingTab = () => {
             }
 
             setIsFormModalVisible(false);
-            
+
         } catch (error) {
             console.error('Error saving professor:', error);
             showNotification('error', 'Error al guardar profesor');
@@ -143,12 +175,12 @@ export const ListingTab = () => {
     // mostrar el filtro
     const [showFilters, setShowFilters] = useState(false);
     const [selectedOptions, setSelectedOptions] = useState([]);
-  
+
     const handleFilterButtonClick = () => {
         setShowFilters(!showFilters);
     };
     // filtro
-  
+
     const handleOptionChange = (event) => {
         const option = event.target.value;
         if (selectedOptions.includes(option)) {
@@ -163,18 +195,6 @@ export const ListingTab = () => {
         alert(`Opciones seleccionadas: ${selectedOptions.join(', ')}`);
     };
     // filtro
-
-    const handleExportButton = () => {
-        alert(`Acciones para el boton de exportar`);
-    };
-
-    const handleAddButton = () => {
-        alert(`Acciones para el boton de anadir`);
-    };
-
-    const handleDeleteButton= () => {
-        alert(`Acciones para el boton de borrar`);
-    };
 
     const handleRowSelect = (id) => {
         const newSelectedRows = new Set(selectedRows);
@@ -192,11 +212,11 @@ export const ListingTab = () => {
 
     const ActionColumn = ({ row, handleEditClick }) => (
         <div>
-          <button className="btn-editar" onClick={() => handleEditClick(row)}> 
-            <FontAwesomeIcon icon={faEdit} /> Editar 
-          </button>
+            <button className="btn-editar" onClick={() => handleEditClick(row)}>
+                <FontAwesomeIcon icon={faEdit} /> Editar
+            </button>
         </div>
-      );
+    );
 
     const columns = [
         {
@@ -258,28 +278,28 @@ export const ListingTab = () => {
                         {/* Las opciones del filtro */}
                         {showFilters && (
                             <div className="filter-options">
-                            <label>
-                                <input
-                                type="checkbox"
-                                value="option1"
-                                checked={selectedOptions.includes('option1')}
-                                onChange={handleOptionChange}
-                                />{' '}
-                                Opción 1
-                            </label>
-                            <label>
-                                <input
-                                type="checkbox"
-                                value="option2"
-                                checked={selectedOptions.includes('option2')}
-                                onChange={handleOptionChange}
-                                />{' '}
-                                Opción 2
-                            </label>
-                            {/* Agrega más opciones de filtros según lo necesites */}
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        value="option1"
+                                        checked={selectedOptions.includes('option1')}
+                                        onChange={handleOptionChange}
+                                    />{' '}
+                                    Opción 1
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        value="option2"
+                                        checked={selectedOptions.includes('option2')}
+                                        onChange={handleOptionChange}
+                                    />{' '}
+                                    Opción 2
+                                </label>
+                                {/* Agrega más opciones de filtros según lo necesites */}
                             </div>
                         )}
-                        <button className="action-button export-button" onClick={handleExportButton}>
+                        <button className="action-button export-button" onClick={handleExport}>
                             <FontAwesomeIcon icon={faFileExport} /> Exportar
                         </button>
                         <button
