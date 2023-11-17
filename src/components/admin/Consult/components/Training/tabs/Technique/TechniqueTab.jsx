@@ -3,84 +3,62 @@ import { SearchBar } from "../../../../../../../common/components/SearchBar/Sear
 import { Table } from "../../../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { faFileExport, faTrash, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
 import './TechniqueTab.css';
 
-// Simula una llamada a la API con datos de prueba
-const fetchDataFromApi = async (page, teacherId) => {
-    // Simulación de datos de prueba
-    const fakeApiData = [
-        { teacher: 'Teacher 1', activity: 'Activity 1', type: 'Type 1' },
-        { teacher: 'Teacher 2', activity: 'Activity 2', type: 'Type 2' },
-        { teacher: 'Teacher 3', activity: 'Activity 3', type: 'Type 3' },
-        { teacher: 'Teacher 1', activity: 'Activity 1', type: 'Type 1' },
-        { teacher: 'Teacher 2', activity: 'Activity 2', type: 'Type 2' },
-        { teacher: 'Teacher 3', activity: 'Activity 3', type: 'Type 3' },
-        { teacher: 'Teacher 1', activity: 'Activity 1', type: 'Type 1' },
-        { teacher: 'Teacher 2', activity: 'Activity 2', type: 'Type 2' },
-        { teacher: 'Teacher 3', activity: 'Activity 3', type: 'Type 3' },
-        { teacher: 'Teacher 1', activity: 'Activity 1', type: 'Type 1' },
-        { teacher: 'Teacher 2', activity: 'Activity 2', type: 'Type 2' },
-        { teacher: 'Teacher 3', activity: 'Activity 3', type: 'Type 3' },
-        { teacher: 'Teacher 1', activity: 'Activity 1', type: 'Type 1' },
-        { teacher: 'Teacher 2', activity: 'Activity 2', type: 'Type 2' },
-        { teacher: 'Teacher 3', activity: 'Activity 3', type: 'Type 3' },
-        // ... más datos según sea necesario
+// Función para obtener los datos de prueba
+const getTestData = () => {
+    const data = [
+        { teacher: 'testing Test1', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test2', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test3', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test4', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test5', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test6', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test7', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test8', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test9', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test1', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test2', activity: 5, type: 10, actions: 'PENDING' },
+        { teacher: 'testing Test3', activity: 5, type: 10, actions: 'PENDING' },
     ];
 
-    // Simulación de un retardo en la llamada a la API (puedes eliminar esto en tu código real)
-    await new Promise(resolve => setTimeout(resolve, 500));
-
-    // Devuelve los datos de prueba
-    return {
-        data: fakeApiData.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE),
-        total: fakeApiData.length,
-    };
+    return data;
 };
-
-const ITEMS_PER_PAGE = 10;
-const DEFAULT_TEACHER_VALUE = -1;
 
 export const TechniqueTab = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    const [data, setData] = useState([]);
-    const [totalItems, setTotalItems] = useState(0);
-
-    // Define fetchData aquí
-    const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
-        try {
-            const response = await fetchDataFromApi(page, teacherId);
-            setData(response.data);
-            setTotalItems(response.total);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-            // Maneja el error según tus necesidades
-        }
-    };
-
-    useEffect(() => {
-        fetchData(currentPage, DEFAULT_TEACHER_VALUE);
-    }, [DEFAULT_TEACHER_VALUE, ITEMS_PER_PAGE, currentPage]);
-
-    useEffect(() => {
-        fetchData(1, ''); // Llama a la API para obtener datos iniciales
-    }, []);
+    const [data, setData] = useState(getTestData()); // Inicializar con datos de prueba
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
         setDebouncedSearchTerm(event.target.value);
     };
 
+    useEffect(() => {
+        // Aquí deberías llamar a tu API para obtener los datos reales.
+        // Actualizar el estado de 'data' con los datos obtenidos.
+        // Ejemplo:
+        // fetchData(currentPage, debouncedSearchTerm);
+        // setData([...]); // Actualiza 'data' con los datos obtenidos
+    }, [currentPage, debouncedSearchTerm]);
+
+    // ... (otros estados y funciones)
+
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
+        // Actualiza datos basados en la nueva página
+        // Ejemplo:
+        // fetchData(pageNumber, debouncedSearchTerm);
     };
 
     const columns = [
         { header: 'Profesor', render: row => <span>{row.teacher}</span> },
         { header: 'Actividad', render: row => <span>{row.activity}</span> },
         { header: 'Tipo', render: row => <span>{row.type}</span> },
+        { header: '', render: row => <span >PENDING</span> },
     ];
 
     return (
@@ -104,8 +82,8 @@ export const TechniqueTab = () => {
                 </div>
             </div>
             <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} className="width-95"/>
-            {/* ... (resto del código) */}
+            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className="width-95"/>
+            {/* ... (resto del código, como el formulario modal, notificaciones, etc.) */}
         </div>
     );
 };

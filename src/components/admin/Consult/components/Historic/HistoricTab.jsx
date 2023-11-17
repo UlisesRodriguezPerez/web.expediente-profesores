@@ -45,15 +45,19 @@ export const HistoricTab = () => {
 
             const periodDetails = response.data.data;
 
+            console.log('periodDetails', periodDetails)
+
             // Transforma los datos en el formato esperado por la tabla.
             const transformedData = periodDetails.map(detail => ({
-                period_name: detail.period_name,
-                courses_count: detail.courses_count,
-                total_activities_count: detail.total_activities_count,
+                cursos: detail.courses_count,
+                actividades: detail.activities_count,
                 workload: detail.workload,
+                period: detail.period_name,
             }));
+            
 
             setCollaborator(transformedData);
+
             setTotalItems(response.data.total);
         } catch (error) {
             console.error('Error fetching collaborators:', error);
@@ -75,6 +79,7 @@ export const HistoricTab = () => {
         fetchData(currentPage, selectedTeacher?.value);
     }, [currentPage, selectedTeacher]);
 
+
     const CargaHistoricaColumn = ({ row }) => (
         <div className="bar-container">
             <div
@@ -85,10 +90,11 @@ export const HistoricTab = () => {
     );
 
     const columns = [
-        { header: 'Periodo', render: row => <span>{row.period_name}</span> },
-        { header: 'Cursos', render: row => <span>{row.courses_count}</span> },
-        { header: 'Actividades', render: row => <span>{row.total_activities_count}</span> },
+        { header: 'Periodo', render: row => <span>{row.period}</span> },
+        { header: 'Cursos', render: row => <span>{row.cursos}</span> },
+        { header: 'Actividades', render: row => <span>{row.actividades}</span> },
         { header: 'Carga', render: row => <CargaHistoricaColumn row={row} /> },
+        { header: '', render: row => <span className="worload-value">{row.workload}</span>, headerClass: 'workload-header' },
     ];
 
     return (
@@ -113,8 +119,11 @@ export const HistoricTab = () => {
                     Filtros  {/* PENDIENTE */}
                 </button>
             </div>
-            <Table className="historic-table" columns={columns} data={collaborator} />
+            <Table className="historic-table" columns={columns} data={collaborator}
+            />
+
             <Pagination currentPage={currentPage} totalItems={totalItems} onPageChange={handlePageChange} />
         </div>
     );
 };
+
