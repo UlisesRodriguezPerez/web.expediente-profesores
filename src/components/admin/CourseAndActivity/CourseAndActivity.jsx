@@ -96,9 +96,9 @@ export const CourseAndActivity = () => {
     , []);
 
     const handleCancel = () => {
-        setSelectedCourse(null);
-        setSelectedTeacher(null);
-        setSelectedPeriod(null);
+        seCourse(null);
+        setTeacher(null);
+        setPeriod(null);
         setTextBoxValue(defaultTextBoxValue);
     }
 
