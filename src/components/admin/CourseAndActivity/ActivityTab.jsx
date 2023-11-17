@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { ConfirmationBox } from './../../../common/components/ConfirmationBox/ConfirmationBox';
 import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 import dataService from '../../../services/dataService';
@@ -9,7 +9,9 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
     const [description, setDescription] = useState('');
     const [weeklyHours, setWeeklyHours] = useState('');
 
+    //const defaultTextBoxValue = `Agregar la actividad ${description ? description : '[ ]'} al profesor ${teacher ? data.teacher.label : '[ ]'}`
     const { showNotification } = useContext(NotificationContext);
+    //const [textBoxValue, setTextBoxValue] = useState(defaultTextBoxValue);
 
     const handleConfirm = async () => {
         try {
