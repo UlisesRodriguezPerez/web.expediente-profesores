@@ -8,9 +8,9 @@ import './FormationTab.css';
 import dataService from "../../../../../../../services/dataService";
 import ROUTES from "../../../../../../../enums/routes";
 import { NotificationContext } from "../../../../../../../contexts/NotificationContext/NotificationContext";
-import useSearch from "../../../../../../../hooks/useSearch";
 
 const ITEMS_PER_PAGE = 10;
+const DEFAULT_TEACHER_VALUE = -1;
 
 export const FormationTab = () => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +18,6 @@ export const FormationTab = () => {
     const [training, setTraining] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Sección reemplazable con datos de prueba
     const mockTrainingData = [
         { teacher: 'John Doe', program: 'Programming 101', university: 'Tech University', academicDegree: 'Bachelor', startYear: 2020, endYear: 2022 },
         { teacher: 'Jane Smith', program: 'Web Development Masterclass', university: 'Code Academy', academicDegree: 'Master', startYear: 2019, endYear: 2021 },
@@ -42,25 +41,19 @@ export const FormationTab = () => {
         { teacher: 'Samuel Wilson', program: 'Machine Learning Fundamentals', university: 'AI University', academicDegree: 'Ph.D.', startYear: 2018, endYear: 2020 },
     ];
 
-    const [isMockData, setIsMockData] = useState(true);
-
-    const fetchTraining = async (page = 1) => {
+    const fetchTraining = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
         try {
-            if (isMockData) {
-                setTraining(mockTrainingData);
-            } else {
-                const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user&perPage=${ITEMS_PER_PAGE}&page=${page}`);
-                const trainingFormatted = response.data.data.flatMap(collaborator => collaborator.activity_formation_trainings.map(training => ({
-                    teacher: `${collaborator.user.name}`,
-                    program: training.name,
-                    university: training.university_name,
-                    academicDegree: training.academic_degree,
-                    startYear: training.start_year,
-                    endYear: training.end_year,
-                })));
+            const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
+            // Puedes realizar la lógica para obtener los datos de la API aquí
+            // Por ahora, usaremos datos de prueba
+            const data = mockTrainingData; // Cambia esto con la llamada a la API real
+            // Fin de datos de prueba
 
-                setTraining(trainingFormatted);
-            }
+            const start = (page - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const paginatedData = data.slice(start, end);
+
+            setTraining(paginatedData);
         } catch (error) {
             console.error('Error fetching training:', error);
             showNotification('error', 'Error al cargar la formación');
@@ -68,12 +61,8 @@ export const FormationTab = () => {
     }
 
     useEffect(() => {
-        fetchTraining();
-    }, []);
-
-    useEffect(() => {
         fetchTraining(currentPage);
-    }, [currentPage, isMockData]);
+    }, [currentPage]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -113,10 +102,9 @@ export const FormationTab = () => {
                         <FontAwesomeIcon icon={faFileExport} /> Exportar
                     </button>
                 </div>
-                
             </div>
             <Table className="historic-table" columns={columns} data={training} />
-            <Pagination currentPage={currentPage} totalItems={training.length} onPageChange={handlePageChange} className="width-95" />
+            <Pagination currentPage={currentPage} totalItems={mockTrainingData.length} onPageChange={handlePageChange} className="width-95" />
         </div>
     );
 };

@@ -3,42 +3,40 @@ import { SearchBar } from "../../../../../../../common/components/SearchBar/Sear
 import { Table } from "../../../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileExport, faTrash, faPlus, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faFileExport } from '@fortawesome/free-solid-svg-icons';
 import './PedagogicalTab.css';
 
-// Función para obtener los datos de prueba
-const getTestData = () => {
-    const data = [
-        { teacher: 'testing Test', name: 'Pedagogy 101', institution: 'Edu University', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Advanced Teaching Methods', institution: 'Teaching Institute', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Inclusive Education Workshop', institution: 'Education Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Technology Seminar', institution: 'TechEd Academy', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'Language Arts Curriculum', institution: 'Language Institute', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Mathematics Teaching Strategies', institution: 'Math Academy', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Science Education Symposium', institution: 'Science Center', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Physical Education and Health', institution: 'Health School', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Social Studies Curriculum', institution: 'Social Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'Art and Music Education', institution: 'Arts Center', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Special Education Workshop', institution: 'SpecialEd Institute', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Literacy Development Strategies', institution: 'Literacy Academy', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Critical Thinking in Education', institution: 'Critical Ed Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Leadership Seminar', institution: 'Leadership Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'History and Civics Education', institution: 'History Center', period: '2022-2023' },
-        { teacher: 'testing Test', name: 'Environmental Education Workshop', institution: 'Environment Institute', period: '2019-2020' },
-        { teacher: 'testing Test', name: 'Teaching Foreign Languages', institution: 'Language School', period: '2021-2022' },
-        { teacher: 'testing Test', name: 'Early Childhood Education', institution: 'Early Ed Center', period: '2023-2024' },
-        { teacher: 'testing Test', name: 'Educational Psychology Seminar', institution: 'Psychology Institute', period: '2020-2021' },
-        { teacher: 'testing Test', name: 'STEM Education Workshop', institution: 'STEM Academy', period: '2022-2023' },
-    ];
+const ITEMS_PER_PAGE = 10;
+const DEFAULT_TEACHER_VALUE = -1;
 
-    return data;
-};
+const mockPedagogicalData = [
+    { teacher: 'Testing Test', name: 'Pedagogy 101', institution: 'Edu University', period: '2022-2023' },
+    { teacher: 'Testing Test', name: 'Advanced Teaching Methods', institution: 'Teaching Institute', period: '2021-2022' },
+    { teacher: 'Testing Test', name: 'Inclusive Education Workshop', institution: 'Education Center', period: '2023-2024' },
+    { teacher: 'Testing Test', name: 'Educational Technology Seminar', institution: 'TechEd Academy', period: '2020-2021' },
+    { teacher: 'Testing Test', name: 'Language Arts Curriculum', institution: 'Language Institute', period: '2022-2023' },
+    { teacher: 'Testing Test', name: 'Mathematics Teaching Strategies', institution: 'Math Academy', period: '2019-2020' },
+    { teacher: 'Testing Test', name: 'Science Education Symposium', institution: 'Science Center', period: '2021-2022' },
+    { teacher: 'Testing Test', name: 'Physical Education and Health', institution: 'Health School', period: '2023-2024' },
+    { teacher: 'Testing Test', name: 'Social Studies Curriculum', institution: 'Social Institute', period: '2020-2021' },
+    { teacher: 'Testing Test', name: 'Art and Music Education', institution: 'Arts Center', period: '2022-2023' },
+    { teacher: 'Testing Test', name: 'Special Education Workshop', institution: 'SpecialEd Institute', period: '2019-2020' },
+    { teacher: 'Testing Test', name: 'Literacy Development Strategies', institution: 'Literacy Academy', period: '2021-2022' },
+    { teacher: 'Testing Test', name: 'Critical Thinking in Education', institution: 'Critical Ed Center', period: '2023-2024' },
+    { teacher: 'Testing Test', name: 'Educational Leadership Seminar', institution: 'Leadership Institute', period: '2020-2021' },
+    { teacher: 'Testing Test', name: 'History and Civics Education', institution: 'History Center', period: '2022-2023' },
+    { teacher: 'Testing Test', name: 'Environmental Education Workshop', institution: 'Environment Institute', period: '2019-2020' },
+    { teacher: 'Testing Test', name: 'Teaching Foreign Languages', institution: 'Language School', period: '2021-2022' },
+    { teacher: 'Testing Test', name: 'Early Childhood Education', institution: 'Early Ed Center', period: '2023-2024' },
+    { teacher: 'Testing Test', name: 'Educational Psychology Seminar', institution: 'Psychology Institute', period: '2020-2021' },
+    { teacher: 'Testing Test', name: 'STEM Education Workshop', institution: 'STEM Academy', period: '2022-2023' },
+];
 
 export const PedagogicalTab = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState('');
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    const [data, setData] = useState(getTestData()); // Inicializar con datos de prueba
+    const [paginatedData, setPaginatedData] = useState([]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -46,18 +44,29 @@ export const PedagogicalTab = () => {
     };
 
     useEffect(() => {
-        // Aquí deberías llamar a tu API para obtener los datos reales.
-        // Actualizar el estado de 'data' con los datos obtenidos.
-        // Ejemplo:
-        // fetchData(currentPage, debouncedSearchTerm);
-        // setData([...]); // Actualiza 'data' con los datos obtenidos
-    }, [currentPage, debouncedSearchTerm]);
+        const fetchData = async (page = 1, teacherId = DEFAULT_TEACHER_VALUE) => {
+            try {
+                const queryId = teacherId !== null ? teacherId : DEFAULT_TEACHER_VALUE;
+                // Puedes realizar la lógica para obtener los datos de la API aquí
+                // Por ahora, usaremos datos de prueba
+                const start = (page - 1) * ITEMS_PER_PAGE;
+                const end = start + ITEMS_PER_PAGE;
+                const paginatedData = mockPedagogicalData.slice(start, end);
+                // Fin de datos de prueba
 
-    // ... (otros estados y funciones)
+                setPaginatedData(paginatedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Manejar el error, por ejemplo, mostrar una notificación
+            }
+        };
+
+        fetchData(currentPage);
+    }, [currentPage, debouncedSearchTerm]);
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // Actualiza datos basados en la nueva página
+        // Actualizar datos basados en la nueva página
         // Ejemplo:
         // fetchData(pageNumber, debouncedSearchTerm);
     };
@@ -74,6 +83,7 @@ export const PedagogicalTab = () => {
             <div className="search-filter-container width-95">
                 <div className="search-container">
                     <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
+
                     <button className="filter-button">
                         <span className="filter-lines">
                             <span className="line line-large"></span>
@@ -89,9 +99,8 @@ export const PedagogicalTab = () => {
                     </button>
                 </div>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className="width-95"/>
-            {/* ... (resto del código, como el formulario modal, notificaciones, etc.) */}
+            <Table className="historic-table" columns={columns} data={paginatedData} />
+            <Pagination currentPage={currentPage} totalItems={mockPedagogicalData.length} onPageChange={handlePageChange} className="width-95" />
         </div>
     );
 };
