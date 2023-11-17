@@ -10,11 +10,12 @@ import ROUTES from "../../../../../../../enums/routes";
 import { NotificationContext } from "../../../../../../../contexts/NotificationContext/NotificationContext";
 import useSearch from "../../../../../../../hooks/useSearch";
 
+const ITEMS_PER_PAGE = 10;
+
 export const FormationTab = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    // const [searchTerm, setSearchTerm] = useState('');
-    // const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
+    const [paginatedTraining, setPaginatedTraining] = useState([]);
     const { showNotification } = useContext(NotificationContext);
 
     const searchBuildFilterQuery = (term) => {
@@ -25,6 +26,12 @@ export const FormationTab = () => {
         ];
         const queries = baseFields.map(field => `&filter[${field}]=${term}`);
         return queries.join('');
+    };
+
+    const getPaginatedData = () => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return training.slice(startIndex, endIndex);
     };
 
     const { searchTerm, setSearchTerm, searchFilterQuery } = useSearch('', searchBuildFilterQuery);
@@ -62,6 +69,10 @@ export const FormationTab = () => {
     useEffect(() => {
         fetchTraining();
     }, [searchFilterQuery]);
+
+    useEffect(() => {
+        setPaginatedTraining(getPaginatedData());
+    }, [currentPage, training]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -104,7 +115,7 @@ export const FormationTab = () => {
                     </button>
                 </div>
             </div>
-            <Table className="historic-table" columns={columns} data={training} />
+            <Table className="historic-table" columns={columns} data={paginatedTraining} />
             <Pagination currentPage={currentPage} totalItems={training.length} onPageChange={handlePageChange} className="width-95" />
         </div>
     );
