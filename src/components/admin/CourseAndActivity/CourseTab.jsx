@@ -9,22 +9,24 @@ import { NotificationContext } from '../../../contexts/NotificationContext/Notif
 export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCancel, onConfirm, data }) => {
     const { showNotification } = useContext(NotificationContext);
 
+
+    // const [course, setCourse] = useState('');
     const handleConfirm = async () => {
         try {
-            if(!data.selectedCourse || !data.selectedTeacher || !data.selectedPeriod) {
+            if(!data.course || !data.teacher || !data.period) {
                 
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
             }
-            const response = await dataService.createData('courendpoint', {
-                course: data.selectedCourse.value,
-                teacher: data.selectedTeacher.value,
-                period: data.selectedPeriod.value
+            const response = await dataService.createData(`${ROUTES.COLLABORATORS}/${data.teacher.value}/assign-course` ,{
+                course_id: data.course.value,
+                period_id: data.period.value
             });
-            console.log('course', data.selectedCourse);
-            console.log('teacher', data.selectedTeacher.value);
-            console.log('period', data.selectedPeriod.value);
-            console.log('success');
+
+            console.log('response', response);
+
+            setSelectedCourse('');
+            
             showNotification('success', 'Curso asignado exitosamente (pendiente guardar en DB)');
         } catch (error) {
             console.error('error');
@@ -38,7 +40,7 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
         <div className="course-selection">
             <CustomSelect
                 options={courseOptions}
-                onChange={setSelectedCourse}
+                onChange= { (option) => setSelectedCourse(option) }
                 label="Curso"
                 placeholder="Cursos"
             />

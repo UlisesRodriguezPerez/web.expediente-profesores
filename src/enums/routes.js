@@ -22,6 +22,7 @@ const ROUTES = {
     WORKLOADS: '/workloads',
     COURSES: '/courses',
     FORMATION_TRAININGS: '/formation-trainings',
+    GENERAL_ACTIVITIES: '/general-activities',
 
     REGISTER: '/register',
     LOGIN: '/login'

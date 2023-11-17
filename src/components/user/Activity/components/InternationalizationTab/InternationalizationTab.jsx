@@ -28,7 +28,7 @@ export const InternationalizationTab = () => {
           console.error('Error fetching activity types:', error);
           showNotification('error', 'Error al cargar los tipos de actividad');
         }
-      }
+    }
     
     const handleAddInternationalization = async() => {
         try{
