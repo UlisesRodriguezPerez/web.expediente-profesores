@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import api from '../../api/api';
 import ROUTES from '../../enums/routes';
 import { Link, useNavigate } from 'react-router-dom';
+import { NotificationContext } from '../../contexts/NotificationContext/NotificationContext';
 // import headerimage from './src/assets/images/layouts/header-tec.png';
 import './estilo.css';
 
@@ -12,6 +13,8 @@ export const Login = () => {
         password: ''
     });
     const [errors, setErrors] = useState({});
+
+    const { showNotification } = useContext(NotificationContext);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -109,6 +112,7 @@ export const Login = () => {
             }
 
         } catch (err) {
+            showNotification('error', 'Error al realizar la solicitud');
             console.error('Error al realizar la solicitud:', err);
             setErrors({ general: 'Error al realizar la solicitud' });
         }
