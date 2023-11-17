@@ -4,7 +4,7 @@ import { Table } from "../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExport } from '@fortawesome/free-solid-svg-icons';
-import './InternationalizationTab.css';
+import './InternationalizationTab.css';  // Asegúrate de tener el estilo adecuado
 import dataService from "../../../../../services/dataService";
 import ROUTES from "../../../../../enums/routes";
 import { NotificationContext } from "../../../../../contexts/NotificationContext/NotificationContext";
@@ -38,13 +38,13 @@ export const InternationalizationTab = () => {
             const internationalizationFormatted = response.data.data.flatMap(collaborator =>
                 collaborator.internationalizations.map(internationalization => ({
                     teacher: `${collaborator.user.name}`,
-                    activity: internationalization.name,
-                    type: internationalization.type,
-                    university: internationalization.university_name,
-                    country: internationalization.country,
+                    activityName: internationalization.name,
+                    activityType: internationalization.type,
+                    universityName: internationalization.university_name,
+                    countryName: internationalization.country,
                 }))
             );
-
+    
             setInternationalization(internationalizationFormatted);
         } catch (error) {
             console.error('Error fetching internationalization:', error);
@@ -63,7 +63,7 @@ export const InternationalizationTab = () => {
     }, []);
 
     useEffect(() => {
-        console.log("Searche tearm query", searchTerm)
+        console.log("Search term query", searchTerm)
         setCurrentPage(1);
         fetchInternationalization();
     }, [searchFilterQuery]);
@@ -82,12 +82,13 @@ export const InternationalizationTab = () => {
 
     const columns = [
         { header: 'Profesor', render: row => <span>{row.teacher}</span> },
-        { header: 'Actividad', render: row => <span>{row.activity}</span> },
-        { header: 'Tipo', render: row => <span>{row.type}</span> },
-        { header: 'Universidad', render: row => <span>{row.university}</span> },
-        { header: 'Pais', render: row => <span>{row.country}</span> },
+        { header: 'Actividad', render: row => <span>{row.activityName}</span> },
+        { header: 'Tipo', render: row => <span>{row.activityType}</span> },
+        { header: 'Universidad', render: row => <span>{row.universityName}</span> },
+        { header: 'País', render: row => <span>{row.countryName}</span> },
         { header: '', render: row => <span >Antions</span> },
     ];
+    
 
     return (
         <div className="internationalization-tab-container">
