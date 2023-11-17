@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import Select from 'react-select';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -9,14 +9,11 @@ import { ActivityTab } from './ActivityTab';
 import './CourseAndActivity.css';
 import dataService from '../../../services/dataService';
 import ROUTES from '../../../enums/routes';
-// import { CourseTab } from './CourseTab';
+import { NotificationContext } from '../../../contexts/NotificationContext/NotificationContext';
 
 export const CourseAndActivity = () => {
 
-    //const [selectedTeacher, setSelectedTeacher] = useState(null);
-    //const [selectedPeriod, setSelectedPeriod] = useState(null);
     const [selectedTab, setSelectedTab] = useState('curso');
-    //const [selectedCourse, setSelectedCourse] = useState(null);
     const [teacher, setTeacher] = useState('');
     const [teacherOptions, setTeacherOptions] = useState([]);
     const [period, setPeriod] = useState('');
@@ -24,12 +21,9 @@ export const CourseAndActivity = () => {
     const [course, setCourse] = useState('');
     const [courseOptions, setCourseOptions] = useState([]);
 
-    const defaultTextBoxValue = `Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`
+    const defaultTextBoxValue = `Agregar la actividad al profesor ${teacher ? teacher.label : '[ ]'}`
     const [textBoxValue, setTextBoxValue] = useState(defaultTextBoxValue);
-
-    //const teacherOptions = [{ value: 'profesor1', label: 'Profesor 1 profesor test' }, { value: 'profesor2', label: 'Profesor 2' }];
-    //const periodOptions = [{ value: 'periodo1', label: 'Periodo 1' }, { value: 'periodo2', label: 'Periodo 2' }];
-    //const courseOptions = [{ value: 'curso1', label: 'Curso 1' }, { value: 'curso2', label: 'Curso 2' }];
+    const { showNotification } = useContext(NotificationContext);
 
     const getTeacherOptions = async () => {
         try {
@@ -77,7 +71,7 @@ export const CourseAndActivity = () => {
     }
 
     useEffect(() => {
-        setTextBoxValue(`Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`)
+        setTextBoxValue(`Agregar el curso ${course ? course.label : '[ ]'} al profesor ${teacher ? teacher.label : '[ ]'}`)
       }, [course, teacher]);
     
     useEffect(() => {
@@ -96,7 +90,7 @@ export const CourseAndActivity = () => {
     , []);
 
     const handleCancel = () => {
-        seCourse(null);
+        setCourse(null);
         setTeacher(null);
         setPeriod(null);
         setTextBoxValue(defaultTextBoxValue);

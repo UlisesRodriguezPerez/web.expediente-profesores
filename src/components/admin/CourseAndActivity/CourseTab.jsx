@@ -27,7 +27,7 @@ export const CourseTab = ({ courseOptions, setSelectedCourse, textBoxValue, onCa
 
             setSelectedCourse('');
             
-            showNotification('success', 'Curso asignado exitosamente (pendiente guardar en DB)');
+            showNotification('success', 'Curso asignado exitosamente');
         } catch (error) {
             console.error('error');
             showNotification('error', 'Error al asignar el curso');
