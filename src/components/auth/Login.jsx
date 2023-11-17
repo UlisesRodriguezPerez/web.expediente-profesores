@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import api from '../../api/api';
 import ROUTES from '../../enums/routes';
 import { Link, useNavigate } from 'react-router-dom';
-import dataService from '../../services/dataService';
-//import headerimage from './src/assets/images/layouts/header-tec.png';
+// import headerimage from './src/assets/images/layouts/header-tec.png';
 import './estilo.css';
 
 export const Login = () => {
@@ -23,15 +22,13 @@ export const Login = () => {
     };
 
     const handleLoginResponse = async (response) => {
-
-        // Save/Update user data in localStorage
         const userData = response.data.data;
-        console.log('userData', userData);
+
         if (!userData) {
-            // send error message
-            setErrors('Error al iniciar sesión');
+            setErrors({ general: 'Error al iniciar sesión' });
             return;
         }
+
         localStorage.setItem('user', JSON.stringify({
             id: userData.id,
             name: userData.name,
@@ -39,13 +36,7 @@ export const Login = () => {
             roles: userData.roles,
         }));
 
-        // Second request to get tokens
         try {
-            console.log('formData', formData);
-            console.log('process.env.REACT_APP_CLIENT_ID', process.env.REACT_APP_CLIENT_ID);
-            console.log('process.env.REACT_APP_CLIENT_SECRET', process.env.REACT_APP_CLIENT_SECRET);
-            console.log('username', formData.email);
-            console.log('password', formData.password);
             const tokenResponse = await api.post(`${process.env.REACT_APP_API_BASE_URL}/oauth/token`, {
                 grant_type: 'password',
                 client_id: process.env.REACT_APP_CLIENT_ID,
@@ -58,22 +49,11 @@ export const Login = () => {
                 }
             });
 
-            console.log('tokenResponse', tokenResponse);
-
-            // Check if access_token is NOT in localStorage
             if (!localStorage.getItem('token')) {
-                // parse response to JSON
                 const tokenData = tokenResponse.data;
-
                 const expires_in = tokenData.expires_in;
-
-                // get current date and time
                 const now = new Date().getTime();
-
-                // convert expiresIn to milliseconds and add to current time
-                const expirationTime = new Date(now + expires_in * 1000).toISOString(); // toISOString() to save it as a string
-
-                // save in localStorage in unic variable
+                const expirationTime = new Date(now + expires_in * 1000).toISOString();
                 localStorage.setItem('token', JSON.stringify({
                     access_token: tokenData.access_token,
                     refresh_token: tokenData.refresh_token,
@@ -82,19 +62,25 @@ export const Login = () => {
                 }));
             }
 
-            // Redirect or handle after successful token storage
             const userRoles = userData.roles;
-            console.log('isAdmin', isAdmin(userRoles));
+
             if (isAdmin(userRoles)) {
-                // window.location.href = '/admin-dashboard';
                 navigate('/admin-dashboard');
             } else {
-                // window.location.href = '/user-dashboard';
                 navigate('/user-dashboard');
             }
 
         } catch (error) {
             console.error('Error al obtener los tokens:', error);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setErrors({ password: 'Contraseña incorrecta' });
+                } else {
+                    setErrors(error.response.data.errors);
+                }
+            } else {
+                setErrors({ general: 'Error al iniciar sesión' });
+            }
         }
     };
 
@@ -113,30 +99,32 @@ export const Login = () => {
                 }
             });
             
-            // check if don't have 401 error
+            // Check if there is no 401 error
             if (response.status !== 401) {
                 console.log('Login successful');
                 console.log(response);
                 handleLoginResponse(response);
             } else {
-                setErrors(response.data.errors);
+                setErrors({ general: 'Correo o contraseña incorrectos' });
             }
 
         } catch (err) {
-            setErrors(err.response.data.errors);
+            console.error('Error al realizar la solicitud:', err);
+            setErrors({ general: 'Error al realizar la solicitud' });
         }
     };
-    //<img type="logo" src={headerimage} alt="Logo del TEC" />
+
     return (
         <div>
             <h2 type="auth-text">Iniciar Sesión</h2>
             <form onSubmit={handleSubmit}>
+                {errors.general && <p type="auth-text">{errors.general}</p>}
                 <input type="login-email" name="email" placeholder="Email" onChange={handleInputChange} />
                 {errors.email && <p type="auth-text">{errors.email[0]}</p>}
 
                 <div>
                     <input type="login-password" name="password" placeholder="Password" onChange={handleInputChange} />
-                    {errors.password && <p type="auth-text">{errors.password[0]}</p>}
+                    {errors.password && <p type="auth-text">{errors.password}</p>}
                 </div>
 
                 <p type="auth-text">
@@ -150,5 +138,4 @@ export const Login = () => {
             
         </div>
     );
-}
-
+};
