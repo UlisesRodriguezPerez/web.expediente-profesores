@@ -256,7 +256,29 @@ export const ListingTab = () => {
                             Filtros  {/* PENDIENTE */}
                         </button>
                         {/* Las opciones del filtro */}
-                        
+                        {showFilters && (
+                            <div className="filter-options">
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option1"
+                                checked={selectedOptions.includes('option1')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 1
+                            </label>
+                            <label>
+                                <input
+                                type="checkbox"
+                                value="option2"
+                                checked={selectedOptions.includes('option2')}
+                                onChange={handleOptionChange}
+                                />{' '}
+                                Opción 2
+                            </label>
+                            {/* Agrega más opciones de filtros según lo necesites */}
+                            </div>
+                        )}
                         <button className="action-button export-button" onClick={handleExportButton}>
                             <FontAwesomeIcon icon={faFileExport} /> Exportar
                         </button>
