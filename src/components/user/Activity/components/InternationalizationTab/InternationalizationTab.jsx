@@ -15,10 +15,10 @@ export const InternationalizationTab = () => {
 
     const currentUserId = JSON.parse(localStorage.getItem('user')).id;
 
-    const getTypeOptions = async () => { //ESTO ES PORQUE EL TIPO ES UN DROPDOWN -> REVISAR
+    const getTypeOptions = async () => {
         try {
-          const response = await dataService.readData(`${ROUTES.INTERNATIONALIZATIONS_TYPES}`); //RUTA NO EXISTE, DEBE CREARSE
-          console.log('internacionalization types', response.data.data)
+          const response = await dataService.readData(`${ROUTES.ACTIVITY_TYPES}`); //RUTA NO EXISTE, DEBE CREARSE
+          console.log('Activityy types', response.data.data)
           const activityOptions = response.data.data.map(activity => ({ value: activity.id, label: activity.name }));
           
           setActivityOptions(activityOptions);
@@ -45,6 +45,7 @@ export const InternationalizationTab = () => {
                 user_id: currentUserId,
             });
 
+            console.log('ready to save', response);
             setName('');
             setActivityType('');
             setUniversity('');

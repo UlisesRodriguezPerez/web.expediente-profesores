@@ -120,7 +120,7 @@ export const PublicationTab = () => {
                     <option value="" disabled selected hidden>El Estudiante realiza TFG</option>
                     {YesOrNoOptions.map((option) => (
                     <option key={option.value} value={option.value}>
-                        {YesOrNoOptions.label}
+                        {option.label}
                     </option>
                     ))}
                 </select>
@@ -134,7 +134,7 @@ export const PublicationTab = () => {
                     <option value="" disabled selected hidden>Cuenta con Beca</option>
                     {YesOrNoOptions.map((option) => (
                     <option key={option.value} value={option.value}>
-                        {YesOrNoOptions.label}
+                        {option.label}
                     </option>
                     ))}
                 </select>

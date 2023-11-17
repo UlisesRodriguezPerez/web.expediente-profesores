@@ -18,7 +18,7 @@ export const Consult = () => {
     const tabs = [
         { title: 'HISTÓRICO', component: <HistoricTab /> },
         { title: 'LISTADO', component: <ListingTab /> },
-        { title: 'DESCARGAR INFORME', component: <DownloadReportTab /> },
+        // { title: 'DESCARGAR INFORME', component: <DownloadReportTab /> },
         { title: 'CAPACITACIONES', component: <TrainingTab /> },
         { title: 'PUBLICACIONES', component: <PublicationTab /> },
         { title: 'INTERNACIONALIZACIONES', component: <InternationalizationTab /> },
