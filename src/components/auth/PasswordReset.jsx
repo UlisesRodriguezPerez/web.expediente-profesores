@@ -51,7 +51,7 @@ export const PasswordReset = () => {
             console.error('Info: ', currentUser.email)
             let response;
 
-            const collaboratorsResponse = await dataService.readData(`${ROUTES.COLLABORATORS}?exactfilter[user.id]=${currentUser.id}&include=users`);
+            const collaboratorsResponse = await dataService.readData(`${ROUTES.USERS}?exactfilter[user.id]=${currentUser.id}&include=users`);
             console.error('User :', collaboratorsResponse.data);
     
             // Aquí deberías realizar una solicitud a la API para enviar el código de restablecimiento y la nueva contraseña

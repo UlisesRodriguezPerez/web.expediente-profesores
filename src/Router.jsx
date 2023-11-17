@@ -20,6 +20,7 @@ import { ActivityView } from './views/userViews/Activity/ActivityView';
 import { PerfilAdminView } from './views/adminViews/PerfilAdmin/PerfilAdminView';
 import { UserProfileView } from './views/userViews/UserProfile/UserProfileView';
 import { CoursesView } from './views/userViews/Courses/CoursesView';
+import { PasswordLoss } from './components/auth/PasswordLoss';
 
 // temp component
 const TempComponent = () => {
@@ -50,6 +51,7 @@ export const Router = () => {
         <Route path="/profile" element={<RoleBasedRoute requiredRoles={['user']} component={UserProfileView} />} />
         <Route path="/courses" element={<RoleBasedRoute requiredRoles={['user']} component={CoursesView} />} />
         <Route path="/perfil-admin" element={<RoleBasedRoute requiredRoles={['admin']} component={PerfilAdminView} />} />
+        <Route path="/users/{userEmail}/recovery-password" element={<PasswordLoss />} />
         {/* Other routes */}
       </Routes>
     </BrowserRouter>
