@@ -13,7 +13,7 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
 
     const handleConfirm = async () => {
         try {
-            if (!data.selectedTeacher || !data.selectedPeriod || !description || !weeklyHours) {
+            if (!data.teacher || !data.period || !description || !weeklyHours) {
 
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
@@ -32,8 +32,8 @@ export const ActivityTab = ({ onCancel, data, textBoxValue }) => {
             console.log('success');*/
 
             const response = await dataService.createData(`${ROUTES.GENERAL_ACTIVITIES}`, { //CREAR RUTA
-                teacher: data.selectedTeacher.value,
-                period: data.selectedPeriod.value,
+                teacher: data.teacher.value,
+                period: data.period.value,
                 name: description,
                 hours: weeklyHours,
             });

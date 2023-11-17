@@ -22,7 +22,7 @@ export const CourseAndActivity = () => {
     const [course, setCourse] = useState('');
     const [courseOptions, setCourseOptions] = useState([]);
 
-    const defaultTextBoxValue = `Agregar el curso ${selectedCourse ? selectedCourse.value : '[ ]'} al profesor ${selectedTeacher ? selectedTeacher.value : '[ ]'}`
+    const defaultTextBoxValue = `Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`
     const [textBoxValue, setTextBoxValue] = useState(defaultTextBoxValue);
 
     //const teacherOptions = [{ value: 'profesor1', label: 'Profesor 1 profesor test' }, { value: 'profesor2', label: 'Profesor 2' }];
@@ -75,8 +75,8 @@ export const CourseAndActivity = () => {
     }
 
     useEffect(() => {
-        setTextBoxValue(`Agregar el curso ${selectedCourse ? selectedCourse.value : '[ ]'} al profesor ${selectedTeacher ? selectedTeacher.value : '[ ]'}`)
-      }, [selectedCourse, selectedTeacher]);
+        setTextBoxValue(`Agregar el curso ${course ? course.value : '[ ]'} al profesor ${teacher ? teacher.value : '[ ]'}`)
+      }, [course, teacher]);
     
     useEffect(() => {
         getTeacherOptions();
@@ -94,9 +94,9 @@ export const CourseAndActivity = () => {
     , []);
 
     const handleCancel = () => {
-        setSelectedCourse(null);
-        setSelectedTeacher(null);
-        setSelectedPeriod(null);
+        seCourse(null);
+        setTeacher(null);
+        setPeriod(null);
         setTextBoxValue(defaultTextBoxValue);
     }
 

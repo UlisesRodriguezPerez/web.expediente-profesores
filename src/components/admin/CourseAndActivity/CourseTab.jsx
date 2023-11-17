@@ -11,13 +11,13 @@ export const CourseTab = ({ courseOptions, setCourse, textBoxValue, onCancel, on
 
     const handleConfirm = async () => {
         try {
-            if(!data.selectedCourse || !data.selectedTeacher || !data.selectedPeriod) {
+            if(!data.course || !data.teacher || !data.period) {
                 
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
             }
             const response = await dataService.createData(ROUTES.COLLABORATOR_COURSE_PERIOD, { //RUTA NO EXISTE
-                course: course,
+                course: courseOptions,
                 teacher: teacher,
                 period: period
             });
