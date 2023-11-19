@@ -1,46 +1,82 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { SearchBar } from "../../../../../common/components/SearchBar/SearchBar";
 import { Table } from "../../../../../common/components/Table/Table";
 import { Pagination } from "../../../../../common/components/Pagination/Pagination";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileExport } from '@fortawesome/free-solid-svg-icons';
 import './PublicationTab.css';
+import dataService from "../../../../../services/dataService";
+import ROUTES from "../../../../../enums/routes";
+import { NotificationContext } from "../../../../../contexts/NotificationContext/NotificationContext";
+import useSearch from "../../../../../hooks/useSearch";
+
+const ITEMS_PER_PAGE = 10;
 
 export const PublicationTab = () => {
-
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-    // Datos falsos para visualización
-    const [data, setData] = useState([
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
-        { teacher: 'testing Test', scholarship : 5, publicationName: 10, students: 'PENDING', objective: 'PENDING', target: 'PENDING' },
+    const [paginatedPublication, setPaginatedPublication] = useState([]);
+    const { showNotification } = useContext(NotificationContext);
 
-    ]);
+    const searchBuildFilterQuery = (term) => {
+        const baseFields = [
+            'user.name',
+        ];
+        const queries = baseFields.map(field => `&filter[${field}]=${term}`);
+        return queries.join('');
+    };
+
+    const { searchTerm, setSearchTerm, searchFilterQuery } = useSearch('', searchBuildFilterQuery);
+
+    const [publication, setPublication] = useState([]);
+
+    const fetchPublicationData = async () => {
+        try {
+            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,publications${searchFilterQuery}`);
+            console.log(response.data);
+            const publicationFormatted = response.data.data.flatMap(collaborator => 
+                collaborator.publications.map(training => ({
+                    teacher: `${collaborator.user.name}`,
+                    scholarship: training.scholarship,
+                    publicationName: training.name,
+                    students: training.students,
+                    objective: training.objective,
+                    target: training.target,
+                }))
+            );
+
+            setPublication(publicationFormatted);
+        } catch (error) {
+            console.error('Error fetching publication data:', error);
+            showNotification('error', 'Error al cargar la información de publicación');
+        }
+    };
+
+    const getPaginatedData = (data) => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        const endIndex = startIndex + ITEMS_PER_PAGE;
+        return publication.slice(startIndex,endIndex);
+    };
+
+    useEffect(() => {
+        fetchPublicationData();
+    }, []);
+    
+    useEffect(() => {
+        console.log("Search term query", searchTerm)
+        setCurrentPage(1);
+        fetchPublicationData();
+    }, [searchFilterQuery]);
+    
+    useEffect(() => {
+        setPaginatedPublication(getPaginatedData());
+    }, [currentPage, publication]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
-        setDebouncedSearchTerm(event.target.value);
     };
 
     const handlePageChange = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // Actualizar datos basados en la nueva página
     };
 
     const columns = [
@@ -49,8 +85,8 @@ export const PublicationTab = () => {
         { header: 'Nombre Publicación', render: row => <span>{row.publicationName}</span> },
         { header: 'Estudiantes', render: row => <span>{row.students}</span> },
         { header: 'Objetivo', render: row => <span>{row.objective}</span> },
-        { header: 'Meta', render: row => <span>{row.target }</span> },
-        { header: '', render: row => <span >Antions</span> },
+        { header: 'Meta', render: row => <span>{row.target}</span> },
+        { header: '', render: row => <span>Acciones</span> },
     ];
 
     return (
@@ -58,7 +94,6 @@ export const PublicationTab = () => {
             <div className="search-filter-container width-95">
                 <div className="search-container">
                     <SearchBar className="search-box" value={searchTerm} onChange={handleSearchChange} placeholder={'Búsqueda'} />
-
                     <button className="filter-button">
                         <span className="filter-lines">
                             <span className="line line-large"></span>
@@ -74,9 +109,8 @@ export const PublicationTab = () => {
                     </button>
                 </div>
             </div>
-            <Table className="historic-table" columns={columns} data={data} />
-            <Pagination currentPage={currentPage} totalItems={data.length} onPageChange={handlePageChange} className="width-95"/>
+            <Table className="historic-table" columns={columns} data={paginatedPublication} />
+            <Pagination currentPage={currentPage} totalItems={publication.length} onPageChange={handlePageChange} className="width-95" />
         </div>
     );
-
 };
