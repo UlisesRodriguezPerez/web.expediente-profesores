@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import abrirPeriodo from './../../../assets/images/admin-dashboard/abrirPeriodo.png';
+import cargaSemestral from './../../../assets/images/admin-dashboard/cargaSemestral.png';
+import cursosActividades from './../../../assets/images/admin-dashboard/cursosActividades.png';
+import consultas from './../../../assets/images/admin-dashboard/consultas.png';
 import calendarImage from './../../../assets/images/admin-dashboard/calendar.png';
 import headerIcon from './../../../assets/images/admin-dashboard/header-icon.png';
 import CardComponent from './components/CardComponent';
@@ -23,10 +27,10 @@ export const AdminDashboard = () => {
     };
 
     const cardsData = [
-        { image: calendarImage, title: 'ABRIR PERIODO', backgroundColor: 'deep-blue', path: '/open-period' },
-        { image: calendarImage, title: 'CURSOS Y ACTIVIDADES', backgroundColor: 'teal', path: '/courses-and-activities' },
-        { image: calendarImage, title: 'CARGA SEMESTRAL', backgroundColor: 'bright-red', path: '/semester-workload' },
-        { image: calendarImage, title: 'CONSULTAS', backgroundColor: 'royal-blue', path: '/consults' },
+        { image: abrirPeriodo, title: 'ABRIR PERIODO', backgroundColor: 'deep-blue', path: '/open-period' },
+        { image: cursosActividades, title: 'CURSOS Y ACTIVIDADES', backgroundColor: 'teal', path: '/courses-and-activities' },
+        { image: cargaSemestral, title: 'CARGA SEMESTRAL', backgroundColor: 'bright-red', path: '/semester-workload' },
+        { image: consultas, title: 'CONSULTAS', backgroundColor: 'royal-blue', path: '/consults' },
     ];
 
     return (
