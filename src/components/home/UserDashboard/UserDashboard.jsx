@@ -4,7 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import calendarImage from './../../../assets/images/admin-dashboard/calendar.png';
+import abrirPeriodo from './../../../assets/images/admin-dashboard/abrirPeriodo.png';
+import cargaSemestral from './../../../assets/images/admin-dashboard/cargaSemestral.png';
+import cursosActividades from './../../../assets/images/admin-dashboard/cursosActividades.png';
+import consultas from './../../../assets/images/admin-dashboard/consultas.png';
 import headerIcon from './../../../assets/images/admin-dashboard/header-icon.png';
 import CardComponent from './components/CardComponent';
 
@@ -23,10 +26,10 @@ export const UserDashboard = () => {
     };
 
     const cardsData = [
-        { image: calendarImage, title: 'PERFIL', backgroundColor: 'deep-blue', path: '/profile' },
-        { image: calendarImage, title: 'ACTIVIDADES', backgroundColor: 'teal', path: '/activities' },
-        { image: calendarImage, title: 'MI HISTORIAL', backgroundColor: 'bright-red', path: '/history' },
-        { image: calendarImage, title: 'CURSOS', backgroundColor: 'royal-blue', path: '/courses' },
+        { image: consultas, title: 'PERFIL', backgroundColor: 'deep-blue', path: '/profile' },
+        { image: cursosActividades, title: 'ACTIVIDADES', backgroundColor: 'teal', path: '/activities' },
+        { image: abrirPeriodo, title: 'MI HISTORIAL', backgroundColor: 'bright-red', path: '/history' },
+        { image: cargaSemestral, title: 'CURSOS', backgroundColor: 'royal-blue', path: '/courses' },
     ];
 
     return (

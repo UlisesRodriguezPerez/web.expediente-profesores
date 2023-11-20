@@ -25,21 +25,21 @@ export const PublicationTab = () => {
 
     const getPublicationOptions = async () => {
         try {
-          const response = await dataService.readData(`${ROUTES.PUBLICATION_TYPES}`);
-          console.log('publication types', response.data.data)
-          const publicationOptions = response.data.data.map(publication => ({ value: publication.id, label: publication.name }));
-          
-          setPublicationOptions(publicationOptions);
-          
-    
-        } catch (error) {
-          console.error('Error fetching activity types:', error);
-          showNotification('error', 'Error al cargar los tipos de actividad');
-        }
-      }
+            const response = await dataService.readData(`${ROUTES.PUBLICATION_TYPES}`);
+            console.log('publication types', response.data.data)
+            const publicationOptions = response.data.data.map(publication => ({ value: publication.id, label: publication.name }));
 
-    const handleAddPublication = async() => {
-        try{
+            setPublicationOptions(publicationOptions);
+
+
+        } catch (error) {
+            console.error('Error fetching activity types:', error);
+            showNotification('error', 'Error al cargar los tipos de actividad');
+        }
+    }
+
+    const handleAddPublication = async () => {
+        try {
             if (!name || !publicationType || !students || !TFG || !scholarship || !dissemination_medium || !orcid || !coauthors || !objectives || !goals) {
                 showNotification('error', 'Todos los campos son requeridos.');
                 return;
@@ -69,106 +69,106 @@ export const PublicationTab = () => {
             setCoauthors('');
             setObjetives('');
             setGoals('');
-       
+
             showNotification('success', 'Actividad asignada exitosamente');
         }
         catch (error) {
-        console.error('Error al guardar Publicación:', error);
+            console.error('Error al guardar Publicación:', error);
         }
     };
-    
+
     useEffect(() => {
         getPublicationOptions();
-      }
-      , []);
+    }
+        , []);
 
     return (
         <div className="publication-container">
             <div className="input-pair">
-                <input 
-                    className="input-publication" 
+                <input
+                    className="input-publication"
                     placeholder="Nombre de la Publicación"
                     value={name}
-                    onChange={(e) => setName(e.target.value)} 
+                    onChange={(e) => setName(e.target.value)}
                 />
-                <select 
-                    className="dropdown-technique"
+                <select
+                    className="input-publication"
                     value={publicationType}
                     onChange={(e) => setPublicationType(e.target.value)}
                 >
                     <option value="" disabled selected hidden>Tipo de Publicación</option>
                     {publicationOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
                     ))}
 
                 </select>
             </div>
             <div className="input-pair">
-                <input 
-                    className="input-publication" 
+                <input
+                    className="input-publication"
                     placeholder="Estudiante(s) Participante(s)"
                     value={students}
-                    onChange={(e) => setStudents(e.target.value)}  
+                    onChange={(e) => setStudents(e.target.value)}
                 />
-                <select 
-                    className="dropdown-TFG"
+                <select
+                    className="input-publication"
                     value={TFG}
                     onChange={(e) => setTFG(e.target.value)}
                 >
                     <option value="" disabled selected hidden>El Estudiante realiza TFG</option>
                     {YesOrNoOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
                     ))}
                 </select>
             </div>
             <div className="input-pair">
-                <select 
-                    className="dropdown-Beca"
+                <select
+                    className="input-publication"
                     value={scholarship}
                     onChange={(e) => setScholarship(e.target.value)}
                 >
                     <option value="" disabled selected hidden>Cuenta con Beca</option>
                     {YesOrNoOptions.map((option) => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
+                        <option key={option.value} value={option.value}>
+                            {option.label}
+                        </option>
                     ))}
                 </select>
-                <input 
-                    className="input-publication" 
+                <input
+                    className="input-publication"
                     placeholder="Medio de Divulgación"
                     value={dissemination_medium}
-                    onChange={(e) => setDissemination_medium(e.target.value)} 
+                    onChange={(e) => setDissemination_medium(e.target.value)}
                 />
             </div>
             <div className="input-pair">
-                <input 
-                    className="input-publication" 
-                    placeholder="ORCID" 
+                <input
+                    className="input-publication"
+                    placeholder="ORCID"
                     value={orcid}
                     onChange={(e) => setOrcid(e.target.value)}
                 />
-                <input 
-                    className="input-publication" 
+                <input
+                    className="input-publication"
                     placeholder="Nombre de los coautores"
                     value={coauthors}
-                    onChange={(e) => setCoauthors(e.target.value)} 
+                    onChange={(e) => setCoauthors(e.target.value)}
                 />
             </div>
             <div className="input-pair">
-                <input 
-                    className="input-publication" 
-                    placeholder="Objetivo(s)" 
+                <input
+                    className="input-publication"
+                    placeholder="Objetivo(s)"
                     value={objectives}
                     onChange={(e) => setObjetives(e.target.value)}
                 />
-                <input 
-                    className="input-publication" 
-                    placeholder="Metas" 
+                <input
+                    className="input-publication"
+                    placeholder="Metas"
                     value={goals}
                     onChange={(e) => setGoals(e.target.value)}
                 />

@@ -30,10 +30,10 @@ export const HeaderComponent = () => {
         <div className="header-container">
         <div className="header-top">
             <h2>Mis Actividades</h2>
-            <button className="header-btn" onClick={handleDownloadExcel}>
+            {/* <button className="header-btn" onClick={handleDownloadExcel}>
                 <FontAwesomeIcon icon={faArrowDown} />
                 DESCARGAR EXCEL
-            </button>
+            </button> */}
         </div>
 
         <CustomTabContainer selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={tabs}  title="Registrar actividad:" />

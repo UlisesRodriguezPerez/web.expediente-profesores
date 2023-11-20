@@ -8,7 +8,6 @@ import abrirPeriodo from './../../../assets/images/admin-dashboard/abrirPeriodo.
 import cargaSemestral from './../../../assets/images/admin-dashboard/cargaSemestral.png';
 import cursosActividades from './../../../assets/images/admin-dashboard/cursosActividades.png';
 import consultas from './../../../assets/images/admin-dashboard/consultas.png';
-import calendarImage from './../../../assets/images/admin-dashboard/calendar.png';
 import headerIcon from './../../../assets/images/admin-dashboard/header-icon.png';
 import CardComponent from './components/CardComponent';
 

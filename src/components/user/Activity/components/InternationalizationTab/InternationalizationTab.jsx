@@ -74,7 +74,7 @@ export const InternationalizationTab = () => {
                 onChange={(e) => setName(e.target.value)} 
             />
             <select 
-                className="dropdown-internationalization"
+                className="input-internationalization"
                 value={activityType}
                 onChange={(e) => setActivityType(e.target.value)}
             >
