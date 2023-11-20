@@ -39,16 +39,15 @@ export const PedagogicalTab = () => {
 
     const fetchPedagogicalData = async () => { //pedagogicalTrainings.collaborator_id
         try {
-            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,pedagogicalTrainings${searchFilterQuery}`);
-            console.log('pedagogicalData', response.data.data);
-            console.log('URL', `${ROUTES.COLLABORATORS}?included=user,pedagogicalTrainings${searchFilterQuery}`);
-
-            const pedagogicalDataFormatted = response.data.data.flatMap(collaborator => collaborator.pedagogicalTrainings.map(training => ({
+            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,pedagogical_trainings${searchFilterQuery}`);
+            console.log('pedagogicalData :', response.data.data);
+            
+            const pedagogicalDataFormatted = response.data.data.flatMap(collaborator => ({
                 teacher: `${collaborator.user.name}`,
-                name: training.name,
-                institution: training.institution_name,
-                period: training.period,
-            })));
+                name: 'Pending', // O training.hours según lo que necesites
+                institution: 'Pending',
+                period: 'Pending',
+            }));
 
             console.log('pedagogicalDataFormatted', pedagogicalDataFormatted);
 

@@ -40,7 +40,7 @@ export const PublicationTab = () => {
       
             return publications.map(publication => ({
               teacher: `${user?.name ?? ''} ${user?.last_name ?? ''}`, // Verificar si 'user' está definido
-              scholarship: `${publication.scholarship ?? ''}`,
+              scholarship: `${publication.ORCID === 1 ? 'Si' : 'No'}`,
               publicationName: `${publication.name ?? ''}`,
               students: `${publication.coauthors ?? ''}`,
               objective: `${publication.objectives ?? ''}`,

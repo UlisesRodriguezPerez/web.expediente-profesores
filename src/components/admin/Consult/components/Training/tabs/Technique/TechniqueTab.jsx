@@ -40,17 +40,16 @@ export const TechniqueTab = () => {
     const fetchTechniques = async () => {
         try {
             const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,technicalTrainings${searchFilterQuery}`);
-            console.log('techniques', response.data.data);
-            console.log('URL', `${ROUTES.COLLABORATORS}?included=user,technicalTrainings${searchFilterQuery}`);
-
-            const techniquesFormatted = response.data.data.flatMap(collaborator => collaborator.technicalTrainings.map(technique => ({
+            console.log('techniques :', response.data.data);
+        
+            const techniquesFormatted = response.data.data.flatMap(collaborator => collaborator.technical_trainings.map(technique => ({
                 teacher: `${collaborator.user.name}`,
-                activity: technique.activity,  
-                type: technique.type, 
+                activity: technique.name,  
+                type: technique.training_type ? technique.training_type.name : 'PENDING', 
                 pending: 'PENDING',
             })));
 
-            console.log('techniquesFormatted', techniquesFormatted);
+            console.log('techniquesFormatted: ', techniquesFormatted);
 
             setTechniques(techniquesFormatted);
         } catch (error) {
@@ -85,7 +84,7 @@ export const TechniqueTab = () => {
         { header: 'Profesor', render: row => <span>{row.teacher}</span> },
         { header: 'Actividad', render: row => <span>{row.activity}</span> },
         { header: 'Tipo', render: row => <span>{row.type}</span> },
-        { header: '', render: row => <span>{row.pending}</span> },
+        //{ header: 'Pending', render: row => <span >{row.pending}</span> },
     ];
 
     return (

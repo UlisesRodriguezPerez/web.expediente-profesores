@@ -39,8 +39,8 @@ export const InternationalizationTab = () => {
                 collaborator.internationalizations.map(internationalization => ({
                     teacher: `${collaborator.user.name}`,
                     activityName: internationalization.name,
-                    activityType: internationalization.type,
-                    universityName: internationalization.university_name,
+                    activityType: internationalization.activityType ? internationalization.activityType.name : 'Antions',
+                     universityName: internationalization.university_name,
                     countryName: internationalization.country,
                 }))
             );
@@ -86,7 +86,7 @@ export const InternationalizationTab = () => {
         { header: 'Tipo', render: row => <span>{row.activityType}</span> },
         { header: 'Universidad', render: row => <span>{row.universityName}</span> },
         { header: 'País', render: row => <span>{row.countryName}</span> },
-        { header: '', render: row => <span >Antions</span> },
+        //{ header: '', render: row => <span >Antions</span> },
     ];
     
 
