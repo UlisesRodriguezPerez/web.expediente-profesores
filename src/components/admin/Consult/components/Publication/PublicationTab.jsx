@@ -31,25 +31,32 @@ export const PublicationTab = () => {
 
     const fetchPublicationData = async () => {
         try {
-            const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,publications${searchFilterQuery}`);
-            console.log(response.data);
-            const publicationFormatted = response.data.data.flatMap(collaborator => 
-                collaborator.publications.map(training => ({
-                    teacher: `${collaborator.user.name}`,
-                    scholarship: training.scholarship,
-                    publicationName: training.name,
-                    students: training.students,
-                    objective: training.objective,
-                    target: training.target,
-                }))
-            );
-
-            setPublication(publicationFormatted);
+          const response = await dataService.readData(`${ROUTES.COLLABORATORS}?included=user,publications${searchFilterQuery}`);
+          console.log(response.data.data);
+      
+          const publicationFormatted = response.data.data.flatMap(collaborator => {
+            const user = collaborator.user;
+            const publications = collaborator.publications || []; // Verificar si 'publications' está definido
+      
+            return publications.map(publication => ({
+              teacher: `${user?.name ?? ''} ${user?.last_name ?? ''}`, // Verificar si 'user' está definido
+              scholarship: `${publication.scholarship ?? ''}`,
+              publicationName: `${publication.name ?? ''}`,
+              students: `${publication.coauthors ?? ''}`,
+              objective: `${publication.objectives ?? ''}`,
+              target: `${publication.goals ?? ''}`,
+            }));
+          });
+      
+          console.log(publicationFormatted);
+          setPublication(publicationFormatted);
         } catch (error) {
-            console.error('Error fetching publication data:', error);
-            showNotification('error', 'Error al cargar la información de publicación');
+          console.error('Error fetching publication data:', error);
+          console.log('Response data:', error.response?.data); // Agregado para imprimir la respuesta del servidor
+          showNotification('error', 'Error al cargar la información de publicación');
         }
-    };
+      };
+      
 
     const getPaginatedData = (data) => {
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -86,7 +93,6 @@ export const PublicationTab = () => {
         { header: 'Estudiantes', render: row => <span>{row.students}</span> },
         { header: 'Objetivo', render: row => <span>{row.objective}</span> },
         { header: 'Meta', render: row => <span>{row.target}</span> },
-        { header: '', render: row => <span>Acciones</span> },
     ];
 
     return (
