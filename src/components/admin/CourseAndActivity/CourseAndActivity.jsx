@@ -71,8 +71,13 @@ export const CourseAndActivity = () => {
     }
 
     useEffect(() => {
-        setTextBoxValue(`Agregar el curso ${course ? course.label : '[ ]'} al profesor ${teacher ? teacher.label : '[ ]'}`)
-      }, [course, teacher]);
+        if (selectedTab === 'actividad'){
+            setTextBoxValue(`Agregar la actividad al profesor ${teacher ? teacher.label : '[ ]'}`)
+        }
+        else{
+            setTextBoxValue(`Agregar el curso ${course ? course.label : '[ ]'} al profesor ${teacher ? teacher.label : '[ ]'}`)
+        }
+      }, [course, teacher, selectedTab]);
     
     useEffect(() => {
         getTeacherOptions();
